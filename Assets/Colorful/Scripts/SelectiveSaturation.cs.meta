@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: cb0d18b3430f72946bc7e2b22184d490
+timeCreated: 1477672705
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - maskPass: {fileID: 4800000, guid: 906fdc0ac8d350748bd0041b571b453f, type: 3}
+  - saturationPass: {fileID: 4800000, guid: d4136ae7b3dcf9a4b828ab5e2367fc1a, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
