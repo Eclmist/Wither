@@ -54,7 +54,7 @@
 			}
 			ENDCG
 		}
-
+/*
 		Pass
 			{
 				Stencil
@@ -99,6 +99,6 @@
 			return 0;
 			}
 				ENDCG
-			}
+			}*/
 	}
 }
