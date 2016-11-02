@@ -1,4 +1,0 @@
-sceneSetups:
-- path: Assets/ColorfulTest.unity
-  isLoaded: 1
-  isActive: 1
