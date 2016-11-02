@@ -35,8 +35,6 @@ namespace UnityStandardAssets.ImageEffects
             //pulseMat = CheckShaderAndCreateMaterial(pulsePass, pulseMat);
 
 
-
-
             return base.CheckResources();
 
         }
@@ -80,6 +78,15 @@ namespace UnityStandardAssets.ImageEffects
         {
             Graphics.Blit(source, pass1, cullMat);
             //Graphics.Blit(pass1, pass2, pulseMat);
+        }
+
+        public void OnPostRender()
+        {
+            RenderTexture.active = pass1;
+            GL.Clear(true, true, Color.black);
+
+            RenderTexture.active = pass2;
+            GL.Clear(true, true, Color.black);
         }
 
         public void OnDisable()
