@@ -1,11 +1,13 @@
 ﻿using System;
 using UnityEngine;
 
+/*Disclamer: This is default unity script*/
 namespace UnityStandardAssets.ImageEffects
 {
     [ExecuteInEditMode]
     [AddComponentMenu("Image Effects/Blur/ManualBlur")]
-    public class ManualBlur : MonoBehaviour
+    [RequireComponent (typeof(MaskGenerator))]
+    public class Mask_Blur : MonoBehaviour
     {
         /// Blur iterations - larger number means more blur.
         [Range(0, 10)]
@@ -17,6 +19,7 @@ namespace UnityStandardAssets.ImageEffects
         [Range(0.0f, 1.0f)]
         public float blurSpread = 0.6f;
 
+        private MaskGenerator maskGen;
 
         // --------------------------------------------------------
         // The blur iteration shader.
@@ -64,6 +67,8 @@ namespace UnityStandardAssets.ImageEffects
                 enabled = false;
                 return;
             }
+
+            maskGen = GetComponent<MaskGenerator>();
         }
 
         // Performs one blur iteration.
@@ -88,6 +93,12 @@ namespace UnityStandardAssets.ImageEffects
                                    new Vector2(off, off),
                                    new Vector2(off, -off)
                 );
+        }
+
+        public void OnRenderImage(RenderTexture source, RenderTexture destination)
+        {
+            Blur(maskGen.GetMaskTex(1), maskGen.GetMaskTex(2));
+            maskGen.SwapBuffer();
         }
 
         // Called by the camera to apply the image effect

@@ -19,6 +19,41 @@
         <para>Describes room size to for audio effects.</para>
       </summary>
     </member>
+    <member name="T:UnityEngine.EventSystems.HoloLensInputModule">
+      <summary>
+        <para>A BaseInputModule designed for HoloLens input.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.EventSystems.HoloLensInputModule.normalizedNavigationToScreenOffsetScalar">
+      <summary>
+        <para>Defines the number of pixels of emulated mouse movement when a value of positive or negative 1 is reported by the device for a navigation gesture.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.EventSystems.HoloLensInputModule.timeToPressOnTap">
+      <summary>
+        <para>Controls the number of seconds that taps (emulated mouse clicks) will leave any tapped UI object in the Pressed state for better user feedback.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.EventSystems.HoloLensInputModule.ActivateModule">
+      <summary>
+        <para>See BaseInputModule.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.EventSystems.HoloLensInputModule.IsModuleSupported">
+      <summary>
+        <para>See BaseInputModule.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.EventSystems.HoloLensInputModule.ShouldActivateModule">
+      <summary>
+        <para>See BaseInputModule.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.EventSystems.HoloLensInputModule.UpdateModule">
+      <summary>
+        <para>See BaseInputModule.</para>
+      </summary>
+    </member>
     <member name="T:UnityEngine.VR.WSA.SpatialMappingBase">
       <summary>
         <para>The base class for all spatial mapping components.</para>

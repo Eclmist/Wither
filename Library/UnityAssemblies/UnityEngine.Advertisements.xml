@@ -189,7 +189,7 @@
       <param name="key">Metadata key.</param>
       <param name="value">Metadata value, needs to be JSON serializable.</param>
     </member>
-    <member name="M:UnityEngine.Advertisements.MetaData.Values">
+    <member name="P:UnityEngine.Advertisements.MetaData.Values">
       <summary>
         <para></para>
       </summary>

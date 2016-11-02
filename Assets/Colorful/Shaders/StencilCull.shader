@@ -50,9 +50,7 @@
 
 			fixed4 frag (v2f i) : SV_Target
 			{
-				fixed4 col = tex2D(_MainTex, i.uv);
-				col.rgb = fixed3(1,1,1);
-				return col;
+				return 1;
 			}
 			ENDCG
 		}
@@ -97,10 +95,8 @@
 
 			fixed4 frag(v2f i) : SV_Target
 			{
-			fixed4 col = tex2D(_MainTex, i.uv);
-			col.rgb = fixed3(0,0,0);
 			
-			return col;
+			return 0;
 			}
 				ENDCG
 			}

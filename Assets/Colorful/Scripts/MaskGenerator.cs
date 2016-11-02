@@ -12,7 +12,12 @@ namespace UnityStandardAssets.ImageEffects
         public Shader StencilCullPass;
         private Material cullMat;
 
-        private RenderTexture tex;
+        /* Temp */
+        //public Shader pulsePass;
+        //private Material pulseMat;
+
+
+        private RenderTexture pass1, pass2;
         private Camera cam;
 
         // Use this for initialization
@@ -20,10 +25,20 @@ namespace UnityStandardAssets.ImageEffects
         {
             cullMat = CheckShaderAndCreateMaterial(StencilCullPass, cullMat);
             cam = GetComponent<Camera>();
-            tex = new RenderTexture(cam.pixelWidth, cam.pixelHeight, 24);
-            tex.Create();
-            cam.targetTexture = tex;
+            pass1 = new RenderTexture(cam.pixelWidth, cam.pixelHeight, 24);
+            pass1.Create();
+
+            cam.targetTexture = pass1;                  //Commented out for testing of overlaying masks 
+
+            pass2 = new RenderTexture(cam.pixelWidth, cam.pixelHeight, 24);
+            pass2.Create();
+            //pulseMat = CheckShaderAndCreateMaterial(pulsePass, pulseMat);
+
+
+
+
             return base.CheckResources();
+
         }
 
         // Update is called once per frame
@@ -32,14 +47,39 @@ namespace UnityStandardAssets.ImageEffects
 
         }
 
+        public RenderTexture GetMaskTex(int index)
+        {
+            switch (index)
+            {
+                case 1:
+                    return pass1;
+                case 2:
+                    return pass2;
+                default:
+                    return pass1;
+            }
+        }
+
         public RenderTexture GetMaskTex()
         {
-            return tex;
+            return pass1;
+        }
+
+
+        public void SwapBuffer()
+        {
+            Graphics.Blit(pass2, pass1);
+        }
+
+        public void SetBackBuffer(RenderTexture tex)
+        {
+            pass2 = tex;
         }
 
         public void OnRenderImage(RenderTexture source, RenderTexture destination)
         {
-            Graphics.Blit(source, destination, cullMat);
+            Graphics.Blit(source, pass1, cullMat);
+            //Graphics.Blit(pass1, pass2, pulseMat);
         }
 
         public void OnDisable()

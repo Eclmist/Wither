@@ -49,6 +49,7 @@
 				fixed4 maskCol = tex2D(_MaskTex, i.uv);
 								
 				col.rgb = lerp((col.r + col.g + col.b) / (9 - _Brightness), col.rgb, _Saturation + maskCol.r);
+				//col.rgb = lerp((0) / (9 - _Brightness), col.rgb, _Saturation + maskCol.r);
 
 				return col;
 			}

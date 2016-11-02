@@ -20,7 +20,7 @@ namespace UnityStandardAssets.ImageEffects
 
         private MaskGenerator maskGen;
 
-        private ManualBlur manualBlur;
+        //private ManualBlur manualBlur;
 
         public override bool CheckResources()
         {
@@ -28,12 +28,21 @@ namespace UnityStandardAssets.ImageEffects
 
             saturationMat = CheckShaderAndCreateMaterial(saturationPass, saturationMat);
             maskGen = GetComponentInChildren<MaskGenerator>();
-            manualBlur = GetComponent<ManualBlur>();
+            //manualBlur = GetComponent<ManualBlur>();
 
             if (!isSupported)
                 ReportAutoDisable();
             return isSupported;
         }
+
+
+        public void OnEnable()
+        {
+        }
+
+        public void OnDisable()
+        { }
+
 
 
         public void OnRenderImage(RenderTexture source, RenderTexture destination)
@@ -44,18 +53,16 @@ namespace UnityStandardAssets.ImageEffects
                 return;
             }
 
-            RenderTexture blurredMaskTex = RenderTexture.GetTemporary(maskGen.GetMaskTex().width, maskGen.GetMaskTex().height);
+            //RenderTexture blurredMaskTex = RenderTexture.GetTemporary(maskGen.GetMaskTex().width, maskGen.GetMaskTex().height);
 
-            manualBlur.Blur(maskGen.GetMaskTex(), blurredMaskTex);
+            //manualBlur.Blur(maskGen.GetMaskTex(), blurredMaskTex);
 
-            saturationMat.SetTexture("_MaskTex", blurredMaskTex);
+            saturationMat.SetTexture("_MaskTex", maskGen.GetMaskTex());
 
             saturationMat.SetFloat("_Saturation", saturation);
             saturationMat.SetFloat("_Brightness", brightness);
 
             Graphics.Blit(source, destination, saturationMat);
-
-            RenderTexture.ReleaseTemporary(blurredMaskTex);
         }
     }
 
