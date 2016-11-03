@@ -108,11 +108,31 @@ namespace UnityStandardAssets.ImageEffects
             GL.PopMatrix();
         }
 
+        float d = 0;
+        float w = 0;
+
         void Update()
         {
+            /*Temp*/
+            if (d < 60)
+            {
+                d++;
+            }
+            else
+            {
+                d = 0;
+                w = 0.5F;
+
+            }
+
+            if (w < 10)
+            {
+                w+= 0.5F;
+            }
+
             pulseMat.SetVector("_PulsePosition", pulsePosition.position);
-            pulseMat.SetFloat("_PulseDistance", distance);
-            pulseMat.SetFloat("_PulseWidth", width);
+            pulseMat.SetFloat("_PulseDistance", d);
+            pulseMat.SetFloat("_PulseWidth", w);
 
         }
     }

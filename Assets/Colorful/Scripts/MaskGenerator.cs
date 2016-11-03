@@ -34,9 +34,7 @@ namespace UnityStandardAssets.ImageEffects
             pass2.Create();
             //pulseMat = CheckShaderAndCreateMaterial(pulsePass, pulseMat);
 
-
             return base.CheckResources();
-
         }
 
         // Update is called once per frame

@@ -61,7 +61,7 @@
 
 				float dist = distance(fragmentPosition, _PulsePosition);
 
-				if (dist < _PulseDistance && dist > _PulseDistance - _PulseWidth)
+				if (dist < _PulseDistance && dist > _PulseDistance - _PulseWidth && linearDepth < 1)
 				{
 					float diff = 1 - (_PulseDistance - dist) / (_PulseWidth);
 
