@@ -111,7 +111,7 @@ namespace UnityStandardAssets.ImageEffects
         float d = 0;
         float w = 0;
 
-        void Update()
+        void FixedUpdate()
         {
             /*Temp*/
             if (d < 60)
