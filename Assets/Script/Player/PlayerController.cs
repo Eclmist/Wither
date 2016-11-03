@@ -10,12 +10,15 @@ public class PlayerController : MonoBehaviour
     public ParticleSystem colorSpawn;
     private Rigidbody rigidBody;
     private ParticleSystem.EmissionModule em;
+    private ParticleSystem.MainModule main;
+
     private Vector3 defaultPos;
     // Use this for initialization
     void Start ()
 	{
 	    rigidBody = GetComponent<Rigidbody>();
         em = colorSpawn.emission;
+        main = colorSpawn.main;
         defaultPos = colorSpawn.transform.localPosition;
 	}
     RaycastHit hit;
@@ -38,7 +41,15 @@ public class PlayerController : MonoBehaviour
 	            new Vector3(transform.position.x,
                 hit.point.y - defaultPos.y - 2,
                 transform.position.z);
-	    }
+
+            //colorSpawn.transform.up = hit.normal;
+
+            //Quaternion newRot = new Quaternion();
+            //newRot.SetLookRotation(hit.normal, colorSpawn.transform.up);
+
+            //colorSpawn.transform.rotation = newRot;
+
+        }
 
     }
 

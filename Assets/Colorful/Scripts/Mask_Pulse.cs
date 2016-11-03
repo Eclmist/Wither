@@ -116,7 +116,7 @@ namespace UnityStandardAssets.ImageEffects
             /*Temp*/
             if (d < 60)
             {
-                d++;
+                d+= 0.3F;
             }
             else
             {
