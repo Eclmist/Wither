@@ -126,7 +126,7 @@ namespace UnityStandardAssets.ImageEffects
             {
                 d = 0;
                 w = 0.2F;
-
+                pulseMat.SetVector("_PulsePosition", pulsePosition.position);
             }
 
             if (w < 10)
@@ -134,7 +134,6 @@ namespace UnityStandardAssets.ImageEffects
                 w+= 0.5F;
             }
 
-            pulseMat.SetVector("_PulsePosition", pulsePosition.position);
             pulseMat.SetFloat("_PulseDistance", d);
             pulseMat.SetFloat("_PulseWidth", w);
 
