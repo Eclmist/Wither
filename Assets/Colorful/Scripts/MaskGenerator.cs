@@ -23,6 +23,8 @@ namespace UnityStandardAssets.ImageEffects
         // Use this for initialization
         public override bool CheckResources()
         {
+            CheckSupport(false);
+
             cullMat = CheckShaderAndCreateMaterial(StencilCullPass, cullMat);
             cam = GetComponent<Camera>();
             pass1 = new RenderTexture(cam.pixelWidth, cam.pixelHeight, 24);
@@ -34,7 +36,10 @@ namespace UnityStandardAssets.ImageEffects
             pass2.Create();
             //pulseMat = CheckShaderAndCreateMaterial(pulsePass, pulseMat);
 
-            return base.CheckResources();
+
+            if (!isSupported)
+                ReportAutoDisable();
+            return isSupported;
         }
 
         // Update is called once per frame

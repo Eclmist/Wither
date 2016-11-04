@@ -31,6 +31,8 @@ namespace UnityStandardAssets.ImageEffects
         // Use this for initialization
         public override bool CheckResources()
         {
+            CheckSupport(false);
+
             cam = GetComponent<Camera>();
             maskGen = GetComponent<MaskGenerator>();
             glowMat = CheckShaderAndCreateMaterial(glowPass, glowMat);
@@ -38,7 +40,10 @@ namespace UnityStandardAssets.ImageEffects
             //pass = new RenderTexture(maskGen.GetMaskTex().width, maskGen.GetMaskTex().height, 24);
             //pass.Create();
 
-            return base.CheckResources();
+
+            if (!isSupported)
+                ReportAutoDisable();
+            return isSupported;
         }
 
         void OnRenderImage(RenderTexture source, RenderTexture destionation)
@@ -109,7 +114,7 @@ namespace UnityStandardAssets.ImageEffects
             GL.PopMatrix();
         }
 
-        void FixedUpdate()
+        void Update()
         {
 
             glowMat.SetVector("_GlowPosition", glowPosition.position);
