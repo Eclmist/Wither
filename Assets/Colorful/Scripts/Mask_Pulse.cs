@@ -9,6 +9,7 @@ namespace UnityStandardAssets.ImageEffects
     [AddComponentMenu("Image Effects/Colorful/Mask_Pulse")]
     public class Mask_Pulse : PostEffectsBase
     {
+        public static Mask_Pulse Instance;
 
         [Range(0, 100)]
         [SerializeField] private float distance;
@@ -26,6 +27,12 @@ namespace UnityStandardAssets.ImageEffects
         //private RenderTexture pass;
 
         private Camera cam;
+        private bool canPulse = true;
+
+        void Awake()
+        {
+            Instance = this;
+        }
 
         // Use this for initialization
         public override bool CheckResources()
@@ -118,15 +125,14 @@ namespace UnityStandardAssets.ImageEffects
         void FixedUpdate()
         {
             /*Temp*/
-            if (d < 60)
+            if (d < 30 && !canPulse)
             {
-                d+= 0.3F;
+                d += 0.3F;
             }
             else
             {
                 d = 0;
-                w = 0.2F;
-                pulseMat.SetVector("_PulsePosition", pulsePosition.position);
+                canPulse = true;
             }
 
             if (w < 10)
@@ -137,6 +143,17 @@ namespace UnityStandardAssets.ImageEffects
             pulseMat.SetFloat("_PulseDistance", d);
             pulseMat.SetFloat("_PulseWidth", w);
 
+        }
+
+        public void Pulse()
+        {
+            if (canPulse)
+            {
+                d = 0;
+                w = 0.2F;
+                pulseMat.SetVector("_PulsePosition", pulsePosition.position);
+                canPulse = false;
+            }
         }
     }
 }
