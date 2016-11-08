@@ -21,29 +21,38 @@ public class ColorQuadSpawn : MonoBehaviour {
         rigidBody = GetComponent<Rigidbody>();
         playerController = GetComponent<PlayerController>();
     }
+    RaycastHit hit;
 
     // Update is called once per frame
-    void FixedUpdate () {
+    void FixedUpdate()
+    {
 
         em.enabled = (rigidBody.velocity.magnitude > 0.1F);
-        em.rateOverTime = playerController.GetSpeed() * 2.5F;
+        em.rateOverTime = playerController.GetSpeed()*2.5F;
 
-        //RaycastHit hit;
-        //if (Physics.Raycast(transform.position, Vector3.down, out hit))
-        //{
-        //    colorSpawn.transform.position =
-        //        new Vector3(transform.position.x,
-        //        hit.point.y - defaultPos.y - 2,
-        //        transform.position.z);
+        if (Physics.Raycast(transform.position, Vector3.down, out hit))
+        {
+            colorSpawn.transform.position =
+                new Vector3(transform.position.x,
+                hit.point.y + 0.8F + defaultPos.y,
+                transform.position.z);
 
-        //    //colorSpawn.transform.up = hit.normal;
+            //    //colorSpawn.transform.up = hit.normal;
 
-        //    //Quaternion newRot = new Quaternion();
-        //    //newRot.SetLookRotation(hit.normal, colorSpawn.transform.up);
+            //    //Quaternion newRot = new Quaternion();
+            //    //newRot.SetLookRotation(hit.normal, colorSpawn.transform.up);
 
-        //    //colorSpawn.transform.rotation = newRot;
+            //    //colorSpawn.transform.rotation = newRot;
 
-        //}
+            //}
+
+        }
 
     }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.DrawSphere(hit.point, 1);
+    }
+
 }
