@@ -11,15 +11,6 @@ namespace UnityStandardAssets.ImageEffects
     {
         public static Mask_Pulse Instance;
 
-        [Range(0, 100)]
-        [SerializeField] private float distance;
-
-        [Range(0, 10)]
-        [SerializeField] private float width;
-
-
-        public Transform pulsePosition;
-
         [SerializeField] private Shader pulsePass;
         private Material pulseMat;
 
@@ -27,7 +18,6 @@ namespace UnityStandardAssets.ImageEffects
         //private RenderTexture pass;
 
         private Camera cam;
-        private bool canPulse = true;
 
         void Awake()
         {
@@ -119,41 +109,20 @@ namespace UnityStandardAssets.ImageEffects
             GL.PopMatrix();
         }
 
-        float d = 0;
-        float w = 0;
-
         void FixedUpdate()
         {
-            /*Temp*/
-            if (d < 30 && !canPulse)
-            {
-                d += 0.3F;
-            }
-            else
-            {
-                d = 0;
-                canPulse = true;
-            }
-
-            if (w < 10)
-            {
-                w+= 0.5F;
-            }
-
-            pulseMat.SetFloat("_PulseDistance", d);
-            pulseMat.SetFloat("_PulseWidth", w);
-
         }
 
-        public void Pulse()
+        public void SetPulse(float size, float width)
         {
-            if (canPulse)
-            {
-                d = 0;
-                w = 0.2F;
-                pulseMat.SetVector("_PulsePosition", pulsePosition.position);
-                canPulse = false;
-            }
+            pulseMat.SetFloat("_PulseDistance", size);
+            pulseMat.SetFloat("_PulseWidth", width);
         }
+
+        public void SetPulsePosition(Vector3 pulsePosition)
+        {
+            pulseMat.SetVector("_PulsePosition", pulsePosition);
+        }
+
     }
 }

@@ -6,6 +6,8 @@ Shader "Stencils/XRay"
 	{
 		_RimColor("Rim Color", Color) = (0.26,0.19,0.16,0.0)
 		_RimPower("Rim Power", Range(0.5,8.0)) = 3.0
+		_Opacity("Opacity", Range(0,1)) = 1
+
 
 	}
 	SubShader
@@ -16,12 +18,12 @@ Shader "Stencils/XRay"
 		Blend One One
 		ZTest always
 
-		Stencil
-		{
-			Ref 1
-			Comp always
-			Pass replace
-		}
+		//Stencil
+		//{
+		//	Ref 1
+		//	Comp always
+		//	Pass replace
+		//}
 
 		Pass
 		{
@@ -48,7 +50,7 @@ Shader "Stencils/XRay"
 			float4 _MainTex_ST;
 			float4 _RimColor;
 			float _RimPower;
-
+			float _Opacity;
 			
 			v2f vert (appdata v)
 			{
@@ -61,8 +63,9 @@ Shader "Stencils/XRay"
 			
 			fixed4 frag (v2f i) : SV_Target
 			{
+
 				float ndotv = 1 - dot(i.normalDir, i.viewDir);
-				return _RimColor * pow (ndotv, _RimPower);
+				return _RimColor * pow (ndotv, _RimPower) * _Opacity;
 			}
 			ENDCG
 		}

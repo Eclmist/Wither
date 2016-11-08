@@ -11,4 +11,8 @@ public class TestCube :MonoBehaviour, IInteractable
         Debug.Log("Interact() called from IInteractable");
     }
 
+    public void Pulse()
+    {
+        throw new NotImplementedException();
+    }
 }
