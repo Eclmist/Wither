@@ -65,7 +65,7 @@ public class IvyController : MonoBehaviour
     {
         pulseCoroutineStarted = true;
 
-        WaitForEndOfFrame wait = new WaitForEndOfFrame();
+        WaitForFixedUpdate wait = new WaitForFixedUpdate();
 
         float currentDistance = 0;
 

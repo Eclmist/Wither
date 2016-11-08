@@ -31,7 +31,7 @@ public class PlayerTrigger : MonoBehaviour, IInteractable {
 
         additionalOpacity = 0;
 
-        WaitForEndOfFrame wait = new WaitForEndOfFrame();
+        WaitForFixedUpdate wait = new WaitForFixedUpdate();
 
         float opacityFromCurve = 0;
 
