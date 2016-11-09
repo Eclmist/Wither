@@ -8,6 +8,8 @@
 sysinfo.txt
 *.stackdump
 *.apk
+*.exe
+Wither_Data/
  
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
