@@ -124,5 +124,10 @@ namespace UnityStandardAssets.ImageEffects
             pulseMat.SetVector("_PulsePosition", pulsePosition);
         }
 
+        public void SetMaxDistance(float maxDist)
+        {
+            pulseMat.SetFloat("_MaxDistance", maxDist);
+        }
+
     }
 }

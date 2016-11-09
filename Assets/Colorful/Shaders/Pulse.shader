@@ -49,6 +49,7 @@
 			float4 _PulsePosition;
 			float _PulseDistance;
 			float _PulseWidth;
+			float _MaxDistance;
 
 			fixed4 frag (v2f i) : SV_Target
 			{

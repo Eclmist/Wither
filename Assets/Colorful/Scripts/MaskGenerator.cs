@@ -28,11 +28,13 @@ namespace UnityStandardAssets.ImageEffects
             cullMat = CheckShaderAndCreateMaterial(StencilCullPass, cullMat);
             cam = GetComponent<Camera>();
             pass1 = new RenderTexture(cam.pixelWidth, cam.pixelHeight, 24);
+            pass1.antiAliasing = QualitySettings.antiAliasing;
             pass1.Create();
 
             cam.targetTexture = pass1;                  //Commented out for testing of overlaying masks 
 
             pass2 = new RenderTexture(cam.pixelWidth, cam.pixelHeight, 24);
+            pass2   .antiAliasing = QualitySettings.antiAliasing;
             pass2.Create();
             //pulseMat = CheckShaderAndCreateMaterial(pulsePass, pulseMat);
 
@@ -94,7 +96,7 @@ namespace UnityStandardAssets.ImageEffects
 
         public void OnDisable()
         {
-            cam.targetTexture = null;
+            //cam.targetTexture = null;
         }
     }
 }

@@ -8,7 +8,7 @@ public class IvyController : MonoBehaviour
 
     [SerializeField][Range(0, 10)] private float floatingHeight;
 
-    [SerializeField] private LayerMask ignoreMask = 1 << 9;
+    [SerializeField] private readonly LayerMask ignoreMask = 1 << 9;
 
     [SerializeField] private Transform player;
 
@@ -70,6 +70,9 @@ public class IvyController : MonoBehaviour
         float currentDistance = 0;
 
         Mask_Pulse.Instance.SetPulsePosition(transform.position);
+        Mask_Pulse.Instance.SetMaxDistance(p_maxDistance);
+
+        Vector3 pulsePosition = transform.position;
 
         List<Collider> interracted = new List<Collider>();
 
@@ -78,7 +81,7 @@ public class IvyController : MonoBehaviour
             currentDistance += p_growRate;
             Mask_Pulse.Instance.SetPulse(currentDistance, p_ringWidth);
 
-            Collider[] interractables = Physics.OverlapSphere(transform.position, currentDistance);
+            Collider[] interractables = Physics.OverlapSphere(pulsePosition, currentDistance, LayerMask.GetMask("PulseReveal"));
 
             foreach (Collider c in interractables)
             {
@@ -93,6 +96,8 @@ public class IvyController : MonoBehaviour
 
             yield return wait;
         }
+
+        Mask_Pulse.Instance.SetPulse(0, 0);
 
         yield return wait;
 
