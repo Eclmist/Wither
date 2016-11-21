@@ -5,7 +5,7 @@ using UnityEngine;
 public class RotateOverTime : MonoBehaviour
 {
 
-    public float RotationSpeed;
+    public Vector3 RotationSpeed;
 
 	// Use this for initialization
 	void Start () {
@@ -15,6 +15,6 @@ public class RotateOverTime : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-	    transform.Rotate(Vector3.up*(RotationSpeed*Time.deltaTime));
+	    transform.Rotate((RotationSpeed*Time.deltaTime));
 	}
 }

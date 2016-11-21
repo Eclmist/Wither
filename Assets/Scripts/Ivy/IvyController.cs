@@ -125,6 +125,7 @@ public class IvyController : MonoBehaviour
         else
         {
             targetPosition = player.position;
+            targetPosition.y = player.position.y - 1.125F + floatingHeight;
         }
 
         tempTarget = targetPosition;
@@ -142,7 +143,9 @@ public class IvyController : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation,
             Quaternion.LookRotation(lookAtTarget, Vector3.up),
             emergencyTurn ? 0.1F : rotationSpeed);
-        transform.position = Vector3.Lerp(transform.position, transform.position + transform.forward, moveSpeed);
+
+        Vector3 targetPosCurrFrame = transform.position + transform.forward;
+        transform.position = Vector3.Lerp(transform.position, targetPosCurrFrame, moveSpeed);
 
     }
 
