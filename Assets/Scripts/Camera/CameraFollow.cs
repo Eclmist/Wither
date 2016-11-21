@@ -13,15 +13,14 @@ public class CameraFollow : MonoBehaviour
 	{
 	    offset = - target[0].transform.position + transform.position;
 	}
-	
-	// Update is called once per frame
-	void FixedUpdate ()
+
+    void FixedUpdate()
 	{
 	    Vector3 targetPos = target[0].position * 0.8F;
 
 	    targetPos += target[1].position*0.2F;
 
-
-	    transform.position = Vector3.Lerp(transform.position, targetPos + offset, Time.deltaTime);
-	}
+        //transform.position = targetPos + offset ;
+        transform.position = Vector3.Lerp(transform.position, targetPos + offset, Chronos.BetaTime);
+    }
 }

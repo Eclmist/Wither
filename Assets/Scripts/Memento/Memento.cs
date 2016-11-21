@@ -13,8 +13,6 @@ public class Memento : MonoBehaviour
         Chronos.LateExecute(MementoManager.ShowMemento, 0.6F);
         MementoManager.IncrementPickupCount();
         MementoManager.Instance.StartCoroutine(MementoManager.Instance.TriggerMemento(true));
-
-
         Destroy(gameObject);
     }
 }

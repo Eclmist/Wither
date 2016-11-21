@@ -53,7 +53,7 @@ public class MementoManager : MonoBehaviour {
     public IEnumerator TriggerMemento(bool enabled)
     {
 
-        float startingOpacity = -0.1F;
+        float startingOpacity = 0;
         ren.material.SetFloat("_Opacity", startingOpacity);
         backfaceRen.material.SetFloat("_Opacity", startingOpacity);
 
@@ -67,7 +67,7 @@ public class MementoManager : MonoBehaviour {
             while (startingOpacity < 1)
             {
 
-                startingOpacity += 0.015F;
+                startingOpacity += 0.01F;
 
                 if (startingOpacity >= 1)
                 {
