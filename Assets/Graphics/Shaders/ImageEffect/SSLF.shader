@@ -48,6 +48,8 @@
 			float _opacity;
 			float _sDepth;
 
+			half4 _color;
+
 			fixed4 frag (v2f i) : SV_Target
 			{
 				half r = 0.003;
@@ -75,7 +77,7 @@
 				oMul -= (sign(_sDepth - linearDepthBL)) * 0.2;
 				oMul -= (sign(_sDepth - linearDepthBR)) * 0.2;
 
-				return col + lens * _opacity *oMul;
+				return col + lens * _opacity *oMul * _color;
 			}
 			ENDCG
 		}

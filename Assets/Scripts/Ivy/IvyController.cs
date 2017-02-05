@@ -71,8 +71,9 @@ public class IvyController : MonoBehaviour
 
         Mask_Pulse.Instance.SetPulsePosition(transform.position);
         Mask_Pulse.Instance.SetMaxDistance(p_maxDistance);
+		SSDistortion.Instance.distortionMultiplier = 0;
 
-        Vector3 pulsePosition = transform.position;
+		Vector3 pulsePosition = transform.position;
 
         List<Collider> interracted = new List<Collider>();
 
@@ -80,8 +81,10 @@ public class IvyController : MonoBehaviour
         {
             currentDistance += p_growRate;
             Mask_Pulse.Instance.SetPulse(currentDistance, p_ringWidth);
+	        SSDistortion.Instance.radius = currentDistance;
+			SSDistortion.Instance.distortionMultiplier = Mathf.Sin(currentDistance/p_maxDistance * 3.14f);
 
-            Collider[] interractables = Physics.OverlapSphere(pulsePosition, currentDistance, LayerMask.GetMask("PulseReveal"));
+			Collider[] interractables = Physics.OverlapSphere(pulsePosition, currentDistance, LayerMask.GetMask("PulseReveal"));
 
             foreach (Collider c in interractables)
             {
@@ -98,8 +101,10 @@ public class IvyController : MonoBehaviour
         }
 
         Mask_Pulse.Instance.SetPulse(0, 0);
+		SSDistortion.Instance.radius = 0;
+		SSDistortion.Instance.distortionMultiplier = 0;
 
-        yield return wait;
+		yield return wait;
 
         pulseCoroutineStarted = false;
     }

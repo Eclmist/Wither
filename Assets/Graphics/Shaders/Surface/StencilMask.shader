@@ -6,8 +6,10 @@
 	}
 	SubShader
 	{
-		Tags { "RenderType"="Opaque" "Queue"="Geometry-100" }
+		Tags { "RenderType"="Transparent" "Queue"="Geometry-100" }
 		LOD 100
+
+		Blend SrcAlpha OneMinusSrcAlpha
 
 		Pass
 		{
@@ -60,7 +62,6 @@
 			{
 				// sample the texture
 				fixed4 col = tex2D(_MainTex, i.uv);
-				
 				if (col.a == 0) discard;
 				
 				return col;

@@ -8,8 +8,9 @@ public class ScreenSpacedLensFlares : MonoBehaviour
     public Transform t;
     [Range(0,1)] public float size;
     [Range(0, 1)] public float opacity;
+	public Color c;
 
-    public Shader lfShader;
+	public Shader lfShader;
     private Material lfMaterial;
     private Camera cam;
 
@@ -32,8 +33,9 @@ public class ScreenSpacedLensFlares : MonoBehaviour
         lfMaterial.SetVector("_sPosition", screenPos);
         lfMaterial.SetFloat("_size", size);
         lfMaterial.SetFloat("_opacity", opacity);
+		lfMaterial.SetColor("_color", c);
 
-	    float distanceFromCamera = (transform.position - worldPos).magnitude;
+		float distanceFromCamera = (transform.position - worldPos).magnitude;
 
 	    float clipDistance = cam.farClipPlane - cam.nearClipPlane;
 	    distanceFromCamera -= cam.nearClipPlane;
