@@ -10,7 +10,9 @@ sysinfo.txt
 *.apk
 *.exe
 Wither_Data/
- 
+LightingData.asset
+LightingData.asset.meta
+
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
 # ===================================== #

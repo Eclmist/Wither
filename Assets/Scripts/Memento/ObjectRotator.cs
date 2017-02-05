@@ -12,7 +12,6 @@ public class ObjectRotator : MonoBehaviour
     void Start()
     {
         transform.rotation = Quaternion.identity;
-        Application.targetFrameRate = 60;
     }
 
     void Update()

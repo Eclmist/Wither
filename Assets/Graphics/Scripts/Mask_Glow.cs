@@ -13,7 +13,7 @@ namespace UnityStandardAssets.ImageEffects
         [Range(0, 10)]
         [SerializeField] private float radius;
 
-        [Range(0, 3)]
+        [Range(0, 10)]
         [SerializeField]
         private float intensity;
 

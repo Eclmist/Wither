@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
+    public float speed = 1;
+
+    [Tooltip("0 = completely follow target 1, 1 = completely follow target 2")]
+    [Range(0, 1)] public float weight;
+
     public Transform[] target;
 
     private Vector3 offset;
@@ -16,11 +21,11 @@ public class CameraFollow : MonoBehaviour
 
     void FixedUpdate()
 	{
-	    Vector3 targetPos = target[0].position * 0.8F;
+	    Vector3 targetPos = target[0].position * (1-weight);
 
-	    targetPos += target[1].position*0.2F;
+	    targetPos += target[1].position*weight;
 
         //transform.position = targetPos + offset ;
-        transform.position = Vector3.Lerp(transform.position, targetPos + offset, Chronos.BetaTime);
+        transform.position = Vector3.Lerp(transform.position, targetPos + offset, Chronos.BetaTime * speed);
     }
 }

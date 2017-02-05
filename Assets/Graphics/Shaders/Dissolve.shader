@@ -62,9 +62,9 @@
 				// sample the texture
 				fixed4 col = tex2D(_MainTex, i.uv);
 				fixed4 mask = tex2D(_MaskTex, i.uv);
-				mask.rgb -= 1 - _Opacity;
+				mask.rgb -= 1 - _Opacity - 0.1;
 				
-				if (mask.r < _Cutoff) discard;
+				if (mask.r < _Cutoff ) discard;
 
 				// Add burning edge
 				fixed4 ramp = tex2D(_ColorRamp, float2(mask.r *(1 / _BurnSize), 0));
