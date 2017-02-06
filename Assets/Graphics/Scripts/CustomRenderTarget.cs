@@ -23,6 +23,8 @@ public class CustomRenderTarget : MonoBehaviour {
 		Graphics.Blit(source, cachedTexture);
 		Graphics.Blit(source, destination);
 		Graphics.Blit(cachedTexture, cachedDepthTexture, depthCacheMat);
+		Shader.SetGlobalTexture("_PUDepthTex", cachedDepthTexture);
+
 	}
 
 }
