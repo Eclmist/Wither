@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class ParticleSeek : MonoBehaviour
 {
 	public Transform target;
@@ -46,6 +47,11 @@ public class ParticleSeek : MonoBehaviour
 
 			p.velocity += seekForce;
 
+			if (Vector3.Distance(p.position, target.position) < 0.05f)
+			{
+				p.velocity = Vector3.zero;
+				p.position = target.position;
+			}
 			particles[i] = p;
 		}
 

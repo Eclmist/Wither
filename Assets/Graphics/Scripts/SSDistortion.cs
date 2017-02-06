@@ -34,7 +34,7 @@ public class SSDistortion : MonoBehaviour
 	void OnRenderImage(RenderTexture source, RenderTexture dest) {
 
 		SSDistortionMaterial.SetVector("_Position", t.position);
-		SSDistortionMaterial.SetFloat("_Radius", radius);
+		SSDistortionMaterial.SetFloat("_Radius", radius - 2);
 		SSDistortionMaterial.SetFloat("_Width", width);
 		SSDistortionMaterial.SetFloat("_DistortionAmount", distortion * distortionMultiplier);
 
