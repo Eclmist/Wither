@@ -8,17 +8,18 @@ public class RenderCustomTexture : MonoBehaviour {
 
     CustomRenderTarget customTex;
 
+	public Shader globalTexPass;
+	private Material globalTexMat;
+
 	void Start ()
-    {
-        customTex = GetComponentInChildren<CustomRenderTarget>();
+	{
+		globalTexMat = new Material(globalTexPass);
+		customTex = GetComponentInChildren<CustomRenderTarget>();
     }
 
     public void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
-        RenderTexture tex = RenderTexture.GetTemporary(source.width, source.height, 16);
-        Graphics.Blit(customTex.cachedTexture, tex);
-		Graphics.Blit(tex, destination);
-        RenderTexture.ReleaseTemporary(tex);
+		Graphics.Blit(source, destination, globalTexMat);
     }
 
 }

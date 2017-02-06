@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(Camera))]
 public class CustomRenderTarget : MonoBehaviour {
 
-	public RenderTexture cachedTexture, cachedDepthTexture;
+	private RenderTexture cachedTexture, cachedDepthTexture;
 	public Shader depthCacheShader;
 	private Material depthCacheMat;
 
@@ -14,7 +14,7 @@ public class CustomRenderTarget : MonoBehaviour {
 	{
 		Camera cam = GetComponent<Camera>();
 		cachedTexture = new RenderTexture(cam.pixelWidth, cam.pixelHeight, 16);
-		cachedDepthTexture = new RenderTexture(cam.pixelWidth, cam.pixelHeight, 16);
+		cachedDepthTexture = new RenderTexture(cam.pixelWidth, cam.pixelHeight, 16, RenderTextureFormat.RFloat);
 		depthCacheMat = new Material(depthCacheShader);
 	}
 
@@ -24,6 +24,7 @@ public class CustomRenderTarget : MonoBehaviour {
 		Graphics.Blit(source, destination);
 		Graphics.Blit(cachedTexture, cachedDepthTexture, depthCacheMat);
 		Shader.SetGlobalTexture("_PUDepthTex", cachedDepthTexture);
+		Shader.SetGlobalTexture("_CachedTex", cachedTexture);
 
 	}
 

@@ -14,7 +14,7 @@
 			Ref 1
 			Comp always
 			Pass replace
-			ZFail replace
+			ZFail keep
 		}
 
 

@@ -36,7 +36,6 @@ public class ScreenSpacedLensFlares : MonoBehaviour
 		lfMaterial.SetFloat("_size", size);
 		lfMaterial.SetFloat("_opacity", opacity);
 		lfMaterial.SetColor("_color", c);
-		lfMaterial.SetTexture("_CachedDepthTexture", customTex.cachedDepthTexture);
 		float distanceFromCamera = (transform.position - worldPos).magnitude;
 
 		float clipDistance = cam.farClipPlane - cam.nearClipPlane;

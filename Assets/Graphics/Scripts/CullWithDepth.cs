@@ -25,7 +25,6 @@ public class CullWithDepth : MonoBehaviour
 	
 	// Update is called once per frame
 	void OnRenderImage(RenderTexture source, RenderTexture dest) {
-		CullWithDepthMaterial.SetTexture("_CachedDepthTexture", renderCache.cachedDepthTexture);
         Graphics.Blit(source, dest, CullWithDepthMaterial);
 	}
 

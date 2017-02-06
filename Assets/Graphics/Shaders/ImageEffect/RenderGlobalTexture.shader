@@ -1,4 +1,4 @@
-﻿Shader "Hidden/CullWithDepth"
+﻿Shader "Hidden/RenderGlobalTexture"
 {
 	Properties
 	{
@@ -8,7 +8,7 @@
 	{
 		// No culling or depth
 		Cull Off ZWrite Off ZTest Always
-		
+
 		Pass
 		{
 			CGPROGRAM
@@ -37,23 +37,12 @@
 				return o;
 			}
 			
-			sampler2D _MainTex;
-			uniform sampler2D _PUDepthTex;
-			sampler2D _CameraDepthTexture;
+			sampler2D _CachedTex;
+
 			fixed4 frag (v2f i) : SV_Target
 			{
-				fixed4 col = tex2D(_MainTex, i.uv);
-
-			//return col;
-				fixed4 cachedDepth = tex2D(_PUDepthTex, i.uv).r;
-				fixed4 actualDepth = tex2D(_CameraDepthTexture, i.uv * float2(1, -1)).r;
-
-	
-
-				col = lerp(col, 0, sign(cachedDepth - actualDepth));
-
+				fixed4 col = tex2D(_CachedTex, i.uv);
 				return col;
-
 			}
 			ENDCG
 		}
