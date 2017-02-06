@@ -45,7 +45,7 @@
 			}
 			
 			sampler2D _MainTex;
-			sampler2D_float _CameraDepthTexture;
+			sampler2D _CameraDepthTexture;
 			float4 _GlowPosition;
 			float _GlowRadius;
 			float _Intensity;
@@ -67,6 +67,7 @@
 
 					return col + lerp(0, _Intensity, pow(diff, 3));
 				}
+
 
 				return col;
 

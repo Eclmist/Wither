@@ -42,7 +42,9 @@
 			
 			sampler2D _MainTex;
 			sampler2D _LensFlare;
-			sampler2D _CameraDepthTexture;
+			uniform sampler2D _CachedDepthTexture;
+
+			sampler2D _CustomDepth;
 			float2 _sPosition;
 			float _size;
 			float _opacity;
@@ -57,11 +59,11 @@
 				fixed4 lens = tex2D(_LensFlare, ((i.uv) - (_sPosition)) / _size + 0.5);
 				lens.a = 0.5;
 
-				fixed depth = tex2D(_CameraDepthTexture, _sPosition).r;
-				fixed depthTL = tex2D(_CameraDepthTexture, _sPosition + half2(-r, -r)).r;
-				fixed depthTR = tex2D(_CameraDepthTexture, _sPosition + half2(r, -r)).r;
-				fixed depthBL = tex2D(_CameraDepthTexture, _sPosition + half2(-r, r)).r;
-				fixed depthBR = tex2D(_CameraDepthTexture, _sPosition + half2(r, r)).r;
+				fixed depth = tex2D(_CachedDepthTexture, _sPosition).r;
+				fixed depthTL = tex2D(_CachedDepthTexture, _sPosition + half2(-r, -r)).r;
+				fixed depthTR = tex2D(_CachedDepthTexture, _sPosition + half2(r, -r)).r;
+				fixed depthBL = tex2D(_CachedDepthTexture, _sPosition + half2(-r, r)).r;
+				fixed depthBR = tex2D(_CachedDepthTexture, _sPosition + half2(r, r)).r;
 
 				float linearDepth = Linear01Depth(depth);
 				float linearDepthTL = Linear01Depth(depthTL);

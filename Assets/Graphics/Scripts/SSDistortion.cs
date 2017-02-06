@@ -39,7 +39,6 @@ public class SSDistortion : MonoBehaviour
 		SSDistortionMaterial.SetFloat("_DistortionAmount", distortion * distortionMultiplier);
 		SSDistortionMaterial.SetFloat("_AspectRatio", cam.aspect);
 
-
 		Graphics.Blit(source, dest, SSDistortionMaterial);
 	}
 }
