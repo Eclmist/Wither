@@ -5,6 +5,7 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class ScreenSpacedLensFlares : MonoBehaviour
 {
+	public Texture texture;
 	public Transform t;
 	[Range(0,1)] public float size;
 	[Range(0, 1)] public float opacity;
@@ -20,6 +21,7 @@ public class ScreenSpacedLensFlares : MonoBehaviour
 		lfMaterial = new Material(lfShader);
 		cam = GetComponent<Camera>();
 		customTex = GetComponentInChildren<CustomRenderTarget>();
+		lfMaterial.SetTexture("_LensFlare", texture);
 	}
 
 	private float final;

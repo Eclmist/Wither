@@ -53,8 +53,6 @@ class PlayerController : MonoBehaviour,IDamagable
 	void Update ()
     {
         
-        horizontal = Input.GetAxis("Horizontal");
-        vertical = Input.GetAxis("Vertical");
         HandleInput();
         HandleAnimations();
 
@@ -67,7 +65,10 @@ class PlayerController : MonoBehaviour,IDamagable
 
     void FixedUpdate()
     {
-        if(!isDead)
+		horizontal = Input.GetAxis("Horizontal");
+		vertical = Input.GetAxis("Vertical");
+
+		if (!isDead)
             HandleMovement(horizontal, vertical);
     }
 

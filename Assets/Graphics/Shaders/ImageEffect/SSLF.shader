@@ -3,8 +3,6 @@
 	Properties
 	{
 		_MainTex ("Texture", 2D) = "black" {}
-		_LensFlare("Texture", 2D) = "" {}
-
 	}
 	SubShader
 	{
@@ -76,7 +74,6 @@
 				oMul -= (sign(_sDepth - linearDepthTR)) * 0.2;
 				oMul -= (sign(_sDepth - linearDepthBL)) * 0.2;
 				oMul -= (sign(_sDepth - linearDepthBR)) * 0.2;
-
 				return col + lens * _opacity *oMul * _color;
 			}
 			ENDCG

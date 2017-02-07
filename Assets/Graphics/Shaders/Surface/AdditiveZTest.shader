@@ -42,9 +42,7 @@
 		float4 vertex : POSITION;
 		fixed4 color : COLOR;
 		float2 texcoord : TEXCOORD0;
-#ifdef SOFTPARTICLES_ON
 		float4 projPos : TEXCOORD1;
-#endif
 	};
 
 	float4 _MainTex_ST;
@@ -53,10 +51,8 @@
 	{
 		v2f o;
 		o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
-#ifdef SOFTPARTICLES_ON
 		o.projPos = ComputeScreenPos(o.vertex);
 		COMPUTE_EYEDEPTH(o.projPos.z);
-#endif
 		o.color = v.color;
 		o.texcoord = TRANSFORM_TEX(v.texcoord,_MainTex);
 		return o;
@@ -68,12 +64,10 @@
 
 	fixed4 frag(v2f i) : COLOR
 	{
-#ifdef SOFTPARTICLES_ON
 		float sceneZ = LinearEyeDepth(UNITY_SAMPLE_DEPTH(tex2Dproj(_PUDepthTex, UNITY_PROJ_COORD(i.projPos))));
 	float partZ = i.projPos.z;
 	float fade = saturate(_InvFade * (sceneZ - partZ));
 	i.color.a *= fade;
-#endif
 
 	if (partZ > sceneZ) discard;
 
