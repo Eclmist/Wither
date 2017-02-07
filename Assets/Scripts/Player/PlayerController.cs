@@ -38,7 +38,7 @@ class PlayerController : MonoBehaviour
 	void Start ()
     {
         rigidBody = GetComponent<Rigidbody>();
-        animator = GetComponent<Animator>();
+        animator = GetComponentInChildren<Animator>();
         isMoving = false;
 
 	}
