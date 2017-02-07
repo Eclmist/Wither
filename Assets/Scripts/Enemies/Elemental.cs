@@ -39,7 +39,7 @@ public class Elemental : EnemyFSM, IDamagable {
         pathAgent = GetComponent<PathAgent>();
         animator = GetComponent<Animator>();
         player = GameObject.FindWithTag("Player");
-        isUsingAStar = true;
+        isUsingAStar = false;
         currentState = FSMState.Chase;
 
     }
@@ -59,8 +59,6 @@ public class Elemental : EnemyFSM, IDamagable {
 
     protected override void UpdateAttackState()
     {
-
-        Debug.Log("attacking");
 
         if (Vector3.Distance(transform.position, player.transform.position) > attackRange)
         {

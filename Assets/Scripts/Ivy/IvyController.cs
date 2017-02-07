@@ -21,7 +21,7 @@ public class IvyController : MonoBehaviour
 
 	[Header("Avoidance")]
 	[SerializeField] [Range(0, 10)] private float minimumDistance;
-	[SerializeField] [Range(0, 10)] private float avoidanceRotationForce;
+	[SerializeField] [Range(0, 30)] private float avoidanceRotationForce;
 
 	[Header("Pulse")]
 	[Range(0, 100)]

@@ -3,6 +3,8 @@ using System.Collections;
 
 class PlayerController : MonoBehaviour,IDamagable
 {
+	public static PlayerController Instance;
+
     [Range(0,30)]
     [SerializeField]
     private float moveSpeedMultiplier;
@@ -34,10 +36,22 @@ class PlayerController : MonoBehaviour,IDamagable
         set { this.health = value; }
     }
 
-    public void TakeDamage(float damage)
+	public bool IsDead
+	{
+		get { return this.isDead; }
+		set { this.isDead = value; }
+	}
+
+
+	public void TakeDamage(float damage)
     {
         health -= damage;
     }
+
+	void Awake()
+	{
+		Instance = this;
+	}
 
 	// Use this for initialization
 	void Start ()

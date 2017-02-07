@@ -52,7 +52,7 @@
 
 				col = lerp(col, 0, sign(cachedDepth - actualDepth));
 
-				return col;
+				return actualDepth;
 
 			}
 			ENDCG

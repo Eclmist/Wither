@@ -3,6 +3,7 @@
 	Properties
 	{
 		_MainTex ("Texture", 2D) = "black" {}
+
 	}
 	SubShader
 	{
@@ -61,11 +62,11 @@
 				fixed depthBL = tex2D(_PUDepthTex, _sPosition + half2(-r, r)).r;
 				fixed depthBR = tex2D(_PUDepthTex, _sPosition + half2(r, r)).r;
 
-				float linearDepth = Linear01Depth(depth);
-				float linearDepthTL = Linear01Depth(depthTL);
-				float linearDepthTR = Linear01Depth(depthTR);
-				float linearDepthBL = Linear01Depth(depthBL);
-				float linearDepthBR = Linear01Depth(depthBR);
+				float linearDepth = LinearEyeDepth(depth);
+				float linearDepthTL = LinearEyeDepth(depthTL);
+				float linearDepthTR = LinearEyeDepth(depthTR);
+				float linearDepthBL = LinearEyeDepth(depthBL);
+				float linearDepthBR = LinearEyeDepth(depthBR);
 
 				fixed oMul = 1;
 
@@ -74,6 +75,9 @@
 				oMul -= (sign(_sDepth - linearDepthTR)) * 0.2;
 				oMul -= (sign(_sDepth - linearDepthBL)) * 0.2;
 				oMul -= (sign(_sDepth - linearDepthBR)) * 0.2;
+
+				//col = LinearEyeDepth(tex2D(_PUDepthTex, i.uv).r) / 100;
+				//if (length(i.uv - _sPosition) < 0.01) return _sDepth / 100;
 				return col + lens * _opacity *oMul * _color;
 			}
 			ENDCG

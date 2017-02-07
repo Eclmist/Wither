@@ -60,7 +60,7 @@
 				fixed4 col = tex2D(_MainTex, i.uv);
 				
 				if (col.a == 0) discard;
-				
+				col.a = col.rgb;
 				col = (col + _Color) / 2;
 
 				return col;

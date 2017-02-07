@@ -39,6 +39,7 @@ public class Morbius : BossFSM , IDamagable
 
     public void TakeDamage(float damage)
     {
+		if (GetComponent<HealthEffect>())
         GetComponent<HealthEffect>().ReduceHealth(damage / maxHealth);
         health -= damage;
     }
@@ -128,7 +129,7 @@ public class Morbius : BossFSM , IDamagable
 
     protected void GenerateSpawnEffects()
     {
-        Effects.instance.ShakeCameraRelative(2, 0.7f);
+        Effects.instance.ShakeCameraRelative(2, 0.3f);
         Instantiate(effectBlue, transform.position, transform.rotation);
         Instantiate(effectRed, transform.position, transform.rotation);
     }
@@ -148,7 +149,7 @@ public class Morbius : BossFSM , IDamagable
 
     public void HeavySwing()
     {
-        Effects.instance.ShakeCameraRelative(0.5f, 0.2f);
+        Effects.instance.ShakeCameraRelative(0.5f, 0.1f);
     }
 
     public void Roar()
@@ -158,7 +159,7 @@ public class Morbius : BossFSM , IDamagable
 
     public void Falling()
     {
-        Effects.instance.ShakeCameraRelative(0.3f, 0.2f);
+        Effects.instance.ShakeCameraRelative(0.3f, 0.05f);
     }
 
     public void Fall()
@@ -168,7 +169,7 @@ public class Morbius : BossFSM , IDamagable
 
     public void TakeStep()
     {
-        Effects.instance.ShakeCameraRelative(0.2f, 0.4f);
+        Effects.instance.ShakeCameraRelative(0.2f, 0.1f);
         source.PlayOneShot(Resources.Load("Sounds/footsteps1") as AudioClip);
         
     }
