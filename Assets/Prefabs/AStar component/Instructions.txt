@@ -1,0 +1,7 @@
+1) Place the grid manager prefab at 0,0,0 (Only works at origin)
+2) Define the size of the grid by adjusting the x & y property.
+3) Put obstacles on the "Obstacle" layer.
+4) Move the grid manager up until it covers every walkable part of the map
+5) Make sure that obstacles are high enough to be detected by the grid manager (adjust the grid manager's y position)
+) Tag the player "Player".
+) Attach PathAgent script to your AI.

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-class PlayerController : MonoBehaviour
+class PlayerController : MonoBehaviour,IDamagable
 {
     [Range(0,30)]
     [SerializeField]
@@ -10,7 +10,8 @@ class PlayerController : MonoBehaviour
     private Rigidbody rigidBody;
     private Animator animator;
     private bool isMoving;
-    private int health;
+    private float health;
+    private bool isDead;
 
     // Variables for overlap sphere detection
     [Range(1,20)]
@@ -27,16 +28,21 @@ class PlayerController : MonoBehaviour
     private float horizontal;
     private float vertical;
 
-    public int Health
+    public float Health
     {
         get { return this.health; }
         set { this.health = value; }
     }
 
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+    }
 
 	// Use this for initialization
 	void Start ()
     {
+        health = 100;
         rigidBody = GetComponent<Rigidbody>();
         animator = GetComponentInChildren<Animator>();
         isMoving = false;
@@ -59,7 +65,8 @@ class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        HandleMovement(horizontal, vertical);
+        if(!isDead)
+            HandleMovement(horizontal, vertical);
     }
 
     // Handles input from keyboard or mouse
@@ -76,6 +83,7 @@ class PlayerController : MonoBehaviour
     void HandleAnimations()
     {
         animator.SetBool("isMoving", isMoving);
+        animator.SetBool("isDead", isDead);
     }
 
 
@@ -90,7 +98,10 @@ class PlayerController : MonoBehaviour
         if (vertical!=0 || horizontal != 0)
         {
             isMoving = true;
-            rigidBody.velocity = new Vector3(horizontal * moveSpeedMultiplier, rigidBody.velocity.y,vertical * moveSpeedMultiplier);
+            Vector3 hz = new Vector3(horizontal, 0, vertical).normalized * moveSpeedMultiplier;
+            rigidBody.velocity = new Vector3(hz.x, rigidBody.velocity.y, hz.z);
+            
+            
         }
 
         if (horizontal == 0 && vertical == 0)

@@ -1,0 +1,179 @@
+fileFormatVersion: 2
+guid: 1b37736547c81b942aacffa1329d3de6
+timeCreated: 1484715696
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: ValveBiped.Bip01_Head1
+    100004: ValveBiped.Bip01_L_Calf
+    100006: ValveBiped.Bip01_L_Clavicle
+    100008: ValveBiped.Bip01_L_Finger0
+    100010: ValveBiped.Bip01_L_Finger01
+    100012: ValveBiped.Bip01_L_Finger02
+    100014: ValveBiped.Bip01_L_Finger1
+    100016: ValveBiped.Bip01_L_Finger11
+    100018: ValveBiped.Bip01_L_Finger12
+    100020: ValveBiped.Bip01_L_Finger2
+    100022: ValveBiped.Bip01_L_Finger21
+    100024: ValveBiped.Bip01_L_Finger22
+    100026: ValveBiped.Bip01_L_Foot
+    100028: ValveBiped.Bip01_L_Forearm
+    100030: ValveBiped.Bip01_L_Hand
+    100032: ValveBiped.Bip01_L_Thigh
+    100034: ValveBiped.Bip01_L_Toe0
+    100036: ValveBiped.Bip01_L_Ulna
+    100038: ValveBiped.Bip01_L_UpperArm
+    100040: ValveBiped.Bip01_L_Wrist
+    100042: ValveBiped.Bip01_Neck1
+    100044: ValveBiped.Bip01_Pelvis
+    100046: ValveBiped.Bip01_R_Calf
+    100048: ValveBiped.Bip01_R_Clavicle
+    100050: ValveBiped.Bip01_R_Finger0
+    100052: ValveBiped.Bip01_R_Finger01
+    100054: ValveBiped.Bip01_R_Finger02
+    100056: ValveBiped.Bip01_R_Finger1
+    100058: ValveBiped.Bip01_R_Finger11
+    100060: ValveBiped.Bip01_R_Finger12
+    100062: ValveBiped.Bip01_R_Finger2
+    100064: ValveBiped.Bip01_R_Finger21
+    100066: ValveBiped.Bip01_R_Finger22
+    100068: ValveBiped.Bip01_R_Foot
+    100070: ValveBiped.Bip01_R_Forearm
+    100072: ValveBiped.Bip01_R_Hand
+    100074: ValveBiped.Bip01_R_Thigh
+    100076: ValveBiped.Bip01_R_Toe0
+    100078: ValveBiped.Bip01_R_Ulna
+    100080: ValveBiped.Bip01_R_UpperArm
+    100082: ValveBiped.Bip01_R_Wrist
+    100084: ValveBiped.Bip01_Spine
+    100086: ValveBiped.Bip01_Spine1
+    100088: ValveBiped.Bip01_Spine2
+    100090: ValveBiped.Bip01_Spine4
+    100092: ValveBiped.forward
+    100094: ValveBiped.weapon_bone
+    100096: ValveBiped.weapon_bone_Clip
+    100098: ValveBiped.weapon_bone_LHand
+    100100: ValveBiped.weapon_bone_RHand
+    400000: //RootNode
+    400002: ValveBiped.Bip01_Head1
+    400004: ValveBiped.Bip01_L_Calf
+    400006: ValveBiped.Bip01_L_Clavicle
+    400008: ValveBiped.Bip01_L_Finger0
+    400010: ValveBiped.Bip01_L_Finger01
+    400012: ValveBiped.Bip01_L_Finger02
+    400014: ValveBiped.Bip01_L_Finger1
+    400016: ValveBiped.Bip01_L_Finger11
+    400018: ValveBiped.Bip01_L_Finger12
+    400020: ValveBiped.Bip01_L_Finger2
+    400022: ValveBiped.Bip01_L_Finger21
+    400024: ValveBiped.Bip01_L_Finger22
+    400026: ValveBiped.Bip01_L_Foot
+    400028: ValveBiped.Bip01_L_Forearm
+    400030: ValveBiped.Bip01_L_Hand
+    400032: ValveBiped.Bip01_L_Thigh
+    400034: ValveBiped.Bip01_L_Toe0
+    400036: ValveBiped.Bip01_L_Ulna
+    400038: ValveBiped.Bip01_L_UpperArm
+    400040: ValveBiped.Bip01_L_Wrist
+    400042: ValveBiped.Bip01_Neck1
+    400044: ValveBiped.Bip01_Pelvis
+    400046: ValveBiped.Bip01_R_Calf
+    400048: ValveBiped.Bip01_R_Clavicle
+    400050: ValveBiped.Bip01_R_Finger0
+    400052: ValveBiped.Bip01_R_Finger01
+    400054: ValveBiped.Bip01_R_Finger02
+    400056: ValveBiped.Bip01_R_Finger1
+    400058: ValveBiped.Bip01_R_Finger11
+    400060: ValveBiped.Bip01_R_Finger12
+    400062: ValveBiped.Bip01_R_Finger2
+    400064: ValveBiped.Bip01_R_Finger21
+    400066: ValveBiped.Bip01_R_Finger22
+    400068: ValveBiped.Bip01_R_Foot
+    400070: ValveBiped.Bip01_R_Forearm
+    400072: ValveBiped.Bip01_R_Hand
+    400074: ValveBiped.Bip01_R_Thigh
+    400076: ValveBiped.Bip01_R_Toe0
+    400078: ValveBiped.Bip01_R_Ulna
+    400080: ValveBiped.Bip01_R_UpperArm
+    400082: ValveBiped.Bip01_R_Wrist
+    400084: ValveBiped.Bip01_Spine
+    400086: ValveBiped.Bip01_Spine1
+    400088: ValveBiped.Bip01_Spine2
+    400090: ValveBiped.Bip01_Spine4
+    400092: ValveBiped.forward
+    400094: ValveBiped.weapon_bone
+    400096: ValveBiped.weapon_bone_Clip
+    400098: ValveBiped.weapon_bone_LHand
+    400100: ValveBiped.weapon_bone_RHand
+    7400000: mixamo.com
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
