@@ -128,7 +128,7 @@ public class Morbius : BossFSM , IDamagable
 
     protected void GenerateSpawnEffects()
     {
-        Effects.instance.ShakeCameraRelative(2, 1f);
+        Effects.instance.ShakeCameraRelative(2, 0.7f);
         Instantiate(effectBlue, transform.position, transform.rotation);
         Instantiate(effectRed, transform.position, transform.rotation);
     }
@@ -148,7 +148,7 @@ public class Morbius : BossFSM , IDamagable
 
     public void HeavySwing()
     {
-        Effects.instance.ShakeCameraRelative(0.5f, 1f);
+        Effects.instance.ShakeCameraRelative(0.5f, 0.2f);
     }
 
     public void Roar()
@@ -158,12 +158,12 @@ public class Morbius : BossFSM , IDamagable
 
     public void Falling()
     {
-        Effects.instance.ShakeCameraRelative(0.3f, 0.5f);
+        Effects.instance.ShakeCameraRelative(0.3f, 0.2f);
     }
 
     public void Fall()
     {
-        Effects.instance.ShakeCameraRelative(1f, 1f);
+        Effects.instance.ShakeCameraRelative(1f, 0.2f);
     }
 
     public void TakeStep()

@@ -139,13 +139,13 @@ public class Effects : MonoBehaviour {
 
             Vector3 temp = new Vector3(x,y,z);
 
-            GetComponent<CameraFollow>().SetShakeVector(temp * 30);
+            GetComponent<TP_Camera>().SetShakeVector(temp * 30);
 
 
             yield return null;
         }
 
         // Set it to a zero vector
-        GetComponent<CameraFollow>().SetShakeVector(Vector3.zero);
+        GetComponent<TP_Camera>().SetShakeVector(Vector3.zero);
     }
 }

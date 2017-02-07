@@ -244,7 +244,7 @@ public class TP_Camera : MonoBehaviour {
 
 		transform.position = currentPosition + shake;
 
-		transform.LookAt(target.position + transform.right * desiredXOffset * distance / 10);
+		transform.LookAt(target.position + shake + transform.right * desiredXOffset * distance / 10);
 		//transform.LookAt(target.position);
 	}
 
@@ -260,6 +260,6 @@ public class TP_Camera : MonoBehaviour {
 
 	public void SetShakeVector(Vector3 amount)
 	{
-		shake = amount;
+		shake = amount/10;
 	}
 }

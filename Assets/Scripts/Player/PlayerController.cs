@@ -58,6 +58,8 @@ class PlayerController : MonoBehaviour,IDamagable
         HandleInput();
         HandleAnimations();
 
+        isDead = (health <= 0);
+
         hitColliders = Physics.OverlapSphere(this.transform.position,sphereRadius,1);
         CheckForInteractableObjects();
 
@@ -74,8 +76,8 @@ class PlayerController : MonoBehaviour,IDamagable
     {
         if (Input.GetKeyDown(KeyCode.E) && canInteract)
             InteractWithObject(GetObjectWithinRange());
-            
-            
+
+        
 
     }
 
