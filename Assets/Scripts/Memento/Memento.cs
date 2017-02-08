@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Memento : MonoBehaviour
 {
-    public Texture currentTex;
+	public Texture currentTex;
 
 	void OnTriggerEnter(Collider other)
 	{

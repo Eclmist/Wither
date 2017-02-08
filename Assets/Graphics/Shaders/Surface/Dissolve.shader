@@ -44,7 +44,6 @@
 			float _Opacity;
 			float _Cutoff;
 			float4 _MainTex_ST;
-
 			sampler2D _ColorRamp;
 			float _BurnSize;
 
@@ -53,6 +52,7 @@
 				v2f o;
 				o.vertex = UnityObjectToClipPos(v.vertex);
 				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+				
 				UNITY_TRANSFER_FOG(o,o.vertex);
 				return o;
 			}

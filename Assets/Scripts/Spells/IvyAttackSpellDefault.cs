@@ -66,8 +66,11 @@ public class IvyAttackSpellDefault : MonoBehaviour {
 
 					if (distanceFromPlayer < shortestDistance)
 					{
-						if (Physics.Raycast(transform.position, enemy.transform.position))
+						RaycastHit intersection;
+						Physics.Linecast(transform.position, enemy.transform.position, out intersection);
+						if (intersection.collider == enemy)
 						{
+
 
 							IDamagable enemyDamageComponent = enemy.GetComponent<IDamagable>();
 

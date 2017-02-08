@@ -36,8 +36,9 @@ public class Elemental : EnemyFSM, IDamagable
     private PathAgent pathAgent;
 	private Animator animator;
 	private Rigidbody rigidBody;
-	private float health = 70;
+	private float health = 10;
 	private bool stunned;
+	private Renderer renderer;
 
 	[SerializeField]
 	private AnimationCurve turnRateOverAngle;
@@ -49,7 +50,7 @@ public class Elemental : EnemyFSM, IDamagable
 
 	public void ApplyStun(float duration)
 	{
-		StopAllCoroutines();
+		StopCoroutine("ApplyStatusEffect");
 		StartCoroutine(ApplyStatusEffect(duration));
 	}
 		
@@ -61,6 +62,39 @@ public class Elemental : EnemyFSM, IDamagable
 		animator.enabled = true;
 		stunned = true;
 	}
+
+	public IEnumerator FadeOpacity(bool show)
+	{
+		float currentOpacity = renderer.material.GetFloat("_Opacity");
+
+		if (show)
+		{
+			while (currentOpacity <= 1)
+			{
+				currentOpacity += 0.005f;
+				renderer.material.SetFloat("_Opacity", currentOpacity);
+				yield return new WaitForFixedUpdate();
+			}
+
+			currentOpacity = 1;
+			renderer.material.SetFloat("_Opacity", currentOpacity);
+		}
+		else
+		{
+			while (currentOpacity >= 0)
+			{
+				currentOpacity -= 0.005f;
+				renderer.material.SetFloat("_Opacity", currentOpacity);
+				yield return new WaitForFixedUpdate();
+			}
+
+			currentOpacity = 0;
+			renderer.material.SetFloat("_Opacity", currentOpacity);
+			Destroy(gameObject);
+		}
+
+	}
+
 
 	protected override void Initialize()
 	{
@@ -75,6 +109,9 @@ public class Elemental : EnemyFSM, IDamagable
 		player = GameObject.FindWithTag("Player");
 		currentState = FSMState.Chase;
 
+		renderer = GetComponentInChildren<Renderer>();
+		StartCoroutine(FadeOpacity(true));
+
 	}
 
 	protected override void FSMUpdate()
@@ -85,9 +122,11 @@ public class Elemental : EnemyFSM, IDamagable
 
 		if (health <= 0)
 		{
+			currentState = FSMState.Dead;
+
             if(ElementalDeath != null)
-			Instantiate(ElementalDeath,transform.position,transform.rotation);
-			Destroy(gameObject);
+				Instantiate(ElementalDeath,transform.position,transform.rotation);
+			StartCoroutine(FadeOpacity(false));
 		}
 
 		if(Input.GetKeyDown(KeyCode.I))
@@ -206,7 +245,7 @@ public class Elemental : EnemyFSM, IDamagable
 			distanceExp = 5 - distanceExp * 5;
 			
 
-			Debug.Log("Turned Left");
+			//Debug.Log("Turned Left");
 			//Get the new directional vector by adding force to vehicle's current forward vector
 			return transform.forward - transform.right * force * distanceExp;
 		}
@@ -220,7 +259,7 @@ public class Elemental : EnemyFSM, IDamagable
 			distanceExp = 5 - distanceExp * 5;
 
 
-			Debug.Log("Turned Right");
+			//Debug.Log("Turned Right");
 			//Get the new directional vector by adding force to vehicle's current forward vector
 			return transform.forward + transform.right * force * distanceExp;
 		}
@@ -236,7 +275,7 @@ public class Elemental : EnemyFSM, IDamagable
 		//}
 		else
 		{
-			Debug.Log("Turned towards player");
+			//Debug.Log("Turned towards player");
 			Debug.DrawLine(transform.position, player.transform.position, Color.blue);
 			return player.transform.position - transform.position;
 		}
