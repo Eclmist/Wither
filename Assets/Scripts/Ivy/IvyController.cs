@@ -8,7 +8,7 @@ public class IvyController : MonoBehaviour
 
 	[SerializeField][Range(0, 10)] private float floatingHeight;
 
-	[SerializeField] private readonly LayerMask ignoreMask = 1 << 9;
+	[SerializeField] private LayerMask ignoreMask;
 
 	[SerializeField] private Transform player;
 
@@ -176,21 +176,21 @@ public class IvyController : MonoBehaviour
 		Vector3 left45 = (transform.forward - transform.right).normalized;
 
 		if (Physics.Raycast(transform.position, right45, out Hit,
-			minimumDistance))
+			minimumDistance, ~ignoreMask))
 		{
 			emergencyTurn = true;
 			//Get the new directional vector by adding force to vehicle's current forward vector
 			return transform.forward - transform.right * avoidanceRotationForce;
 		}
 		else if (Physics.Raycast(transform.position, left45, out Hit,
-			minimumDistance))
+			minimumDistance, ~ignoreMask))
 		{
 			emergencyTurn = true;
 			//Get the new directional vector by adding force to vehicle's current forward vector
 			return transform.forward + transform.right * avoidanceRotationForce;
 		}
 		else if (Physics.Raycast(transform.position, transform.forward, out Hit,
-			minimumDistance))
+			minimumDistance, ~ignoreMask))
 		{
 			emergencyTurn = true;
 			//Get the normal of the hit point to calculate the new direction

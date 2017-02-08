@@ -3,7 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Elemental : EnemyFSM, IDamagable {
+public class Elemental : EnemyFSM, IDamagable
+{
+
+	public LayerMask avoidanceIgnoreMask;
 
 	[Range(10,40)]
 	public float distanceToAvoidance;
@@ -12,7 +15,7 @@ public class Elemental : EnemyFSM, IDamagable {
 	[Range(1,100)]
 	public float moveSpeed;
 
-	[Range(10,30)]
+	[Range(0,30)]
 	public float attackRange;
 
 	public GameObject castPoint;
@@ -25,7 +28,7 @@ public class Elemental : EnemyFSM, IDamagable {
 	private bool isDead;
 
 	// Determine when to use AStar calculations
-	private bool isUsingAStar;
+	public bool isUsingAStar;
 
 	private PathAgent pathAgent;
 	private Animator animator;
@@ -63,7 +66,6 @@ public class Elemental : EnemyFSM, IDamagable {
 		animator = GetComponent<Animator>();
 		rigidBody = GetComponent<Rigidbody>();
 		player = GameObject.FindWithTag("Player");
-		isUsingAStar = true;
 		currentState = FSMState.Chase;
 
 	}
@@ -71,8 +73,8 @@ public class Elemental : EnemyFSM, IDamagable {
 	protected override void FSMUpdate()
 	{
 		base.FSMUpdate();
-		if (Vector3.Distance(transform.position, player.transform.position) <= distanceToAvoidance)
-			isUsingAStar = false;
+		//if (Vector3.Distance(transform.position, player.transform.position) <= distanceToAvoidance)
+			//isUsingAStar = true;
 
 		if (health <= 0)
 		{
@@ -132,7 +134,7 @@ public class Elemental : EnemyFSM, IDamagable {
 			// use simple chasing with avoidance
 			LookAtPlayer();
 			
-			rigidBody.velocity = transform.forward * moveSpeed;
+			rigidBody.MovePosition(transform.position + transform.forward * moveSpeed / 100);
 
 			if(Vector3.Distance(transform.position, player.transform.position) <= attackRange)
 			{
@@ -155,14 +157,14 @@ public class Elemental : EnemyFSM, IDamagable {
 
 		float distance = (tempTarget - transform.position).magnitude / 60;
 		float angle = Vector3.Angle(tempTarget - transform.position, transform.forward) / 180;
-		float rotationSpeed = turnRateOverAngle.Evaluate(angle) / 10;
+		float rotationSpeed = turnRateOverAngle.Evaluate(angle);
 		//rotationSpeed += turnRateOverDistance.Evaluate((hit.point - transform.position).magnitude / 60);
 
 		Vector3 lookAtTarget = AvoidObstacles();
-
+		lookAtTarget.y = 0; //Force no y change;
 		transform.rotation = Quaternion.Slerp(transform.rotation,
 			Quaternion.LookRotation(lookAtTarget, Vector3.up),
-			rotationSpeed);
+			rotationSpeed / 50);
 
 		//Vector3 targetPosCurrFrame = transform.position + transform.forward;
 		//transform.position = Vector3.Lerp(transform.position, targetPosCurrFrame, moveSpeed);
@@ -188,35 +190,53 @@ public class Elemental : EnemyFSM, IDamagable {
 		Vector3 left45 = (transform.forward - transform.right).normalized;
 
 		if (Physics.Raycast(transform.position, right45, out Hit,
-			minimumDistToAvoid))
+			minimumDistToAvoid, ~avoidanceIgnoreMask))
 		{
+			// 0 if near, 1 if far
+			float distanceExp = Vector3.Distance(Hit.point, transform.position) / minimumDistToAvoid;
+			// 5 if near, 0 if far
+			distanceExp = 5 - distanceExp * 5;
+			
 
+			Debug.Log("Turned Left");
 			//Get the new directional vector by adding force to vehicle's current forward vector
-			return transform.forward - transform.right * force;
+			return transform.forward - transform.right * force * distanceExp;
 		}
 		else if (Physics.Raycast(transform.position, left45, out Hit,
-			minimumDistToAvoid))
+			minimumDistToAvoid, ~avoidanceIgnoreMask))
 		{
 
+			// 0 if near, 1 if far
+			float distanceExp = Vector3.Distance(Hit.point, transform.position) / minimumDistToAvoid;
+			// 5 if near, 0 if far
+			distanceExp = 5 - distanceExp * 5;
+
+
+			Debug.Log("Turned Right");
 			//Get the new directional vector by adding force to vehicle's current forward vector
-			return transform.forward + transform.right * force;
+			return transform.forward + transform.right * force * distanceExp;
 		}
-		else if (Physics.Raycast(transform.position, transform.forward, out Hit,
-			minimumDistToAvoid))
-		{
+		//else if (Physics.Raycast(transform.position, transform.forward, out Hit,
+		//	minimumDistToAvoid/3, ~avoidanceIgnoreMask))
+		//{
 
-			//Get the normal of the hit point to calculate the new direction
-			Vector3 hitNormal = Hit.normal;
-			hitNormal.y = 0.0f; //Don't want to move in Y-Space
-			return transform.forward + hitNormal * force;
-		}
+		//	//Get the normal of the hit point to calculate the new direction
+		//	Vector3 hitNormal = Hit.normal;
+		//	hitNormal.y = 0.0f; //Don't want to move in Y-Space
+		//	Debug.Log("Turned away from normal");
+		//	return transform.forward + hitNormal * force;
+		//}
 		else
+		{
+			Debug.Log("Turned towards player");
+			Debug.DrawLine(transform.position, player.transform.position, Color.blue);
 			return player.transform.position - transform.position;
+		}
 	}
 
 	void OnDrawGizmos()
 	{
-		Gizmos.DrawLine(transform.position, transform.position + transform.forward * minimumDistToAvoid/2);
+		Gizmos.DrawLine(transform.position, transform.position + transform.forward * minimumDistToAvoid/3);
 		Gizmos.DrawLine(transform.position, transform.position + (transform.forward + transform.right) * minimumDistToAvoid);
 		Gizmos.DrawLine(transform.position, transform.position + (transform.forward - transform.right) * minimumDistToAvoid);
 	}

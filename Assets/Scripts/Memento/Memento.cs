@@ -6,13 +6,17 @@ public class Memento : MonoBehaviour
 {
     public Texture currentTex;
 
-    void OnTriggerEnter(Collider other)
-    {
-        BlurCameraOverTime.Instance.BlurScreen();
-        Chronos.PauseTime(0.05F);
-        Chronos.LateExecute(MementoManager.ShowMemento, 0.6F);
-        MementoManager.IncrementPickupCount();
-        MementoManager.Instance.StartCoroutine(MementoManager.Instance.TriggerMemento(true));
-        Destroy(gameObject);
-    }
+	void OnTriggerEnter(Collider other)
+	{
+		if (other.tag == "Player")
+		{
+
+			BlurCameraOverTime.Instance.BlurScreen();
+			Chronos.PauseTime(0.05F);
+			Chronos.LateExecute(MementoManager.ShowMemento, 0.6F);
+			MementoManager.IncrementPickupCount();
+			MementoManager.Instance.StartCoroutine(MementoManager.Instance.TriggerMemento(true));
+			Destroy(gameObject);
+		}
+	}
 }
