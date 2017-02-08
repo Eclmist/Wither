@@ -3,8 +3,6 @@ using System.Collections;
 
 class PlayerController : MonoBehaviour,IDamagable
 {
-	public static PlayerController Instance;
-
     [Range(0,30)]
     [SerializeField]
     private float moveSpeedMultiplier;
@@ -14,6 +12,7 @@ class PlayerController : MonoBehaviour,IDamagable
     private bool isMoving;
     private float health;
     private bool isDead;
+    public GameObject enemy;
 
     // Variables for overlap sphere detection
     [Range(1,20)]
@@ -36,25 +35,25 @@ class PlayerController : MonoBehaviour,IDamagable
         set { this.health = value; }
     }
 
-	public bool IsDead
-	{
-		get { return this.isDead; }
-		set { this.isDead = value; }
-	}
-
-
-	public void TakeDamage(float damage)
+    public void TakeDamage(float damage)
     {
         health -= damage;
     }
 
-	void Awake()
-	{
-		Instance = this;
-	}
+    public void ApplyStun(float duration)
+    {
+        StartCoroutine(StatusEffect(duration));
+    }
 
-	// Use this for initialization
-	void Start ()
+    public IEnumerator StatusEffect(float duration)
+    {
+        animator.enabled = false;
+        yield return new WaitForSeconds(duration);
+        animator.enabled = true;
+    }
+
+    // Use this for initialization
+    void Start ()
     {
         health = 100;
         rigidBody = GetComponent<Rigidbody>();
@@ -67,6 +66,8 @@ class PlayerController : MonoBehaviour,IDamagable
 	void Update ()
     {
         
+        horizontal = Input.GetAxis("Horizontal");
+        vertical = Input.GetAxis("Vertical");
         HandleInput();
         HandleAnimations();
 
@@ -79,10 +80,7 @@ class PlayerController : MonoBehaviour,IDamagable
 
     void FixedUpdate()
     {
-		horizontal = Input.GetAxis("Horizontal");
-		vertical = Input.GetAxis("Vertical");
-
-		if (!isDead)
+        if(!isDead)
             HandleMovement(horizontal, vertical);
     }
 
@@ -92,6 +90,7 @@ class PlayerController : MonoBehaviour,IDamagable
         if (Input.GetKeyDown(KeyCode.E) && canInteract)
             InteractWithObject(GetObjectWithinRange());
 
+     
         
 
     }
@@ -122,7 +121,12 @@ class PlayerController : MonoBehaviour,IDamagable
         }
 
         if (horizontal == 0 && vertical == 0)
+        {
             isMoving = false;
+            rigidBody.velocity = new Vector3(0,Mathf.Clamp01(rigidBody.velocity.y),0);
+
+        }
+           
  
     }
 

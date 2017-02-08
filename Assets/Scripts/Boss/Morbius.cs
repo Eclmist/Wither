@@ -44,6 +44,19 @@ public class Morbius : BossFSM , IDamagable
         health -= damage;
     }
 
+    public void ApplyStun(float duration)
+    {
+        StartCoroutine(StatusEffect(duration));
+    }
+
+    public IEnumerator StatusEffect(float duration)
+    {
+        animator.enabled = false;
+        yield return new WaitForSeconds(duration);
+        animator.enabled = true;
+    }
+
+
     protected override void Initialize()
     {
         maxHealth = health;

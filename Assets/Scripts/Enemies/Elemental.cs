@@ -5,13 +5,17 @@ using UnityEngine;
 
 public class Elemental : EnemyFSM, IDamagable {
 
-    [Range(1,100)]
-    public float distanceToChaseMode;
+    [Range(10,40)]
+    public float distanceToAvoidance;
     public float force = 10.0f;
     public float minimumDistToAvoid = 5.0f;
+    [Range(1,100)]
+    public float moveSpeed;
 
-    [Range(1,10)]
+    [Range(10,30)]
     public float attackRange;
+
+    public GameObject castPoint;
 
 
     // Animation flags
@@ -25,21 +29,39 @@ public class Elemental : EnemyFSM, IDamagable {
 
     private PathAgent pathAgent;
     private Animator animator;
-    private float health;
+    private Rigidbody rigidBody;
+    private float health = 70;
+    private bool freezeRotation;
 
+    [SerializeField]
+    private AnimationCurve turnRateOverAngle;
 
     public void TakeDamage(float damage)
     {
-       
+        health -= damage;
     }
+
+    public void ApplyStun(float duration)
+    {
+        StartCoroutine(StatusEffect(duration));
+    }
+        
+    public IEnumerator StatusEffect(float duration)
+    {
+        animator.enabled = false;
+        yield return new WaitForSeconds(duration);
+        animator.enabled = true;
+    }
+
 
     protected override void Initialize()
     {
         base.Initialize();
         pathAgent = GetComponent<PathAgent>();
         animator = GetComponent<Animator>();
+        rigidBody = GetComponent<Rigidbody>();
         player = GameObject.FindWithTag("Player");
-        isUsingAStar = false;
+        isUsingAStar = true;
         currentState = FSMState.Chase;
 
     }
@@ -47,22 +69,38 @@ public class Elemental : EnemyFSM, IDamagable {
     protected override void FSMUpdate()
     {
         base.FSMUpdate();
-        if (Vector3.Distance(transform.position, player.transform.position) <= distanceToChaseMode)
+        if (Vector3.Distance(transform.position, player.transform.position) <= distanceToAvoidance)
             isUsingAStar = false;
+
+        if (health <= 0)
+        {
+            Instantiate(Resources.Load("ElementalDeath"),transform.position,transform.rotation);
+            Destroy(gameObject);
+        }
+
+        if(Input.GetKeyDown(KeyCode.I))
+        {
+            health -= 50;
+        }
+            
         
     }
 
     protected override void HandleAnimations()
     {
-        
+        animator.SetBool("isAttacking",isAttacking);
     }
 
     protected override void UpdateAttackState()
     {
+        isAttacking = true;
+        rigidBody.velocity = Vector3.zero;
+        LookAtPlayer();
 
         if (Vector3.Distance(transform.position, player.transform.position) > attackRange)
         {
             currentState = FSMState.Chase;
+            isAttacking = false;
         }
 
 
@@ -74,19 +112,19 @@ public class Elemental : EnemyFSM, IDamagable {
         if (isUsingAStar)
         {
             if (pathAgent != null)
-            {
                 pathAgent.enabled = true;
-            }
+            else
+                Debug.Log("Elemental does not have a PathAgent");
         }
         else
         {
-            pathAgent.StopAllInstances();
+            if(pathAgent != null)
             pathAgent.enabled = false;
-            //transform.LookAt(player.transform.position);
+
             // use simple chasing with avoidance
-            Quaternion rot = Quaternion.LookRotation(AvoidObstacles());
-            transform.rotation = Quaternion.Slerp(transform.rotation, rot, 2.0f * Time.deltaTime);
-            transform.position += transform.forward * 0.07f;
+            LookAtPlayer();
+            
+            rigidBody.velocity = transform.forward * moveSpeed;
 
             if(Vector3.Distance(transform.position, player.transform.position) <= attackRange)
             {
@@ -98,6 +136,32 @@ public class Elemental : EnemyFSM, IDamagable {
 
 
     }
+
+    private void LookAtPlayer()
+    {
+
+            //Quaternion rot = Quaternion.LookRotation(AvoidObstacles());
+            //transform.rotation = Quaternion.Slerp(transform.rotation, rot, 2.0f * Time.deltaTime);
+
+        Vector3 tempTarget = player.transform.position;
+
+        float distance = (tempTarget - transform.position).magnitude / 60;
+        float angle = Vector3.Angle(tempTarget - transform.position, transform.forward) / 180;
+        float rotationSpeed = turnRateOverAngle.Evaluate(angle) / 10;
+        //rotationSpeed += turnRateOverDistance.Evaluate((hit.point - transform.position).magnitude / 60);
+
+        Vector3 lookAtTarget = AvoidObstacles();
+
+        transform.rotation = Quaternion.Slerp(transform.rotation,
+            Quaternion.LookRotation(lookAtTarget, Vector3.up),
+            rotationSpeed);
+
+        //Vector3 targetPosCurrFrame = transform.position + transform.forward;
+        //transform.position = Vector3.Lerp(transform.position, targetPosCurrFrame, moveSpeed);
+
+    }
+
+
     protected override void UpdateDeadState()
     {
         
@@ -107,34 +171,57 @@ public class Elemental : EnemyFSM, IDamagable {
         pathAgent.enabled = false;
     }
 
-    private Vector3 AvoidObstacles()
+
+    public Vector3 AvoidObstacles()
     {
         RaycastHit Hit;
-        
+        //Check that the vehicle hit with the obstacles within it's minimum distance to avoid
         Vector3 right45 = (transform.forward + transform.right).normalized;
         Vector3 left45 = (transform.forward - transform.right).normalized;
-        Vector3 startPos = transform.position + transform.up * 1;
-        if (Physics.Raycast(startPos, right45, out Hit, minimumDistToAvoid))
+
+        if (Physics.Raycast(transform.position, right45, out Hit,
+            minimumDistToAvoid))
         {
-            
+
+            //Get the new directional vector by adding force to vehicle's current forward vector
             return transform.forward - transform.right * force;
         }
-        else if (Physics.Raycast(startPos, left45, out Hit, minimumDistToAvoid))
+        else if (Physics.Raycast(transform.position, left45, out Hit,
+            minimumDistToAvoid))
         {
-           
+
+            //Get the new directional vector by adding force to vehicle's current forward vector
             return transform.forward + transform.right * force;
         }
-        else if (Physics.Raycast(startPos, transform.forward, out Hit, minimumDistToAvoid))
+        else if (Physics.Raycast(transform.position, transform.forward, out Hit,
+            minimumDistToAvoid))
         {
-            
+
+            //Get the normal of the hit point to calculate the new direction
             Vector3 hitNormal = Hit.normal;
-            hitNormal.y = 0.0f; 
+            hitNormal.y = 0.0f; //Don't want to move in Y-Space
             return transform.forward + hitNormal * force;
         }
         else
             return player.transform.position - transform.position;
-
     }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.DrawLine(transform.position, transform.position + transform.forward * minimumDistToAvoid/2);
+        Gizmos.DrawLine(transform.position, transform.position + (transform.forward + transform.right) * minimumDistToAvoid);
+        Gizmos.DrawLine(transform.position, transform.position + (transform.forward - transform.right) * minimumDistToAvoid);
+    }
+
+    //-----------------------------Animation Events-----------------------------------------//
+    public void ShootProjectile()
+    {       
+        Instantiate(Resources.Load("ElementalProjectile"),castPoint.transform.position,transform.rotation);
+    }
+
+
+
+
 
 
 

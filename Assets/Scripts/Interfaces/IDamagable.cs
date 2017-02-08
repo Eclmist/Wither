@@ -8,8 +8,9 @@ using UnityEngine;
 public interface IDamagable {
 
     void TakeDamage(float damage);
+    void ApplyStun(float duration);
 
-
+    IEnumerator StatusEffect(float duration);
 
 	
 }

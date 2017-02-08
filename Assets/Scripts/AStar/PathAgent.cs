@@ -47,6 +47,11 @@ public class PathAgent : MonoBehaviour
         
     }
 
+    void OnDisable()
+    {
+        StopAllCoroutines();
+    }
+
 
     void Update()
     {
@@ -112,29 +117,8 @@ public class PathAgent : MonoBehaviour
 
     }
 
-    Vector3 Avoidance()
-    {
-        RaycastHit hit;
-
-        Vector3 left = (transform.position - transform.right).normalized;
-        Vector3 right = (transform.position + transform.right).normalized;
-        Vector3 rayOrigin = transform.position + transform.up;
-
-        if (Physics.Raycast(rayOrigin, left, out hit, 5f))
-            return transform.forward + transform.right * 10f;
-        else if (Physics.Raycast(rayOrigin, left, out hit, 5f))
-            return transform.forward - transform.right * 10f;
-        else if (Physics.Raycast(rayOrigin, transform.forward, out hit, 5f))
-        {
-            Vector3 hitNormal = hit.normal;
-            hitNormal.y = 0;
-            return transform.forward + hitNormal * 10f;
-        }
-        else
-            return player.transform.position - transform.position;
 
 
-    }
 
     void OnDrawGizmos()
     {
