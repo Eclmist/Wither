@@ -59,15 +59,11 @@ class PlayerController : MonoBehaviour,IDamagable
         animator.enabled = true;
     }
 
-	void Awake()
-	{
-		Instance = this;
-	}
-
 	// Use this for initialization
     void Start ()
     {
-        health = 100;
+		Instance = this;
+		health = 100;
         rigidBody = GetComponent<Rigidbody>();
         animator = GetComponentInChildren<Animator>();
         isMoving = false;

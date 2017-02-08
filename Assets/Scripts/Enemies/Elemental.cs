@@ -90,11 +90,22 @@ public class Elemental : EnemyFSM, IDamagable
 
 			currentOpacity = 0;
 			renderer.material.SetFloat("_Opacity", currentOpacity);
-			Destroy(gameObject);
+			Die();
 		}
 
 	}
 
+	void Die()
+	{
+
+		ParticleSystem.EmissionModule em =
+			GetComponentInChildren<ParticleToggle>().GetComponent<ParticleSystem>().emission;
+
+		em.enabled = false;
+		GetComponentInChildren<ParticleToggle>().gameObject.transform.parent = null;
+
+		Destroy(gameObject);
+	}
 
 	protected override void Initialize()
 	{

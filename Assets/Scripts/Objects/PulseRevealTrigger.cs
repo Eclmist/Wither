@@ -70,7 +70,6 @@ public class PulseRevealTrigger : MonoBehaviour, IInteractable {
     {
         if (!pulseStarted)
         {
-	        Debug.Log("Pulsed");
             StartCoroutine("DoPulse");
         }
     }
