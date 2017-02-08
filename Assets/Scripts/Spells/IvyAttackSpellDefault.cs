@@ -22,8 +22,9 @@ public class IvyAttackSpellDefault : MonoBehaviour {
 	private float currentCurveFactor;
 	private GameObject target;
 	private float timeSinceLastStart = float.MaxValue;
+    private ParticleToggle enemyHitParticles;
 
-	public bool SkillActive
+    public bool SkillActive
 	{
 		get { return skillActive; }
 		set { skillActive = value; }
@@ -42,9 +43,14 @@ public class IvyAttackSpellDefault : MonoBehaviour {
 		{
 			if (timeSinceLastStart > durationPerHit || !target)
 			{
-				// Find new Enemy
+                // Find new Enemy
+                if (enemyHitParticles)
+                    enemyHitParticles.ToggleParticles(false);
 
-				target = null;
+
+                enemyHitParticles = null;
+
+                target = null;
 
 
 				//Find enemy within lightning range
@@ -62,10 +68,20 @@ public class IvyAttackSpellDefault : MonoBehaviour {
 					{
 						if (Physics.Raycast(transform.position, enemy.transform.position))
 						{
-							//Found new target
 
 							IDamagable enemyDamageComponent = enemy.GetComponent<IDamagable>();
-							enemyDamageComponent.TakeDamage(damage);
+
+                            if (enemyDamageComponent == null)
+                                continue;
+
+                            //Found new target
+                            enemyDamageComponent.TakeDamage(damage);
+
+                            enemyHitParticles = enemy.GetComponentInChildren<ParticleToggle>();
+
+                            if (enemyHitParticles)
+                                enemyHitParticles.ToggleParticles(true);
+                            
 
 							target = enemy.gameObject;
 							currentCurveFactor = UnityEngine.Random.Range(-curveFactor, curveFactor);

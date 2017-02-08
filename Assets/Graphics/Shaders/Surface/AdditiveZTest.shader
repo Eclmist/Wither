@@ -69,12 +69,12 @@
 	float fade = saturate(_InvFade * (sceneZ - partZ));
 	i.color.a *= fade;
 
-	if (partZ > sceneZ) discard;
+		if (partZ > sceneZ) discard;
 
-	return 2.0f * i.color * _TintColor * tex2D(_MainTex, i.texcoord);
+		return 2.0f * i.color * _TintColor * tex2D(_MainTex, i.texcoord);
 	}
-		ENDCG
-	}
+	ENDCG
+}
 	}
 
 		// ---- Dual texture cards

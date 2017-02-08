@@ -47,6 +47,7 @@
 			};
 
 			sampler2D _MainTex;
+			sampler2D _PUDepthTex;
 			float4 _MainTex_ST;
 			
 			v2f vert (appdata v)
