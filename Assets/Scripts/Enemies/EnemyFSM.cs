@@ -9,43 +9,48 @@ using UnityEngine;
 public class EnemyFSM : FSM {
 
 	protected enum FSMState
-    {
-        Idle,
-        Chase,
-        Attack,
-        Dead,
-    }
+	{
+		Idle,
+		Chase,
+		Attack,
+		Stun,
+		Dead,
+	}
 
-    protected FSMState currentState;
+	protected FSMState currentState;
 
-    protected override void Initialize()
-    {
-        currentState = FSMState.Idle;
-    }
+	protected override void Initialize()
+	{
+		currentState = FSMState.Idle;
+	}
 
-    protected override void FSMUpdate()
-    {
-        switch (currentState)
-        {
-            case FSMState.Idle:
-                UpdateIdleState();
-                break;
-            case FSMState.Chase:
-                UpdateChaseState();
-                break;
-            case FSMState.Attack:
-                UpdateAttackState();
-                break;
-            case FSMState.Dead:
-                UpdateDeadState();
-                break;
-        }
+	protected override void FSMUpdate()
+	{
+		switch (currentState)
+		{
+			case FSMState.Idle:
+				UpdateIdleState();
+				break;
+			case FSMState.Chase:
+				UpdateChaseState();
+				break;
+			case FSMState.Attack:
+				UpdateAttackState();
+				break;
+			case FSMState.Stun:
+				UpdateAttackState();
+				break;
+			case FSMState.Dead:
+				UpdateDeadState();
+				break;
+		}
 
-    }
+	}
 
-    protected virtual void UpdateIdleState() { }
-    protected virtual void UpdateChaseState() { }
-    protected virtual void UpdateAttackState() { }
-    protected virtual void UpdateDeadState() { }
+	protected virtual void UpdateIdleState() { }
+	protected virtual void UpdateChaseState() { }
+	protected virtual void UpdateAttackState() { }
+	protected virtual void UpdateStunState() { }
+	protected virtual void UpdateDeadState() { }
  
 }
