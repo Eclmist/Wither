@@ -23,7 +23,8 @@ public class IvyController : MonoBehaviour
 	[SerializeField] [Range(0, 10)] private float minimumDistance;
 	[SerializeField] [Range(0, 30)] private float avoidanceRotationForce;
 
-	[Header("Pulse")]
+	[Header("Pulse")] [SerializeField] private LayerMask revealLayers;
+
 	[Range(0, 100)]
 	[SerializeField]
 	private float p_maxDistance;
@@ -86,7 +87,7 @@ public class IvyController : MonoBehaviour
 			SSDistortion.Instance.radius = currentDistance;
 			SSDistortion.Instance.distortionMultiplier = Mathf.Sin(currentDistance/p_maxDistance * 3.14f);
 
-			Collider[] interractables = Physics.OverlapSphere(pulsePosition, currentDistance, LayerMask.GetMask("PulseReveal"));
+			Collider[] interractables = Physics.OverlapSphere(pulsePosition, currentDistance, revealLayers);
 
 			foreach (Collider c in interractables)
 			{

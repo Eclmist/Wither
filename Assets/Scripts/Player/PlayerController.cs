@@ -3,6 +3,8 @@ using System.Collections;
 
 class PlayerController : MonoBehaviour,IDamagable
 {
+	public static PlayerController Instance;
+
     [Range(0,30)]
     [SerializeField]
     private float moveSpeedMultiplier;
@@ -12,7 +14,6 @@ class PlayerController : MonoBehaviour,IDamagable
     private bool isMoving;
     private float health;
     private bool isDead;
-    public GameObject enemy;
 
     // Variables for overlap sphere detection
     [Range(1,20)]
@@ -29,7 +30,13 @@ class PlayerController : MonoBehaviour,IDamagable
     private float horizontal;
     private float vertical;
 
-    public float Health
+	public bool IsDead
+	{
+		get { return isDead; }
+		set { this.isDead = value; }
+	}
+
+	public float Health
     {
         get { return this.health; }
         set { this.health = value; }
@@ -52,7 +59,12 @@ class PlayerController : MonoBehaviour,IDamagable
         animator.enabled = true;
     }
 
-    // Use this for initialization
+	void Awake()
+	{
+		Instance = this;
+	}
+
+	// Use this for initialization
     void Start ()
     {
         health = 100;

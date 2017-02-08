@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerTrigger : MonoBehaviour, IInteractable {
+public class PulseRevealTrigger : MonoBehaviour, IInteractable {
 
     private bool pulseStarted;
 
@@ -70,6 +70,7 @@ public class PlayerTrigger : MonoBehaviour, IInteractable {
     {
         if (!pulseStarted)
         {
+	        Debug.Log("Pulsed");
             StartCoroutine("DoPulse");
         }
     }
