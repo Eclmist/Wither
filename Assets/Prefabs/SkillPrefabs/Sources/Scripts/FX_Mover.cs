@@ -7,7 +7,7 @@ namespace MagicalFX
 
 public class FX_Mover : MonoBehaviour
 	{
-
+		private Rigidbody rb;
 		public float Speed = 1;
 		public Vector3 Noise = Vector3.zero;
 		public float Damping = 0.3f;
@@ -15,6 +15,7 @@ public class FX_Mover : MonoBehaviour
 
 		void Start ()
 		{
+			rb = GetComponent<Rigidbody>();
 			direction = Quaternion.LookRotation (this.transform.forward * 1000);
 			this.transform.Rotate (new Vector3 (Random.Range (-Noise.x, Noise.x), Random.Range (-Noise.y, Noise.y), Random.Range (-Noise.z, Noise.z)));
 		}
@@ -22,7 +23,12 @@ public class FX_Mover : MonoBehaviour
 		void LateUpdate ()
 		{
 			this.transform.rotation = Quaternion.Lerp (this.transform.rotation, direction, Damping);
-			this.transform.position += this.transform.forward * Speed * Time.deltaTime;
+			rb.velocity = this.transform.forward * Speed * Time.deltaTime;
+		}
+
+		void OnDestroy()
+		{
+			rb.velocity = Vector3.zero;
 		}
 	}
 }

@@ -39,6 +39,7 @@ public class Elemental : EnemyFSM, IDamagable
 	private float health = 10;
 	private bool stunned;
 	private Renderer renderer;
+	private Vector3 lastPlayerPos;
 
 	[SerializeField]
 	private AnimationCurve turnRateOverAngle;
@@ -71,9 +72,9 @@ public class Elemental : EnemyFSM, IDamagable
 		{
 			while (currentOpacity <= 1)
 			{
-				currentOpacity += 0.005f;
+				currentOpacity += 0.05f;
 				renderer.material.SetFloat("_Opacity", currentOpacity);
-				yield return new WaitForFixedUpdate();
+				yield return new WaitForSeconds(0.02F);
 			}
 
 			currentOpacity = 1;
@@ -83,9 +84,9 @@ public class Elemental : EnemyFSM, IDamagable
 		{
 			while (currentOpacity >= 0)
 			{
-				currentOpacity -= 0.005f;
+				currentOpacity -= 0.1f;
 				renderer.material.SetFloat("_Opacity", currentOpacity);
-				yield return new WaitForFixedUpdate();
+				yield return new WaitForSeconds(0.01F);
 			}
 
 			currentOpacity = 0;
@@ -111,8 +112,8 @@ public class Elemental : EnemyFSM, IDamagable
 	{
 		base.Initialize();
 
-		ElementalProjectile = Resources.Load("ElementalProjectile") as GameObject;
-		ElementalDeath = Resources.Load("ElementalDeath") as GameObject;
+		ElementalProjectile = Resources.Load<GameObject>("Ice_Wave");
+		ElementalDeath = Resources.Load<GameObject>("Dark_Explosion");
 
 		pathAgent = GetComponent<PathAgent>();
 		animator = GetComponent<Animator>();
@@ -131,8 +132,10 @@ public class Elemental : EnemyFSM, IDamagable
 		//if (Vector3.Distance(transform.position, player.transform.position) <= distanceToAvoidance)
 			//isUsingAStar = true;
 
-		if (health <= 0)
+		if (health <= 0 && !isDead)
 		{
+			isDead = true;
+
 			currentState = FSMState.Dead;
 
 			if(ElementalDeath != null)
@@ -303,7 +306,18 @@ public class Elemental : EnemyFSM, IDamagable
 	public void ShootProjectile()
 	{
 		if (ElementalDeath != null)
-			Instantiate(ElementalProjectile, transform.position, transform.rotation);
-	   
+
+		{
+			Quaternion rotation =
+				Quaternion.LookRotation(lastPlayerPos - 
+				castPoint.transform.position);
+
+			Instantiate(ElementalProjectile, castPoint.transform.position, rotation);
+		}
+	}
+
+	public void RecalculatePlayerPosForAiming()
+	{
+		lastPlayerPos = player.transform.position;
 	}
 }

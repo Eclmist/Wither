@@ -28,12 +28,18 @@ namespace MagicalFX
 				if (LifeTime > 0)
 					GameObject.Destroy (fx.gameObject, LifeTime);
 			}
-			if (DestoyOnHit) {
-			
+			if (DestoyOnHit)
+			{
+
+				if (GetComponentInChildren<Light>())
+					Destroy(GetComponentInChildren<Light>().gameObject);
+
 				GameObject.Destroy (this.gameObject, LifeTimeAfterHit);
 				if (this.gameObject.GetComponent<Collider>())
 					this.gameObject.GetComponent<Collider>().enabled = false;
 
+				if (GetComponent<FX_Mover>())
+					Destroy(GetComponent<FX_Mover>());
 			}
 		}
 	

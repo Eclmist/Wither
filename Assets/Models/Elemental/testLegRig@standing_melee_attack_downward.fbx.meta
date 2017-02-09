@@ -107,7 +107,15 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.51003677
+      - time: 0
+        functionName: RecalculatePlayerPosForAiming
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: e20f1757e634ccf49a79e1e243a9ebfd,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.31474262
         functionName: ShootProjectile
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: e20f1757e634ccf49a79e1e243a9ebfd,
