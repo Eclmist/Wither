@@ -7,7 +7,7 @@
 
 		_RimColor("Rim Color", Color) = (1,1,1,1)
 		_RimPower("Rim Power", Range(0.5,8)) = 0
-		_Opacity("Rim Opacity", Range(0,1)) = 0
+		_RimOpacity("Rim Opacity", Range(0,1)) = 0
 	}
 	SubShader {
 		Tags { "RenderType"="Opaque" }
@@ -79,13 +79,13 @@
 		sampler2D _MainTex;
 		float4 _RimColor;
 		float _RimPower;
-		float _Opacity;
+		float _RimOpacity;
 
 		void surf(Input IN, inout SurfaceOutputStandard o) {
 			float ndotv = 1 - dot(IN.normalDir, IN.viewDir);
 
-			o.Emission = _RimColor * pow(ndotv, _RimPower) * _Opacity;
-			o.Alpha = _Opacity;
+			o.Emission = _RimColor * pow(ndotv, _RimPower) * _RimOpacity;
+			o.Alpha = _RimOpacity;
 		}
 
 		ENDCG
