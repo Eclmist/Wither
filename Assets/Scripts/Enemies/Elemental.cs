@@ -154,6 +154,7 @@ public class Elemental : EnemyFSM, IDamagable
 	protected override void HandleAnimations()
 	{
 		animator.SetBool("isAttacking",isAttacking);
+        animator.SetBool("isDying",isDead);
 	}
 
 	protected override void UpdateAttackState()
@@ -235,8 +236,10 @@ public class Elemental : EnemyFSM, IDamagable
 
 	protected override void UpdateDeadState()
 	{
-		
+
+
 	}
+
 	protected override void UpdateIdleState()
 	{
 		pathAgent.enabled = false;

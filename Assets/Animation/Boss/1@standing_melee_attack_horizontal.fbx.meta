@@ -166,6 +166,14 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      - time: 1
+        functionName: CheckPlayerPosition
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 92a64c2fbf68d6a4a84533c313281f06,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask:
       - path: 
         weight: 1

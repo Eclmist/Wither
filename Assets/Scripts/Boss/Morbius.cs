@@ -10,10 +10,10 @@ public class Morbius : BossFSM , IDamagable
     public GameObject effectBlue;
     public GameObject burst;
 
-
 	public float cameraShakeIntensity;
 	public float cameraShakeRange;
 	public AnimationCurve cameraShakeFalloff;
+    public float moveSpeed;
     
     [Range(1, 5)] public float attackRange;
 
@@ -22,12 +22,20 @@ public class Morbius : BossFSM , IDamagable
     private Animator animator;
     private int health = 15;
     private float maxHealth;
+    private int damageMultiplier = 1;
+    private int stance = 1;
 
     // Animation flags
     private bool isSpawning;
     private bool isChasing;
     private bool isInRange;
     private bool isDead;
+    private bool isPounding;
+
+    //Resources
+    private AudioClip roar_clip;
+    private AudioClip footstep_clip;
+    private GameObject fissure;
 
     public int Health
     {
@@ -46,39 +54,39 @@ public class Morbius : BossFSM , IDamagable
     {
 		if (GetComponent<HealthEffect>())
         GetComponent<HealthEffect>().ReduceHealth(damage / maxHealth);
-        health -= damage;
+        health -= damage * damageMultiplier;
     }
 
-    public void ApplyStun(float duration)
-    {
-        StartCoroutine(StatusEffect(duration));
-    }
-
-    public IEnumerator StatusEffect(float duration)
-    {
-        animator.enabled = false;
-        yield return new WaitForSeconds(duration);
-        animator.enabled = true;
-    }
 
 
     protected override void Initialize()
     {
-		player = GameObject.FindGameObjectWithTag("Player");
+        roar_clip =  Resources.Load("Sounds/BOSS_roar") as AudioClip;
+        footstep_clip = Resources.Load("Sounds/footsteps1") as AudioClip;
+        fissure = Resources.Load("Skills/FireFissure") as GameObject;
+
+        player = GameObject.FindGameObjectWithTag("Player");
 		maxHealth = health;
-        currentState = FSMState.Spawn;
-        GenerateSpawnEffects();
+        currentState = FSMState.Chase;
         animator = GetComponent<Animator>();
         source = GetComponent<AudioSource>();
+        rigidBody = GetComponent<Rigidbody>();
     }
 
     protected override void FSMUpdate()
     {
         base.FSMUpdate();
         DebuggingInput();
+
         if (health <= 0)
         {
-            currentState = FSMState.Dead;
+            stance = 2;
+            attackRange *= 3;
+            health = 9999;
+            damageMultiplier = 0;
+            isChasing = false;
+            isInRange = false;
+            currentState = FSMState.Spawn;
         }     
 
         
@@ -90,52 +98,81 @@ public class Morbius : BossFSM , IDamagable
         animator.SetBool("isSwinging", isInRange);
         animator.SetBool("isSpawning", isSpawning);
         animator.SetBool("isDead", isDead);
+        animator.SetBool("isPounding", isPounding);
     }
 
     protected override void UpdateSpawnState()
     {
         isSpawning = true;
 
-        if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && !animator.IsInTransition(0))
-        {
-            isSpawning = false;
-            currentState = FSMState.Chase;
-        }
+        
+  
     }
 
     protected override void UpdateChaseState()
     {
         isChasing = true;
-        transform.LookAt(player.transform.position);
+        Quaternion rot = Quaternion.LookRotation(player.transform.position - transform.position);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rot, 2.0f * Time.deltaTime);
+
+        rigidBody.velocity = transform.forward * moveSpeed;
+
+
 
         if (Vector3.Distance(transform.position, player.transform.position) <= attackRange)
         {
             isChasing = false;
-            currentState = FSMState.Attack;
+                currentState = FSMState.Attack;
+
+            
         }
+
 
     }
 
     protected override void UpdateAttackState()
     {
-        isInRange = true;
 
+        // if out of range
         if (Vector3.Distance(transform.position, player.transform.position) > attackRange)
-        {
-            isInRange = false;
-            currentState = FSMState.Chase;
-        }
+            {
+               isInRange = false;
+                currentState = FSMState.Chase;
+            }
+            else
+            {
+                if (Vector3.Angle(transform.forward, player.transform.position - transform.position) < 60)
+                {
+                    if (stance == 1)
+                    {
+                        isInRange = true;
+                        //rigidBody.constraints = RigidbodyConstraints.FreezeAll;
+                    }
+                    else
+                        isPounding = true;
+                }
+                   
+                 
+            }
 
+
+
+
+           
     }
 
     protected override void UpdateAttack2State()
     {
-        Debug.Log("2nd VARIATION");
     }
 
     protected override void UpdateUltimateState()
     {
         Debug.Log("USING ULT");
+
+        isSpawning = true;
+        isChasing = false;
+        
+     
     }
 
     protected override void UpdateDeadState()
@@ -147,9 +184,14 @@ public class Morbius : BossFSM , IDamagable
 
     protected void GenerateSpawnEffects()
     {
-	    Shake(2, 3);
+	    Shake(2, 4);
         Instantiate(effectBlue, transform.position, transform.rotation);
         Instantiate(effectRed, transform.position, transform.rotation);
+    }
+
+    bool IsInMotion(string animationName)
+    {
+        return animator.GetCurrentAnimatorStateInfo(0).IsName(animationName);
     }
 
 
@@ -172,7 +214,9 @@ public class Morbius : BossFSM , IDamagable
 
     public void Roar()
     {
-        source.PlayOneShot(Resources.Load("Sounds/BOSS_roar") as AudioClip);
+        GenerateSpawnEffects();
+        if(roar_clip != null)
+        source.PlayOneShot(roar_clip);
     }
 
     public void Falling()
@@ -188,8 +232,33 @@ public class Morbius : BossFSM , IDamagable
 	public void TakeStep()
     {
 		Shake(0.2F, 1);
-		source.PlayOneShot(Resources.Load("Sounds/footsteps1") as AudioClip);
+        if (footstep_clip != null)
+            source.PlayOneShot(footstep_clip);
         
+    }
+
+    public void CheckPlayerPosition()
+    {
+        isInRange = false;
+        //rigidBody.constraints -= RigidbodyConstraints.FreezePosition;
+
+    }
+
+    public void TransitionToChase()
+    {
+        isSpawning = false;
+        currentState = FSMState.Chase;
+    }
+
+    public void Fissure()
+    {
+        isPounding = false;
+
+        if(fissure != null)
+        Instantiate(fissure,transform.position,transform.rotation);
+        Shake(0.5f,4);
+
+
     }
 
 	public void Shake(float duration, float amount)
