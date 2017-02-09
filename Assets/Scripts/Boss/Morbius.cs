@@ -9,6 +9,11 @@ public class Morbius : BossFSM , IDamagable
     public GameObject effectRed;
     public GameObject effectBlue;
     public GameObject burst;
+
+
+	public float cameraShakeIntensity;
+	public float cameraShakeRange;
+	public AnimationCurve cameraShakeFalloff;
     
     [Range(1, 5)] public float attackRange;
 
@@ -59,12 +64,12 @@ public class Morbius : BossFSM , IDamagable
 
     protected override void Initialize()
     {
-        maxHealth = health;
+		player = GameObject.FindGameObjectWithTag("Player");
+		maxHealth = health;
         currentState = FSMState.Spawn;
         GenerateSpawnEffects();
         animator = GetComponent<Animator>();
         source = GetComponent<AudioSource>();
-        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     protected override void FSMUpdate()
@@ -142,7 +147,7 @@ public class Morbius : BossFSM , IDamagable
 
     protected void GenerateSpawnEffects()
     {
-        Effects.instance.ShakeCameraRelative(2, 0.3f);
+	    Shake(2, 3);
         Instantiate(effectBlue, transform.position, transform.rotation);
         Instantiate(effectRed, transform.position, transform.rotation);
     }
@@ -162,7 +167,7 @@ public class Morbius : BossFSM , IDamagable
 
     public void HeavySwing()
     {
-        Effects.instance.ShakeCameraRelative(0.5f, 0.1f);
+		Shake(0.5f, 1);
     }
 
     public void Roar()
@@ -172,19 +177,40 @@ public class Morbius : BossFSM , IDamagable
 
     public void Falling()
     {
-        Effects.instance.ShakeCameraRelative(0.3f, 0.05f);
-    }
+		Shake(0.5f, 1);
+	}
 
-    public void Fall()
+	public void Fall()
     {
-        Effects.instance.ShakeCameraRelative(1f, 0.2f);
-    }
+		Shake(1, 2);
+	}
 
-    public void TakeStep()
+	public void TakeStep()
     {
-        Effects.instance.ShakeCameraRelative(0.2f, 0.1f);
-        source.PlayOneShot(Resources.Load("Sounds/footsteps1") as AudioClip);
+		Shake(0.2F, 1);
+		source.PlayOneShot(Resources.Load("Sounds/footsteps1") as AudioClip);
         
     }
-    
+
+	public void Shake(float duration, float amount)
+	{
+		float distanceFromPlayer = Vector3.Distance(player.transform.position,
+			transform.position);
+
+		float ratio = distanceFromPlayer/cameraShakeRange;
+
+		float unmodifiedIntensity = cameraShakeFalloff.Evaluate(ratio);
+
+		float finalIntensity = unmodifiedIntensity * cameraShakeIntensity *amount;
+		Effects.instance.ShakeCameraRelative(duration, finalIntensity);
+
+	}
+
+	void OnDrawGizmos()
+	{
+		Gizmos.color = new Color (1,1,0,0.3f);
+		Gizmos.DrawSphere(transform.position, cameraShakeRange);
+	}
+
+
 }
