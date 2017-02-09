@@ -30,10 +30,10 @@ public class Elemental : EnemyFSM, IDamagable
 	// Determine when to use AStar calculations
 	public bool isUsingAStar;
 
-    private GameObject ElementalProjectile;
-    private GameObject ElementalDeath;
+	private GameObject ElementalProjectile;
+	private GameObject ElementalDeath;
 
-    private PathAgent pathAgent;
+	private PathAgent pathAgent;
 	private Animator animator;
 	private Rigidbody rigidBody;
 	private float health = 10;
@@ -111,10 +111,10 @@ public class Elemental : EnemyFSM, IDamagable
 	{
 		base.Initialize();
 
-        ElementalProjectile = Resources.Load("ElementalProjectile") as GameObject;
-        ElementalDeath = Resources.Load("ElementalDeath") as GameObject;
+		ElementalProjectile = Resources.Load("ElementalProjectile") as GameObject;
+		ElementalDeath = Resources.Load("ElementalDeath") as GameObject;
 
-        pathAgent = GetComponent<PathAgent>();
+		pathAgent = GetComponent<PathAgent>();
 		animator = GetComponent<Animator>();
 		rigidBody = GetComponent<Rigidbody>();
 		player = GameObject.FindWithTag("Player");
@@ -135,7 +135,7 @@ public class Elemental : EnemyFSM, IDamagable
 		{
 			currentState = FSMState.Dead;
 
-            if(ElementalDeath != null)
+			if(ElementalDeath != null)
 				Instantiate(ElementalDeath,transform.position,transform.rotation);
 			StartCoroutine(FadeOpacity(false));
 		}
@@ -302,8 +302,8 @@ public class Elemental : EnemyFSM, IDamagable
 	//-----------------------------Animation Events-----------------------------------------//
 	public void ShootProjectile()
 	{
-        if (ElementalDeath != null)
-            Instantiate(ElementalProjectile, transform.position, transform.rotation);
-       
+		if (ElementalDeath != null)
+			Instantiate(ElementalProjectile, transform.position, transform.rotation);
+	   
 	}
 }
