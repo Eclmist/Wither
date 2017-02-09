@@ -75,6 +75,9 @@
 				//Distortion
 				float4 distortion = tex2D(_Pattern, i.uv +
 					(_Time.rg * _Speed));
+				
+				
+				distortion -= float4(0.5, 0.5, 0.5, 0.5);
 
 				float4 distortedTex = tex2Dproj(_BackgroundTexture, i.grabPos + distortion * _DistortionAmt);
 				distortedTex.a = 1;

@@ -36,7 +36,7 @@ public class Elemental : EnemyFSM, IDamagable
 	private PathAgent pathAgent;
 	private Animator animator;
 	private Rigidbody rigidBody;
-	private float health = 10;
+	private int health = 10;
 	private bool stunned;
 	private Renderer renderer;
 	private Vector3 lastPlayerPos;
@@ -44,7 +44,7 @@ public class Elemental : EnemyFSM, IDamagable
 	[SerializeField]
 	private AnimationCurve turnRateOverAngle;
 
-	public void TakeDamage(float damage)
+	public void TakeDamage(int damage)
 	{
 		health -= damage;
 	}

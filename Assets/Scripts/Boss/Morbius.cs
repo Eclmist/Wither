@@ -20,7 +20,7 @@ public class Morbius : BossFSM , IDamagable
     private Rigidbody rigidBody;
     private AudioSource source;
     private Animator animator;
-    private float health = 15;
+    private int health = 15;
     private float maxHealth;
 
     // Animation flags
@@ -29,7 +29,7 @@ public class Morbius : BossFSM , IDamagable
     private bool isInRange;
     private bool isDead;
 
-    public float Health
+    public int Health
     {
         get { return this.health; }
     }
@@ -37,12 +37,12 @@ public class Morbius : BossFSM , IDamagable
     void DebuggingInput()
     {
         if (Input.GetKeyDown(KeyCode.Q))
-            TakeDamage(0.1f);
+            TakeDamage(1);
         if (Input.GetKeyDown(KeyCode.R))
-            TakeDamage(5f);
+            TakeDamage(5);
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(int damage)
     {
 		if (GetComponent<HealthEffect>())
         GetComponent<HealthEffect>().ReduceHealth(damage / maxHealth);

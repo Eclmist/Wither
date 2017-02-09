@@ -7,5 +7,5 @@ using UnityEngine;
 /// </summary>
 public interface IDamagable
 {
-    void TakeDamage(float damage);
+    void TakeDamage(int damage);
 }

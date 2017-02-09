@@ -20,7 +20,7 @@ public class RevealOverDistance : MonoBehaviour
 		foreach (Collider c in interractables)
 		{
 			IInteractable interactable = c.GetComponent<IInteractable>();
-			if (interactable != null)
+			 if (interactable != null)
 			{
 				float distanceRatio = Vector3.Distance(c.transform.position, transform.position)/
 				                      distance;

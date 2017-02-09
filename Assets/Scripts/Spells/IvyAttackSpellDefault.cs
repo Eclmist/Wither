@@ -14,7 +14,7 @@ public class IvyAttackSpellDefault : MonoBehaviour {
 	[SerializeField] private float range = 26;
 	[SerializeField] private float durationPerHit = 0.5f;
 	[SerializeField] private int targetIndex = 0;
-	[SerializeField] private float damage = 0.5f;
+	[SerializeField] private int damage = 1;
 
 	private LineRenderer lineRenderer;
 	private Vector3[] linePoints = new Vector3[10];
@@ -126,14 +126,7 @@ public class IvyAttackSpellDefault : MonoBehaviour {
 
 	void ToggleLineRenderer()
 	{
-		if (!PlayerController.Instance.IsDead)
-		{
-			lineRenderer.enabled = target;
-		}
-		else
-		{
-			lineRenderer.enabled = false;
-		}
+		lineRenderer.enabled = target;
 	}
 
 	void UpdateMaterial()

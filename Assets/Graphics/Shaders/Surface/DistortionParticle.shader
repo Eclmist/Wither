@@ -71,7 +71,8 @@
 				float4 distortion = tex2D(_Pattern, i.uv +
 					(_Time.rg * _Speed));
 
-				distortion *= tex2D(_MainTex, i.uv).r * i.color.a;
+				distortion *= tex2D(_MainTex, i.uv) * i.color.a;
+				distortion *= tex2D(_MainTex, i.uv).r;
 
 				float4 distortedTex = tex2Dproj(_BackgroundTexture, i.grabPos + distortion * _DistortionAmt);
 				distortedTex.a = 1;
