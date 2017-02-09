@@ -131,7 +131,9 @@ class PlayerController : MonoBehaviour,IDamagable
         if (horizontal == 0 && vertical == 0)
         {
             isMoving = false;
-            rigidBody.velocity = new Vector3(0,Mathf.Clamp01(rigidBody.velocity.y),0);
+            rigidBody.velocity = new Vector3(0,
+				Mathf.Clamp(rigidBody.velocity.y, float.MinValue, 0),
+				0);
 
         }
            
