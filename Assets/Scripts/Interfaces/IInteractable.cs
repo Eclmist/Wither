@@ -7,7 +7,9 @@ using UnityEngine;
 public interface IInteractable
 {
 
-    void Interact();
+	void Interact();
 
-    void Pulse();
+	void Pulse();
+
+	void SetOpacity(float opacity);
 }

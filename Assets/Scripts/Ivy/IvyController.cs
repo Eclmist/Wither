@@ -201,5 +201,4 @@ public class IvyController : MonoBehaviour
 		else
 			return targetPosition - transform.position;
 	}
-
 }

@@ -73,4 +73,10 @@ public class PulseRevealTrigger : MonoBehaviour, IInteractable {
             StartCoroutine("DoPulse");
         }
     }
+
+	void IInteractable.SetOpacity(float o)
+	{
+		opacity = o;
+	}
+
 }
