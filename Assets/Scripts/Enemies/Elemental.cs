@@ -209,24 +209,18 @@ public class Elemental : EnemyFSM, IDamagable, IStunnable
 	private void LookAtPlayer()
 	{
 
-			//Quaternion rot = Quaternion.LookRotation(AvoidObstacles());
-			//transform.rotation = Quaternion.Slerp(transform.rotation, rot, 2.0f * Time.deltaTime);
-
 		Vector3 tempTarget = player.transform.position;
 
 		float distance = (tempTarget - transform.position).magnitude / 60;
 		float angle = Vector3.Angle(tempTarget - transform.position, transform.forward) / 180;
 		float rotationSpeed = turnRateOverAngle.Evaluate(angle);
-		//rotationSpeed += turnRateOverDistance.Evaluate((hit.point - transform.position).magnitude / 60);
+
 
 		Vector3 lookAtTarget = AvoidObstacles();
 		lookAtTarget.y = 0; //Force no y change;
 		transform.rotation = Quaternion.Slerp(transform.rotation,
 			Quaternion.LookRotation(lookAtTarget, Vector3.up),
 			rotationSpeed * Time.deltaTime);
-
-		//Vector3 targetPosCurrFrame = transform.position + transform.forward;
-		//transform.position = Vector3.Lerp(transform.position, targetPosCurrFrame, moveSpeed);
 
 	}
 
@@ -258,9 +252,6 @@ public class Elemental : EnemyFSM, IDamagable, IStunnable
 			// 5 if near, 0 if far
 			distanceExp = 5 - distanceExp * 5;
 			
-
-			//Debug.Log("Turned Left");
-			//Get the new directional vector by adding force to vehicle's current forward vector
 			return transform.forward - transform.right * force * distanceExp;
 		}
 		else if (Physics.Raycast(transform.position, left45, out Hit,
@@ -272,21 +263,9 @@ public class Elemental : EnemyFSM, IDamagable, IStunnable
 			// 5 if near, 0 if far
 			distanceExp = 5 - distanceExp * 5;
 
-
-			//Debug.Log("Turned Right");
-			//Get the new directional vector by adding force to vehicle's current forward vector
 			return transform.forward + transform.right * force * distanceExp;
 		}
-		//else if (Physics.Raycast(transform.position, transform.forward, out Hit,
-		//	minimumDistToAvoid/3, ~avoidanceIgnoreMask))
-		//{
 
-		//	//Get the normal of the hit point to calculate the new direction
-		//	Vector3 hitNormal = Hit.normal;
-		//	hitNormal.y = 0.0f; //Don't want to move in Y-Space
-		//	Debug.Log("Turned away from normal");
-		//	return transform.forward + hitNormal * force;
-		//}
 		else
 		{
 			//Debug.Log("Turned towards player");

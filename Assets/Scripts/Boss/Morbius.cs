@@ -10,13 +10,20 @@ public class Morbius : BossFSM , IDamagable
     public GameObject effectBlue;
     public GameObject burst;
     public GameObject bossGUI;
+    public GameObject castPoint;
 
 	public float cameraShakeIntensity;
 	public float cameraShakeRange;
 	public AnimationCurve cameraShakeFalloff;
     public float moveSpeed;
-    
     [Range(1, 5)] public float attackRange;
+    [Range(1,360)]public float attackAngle;
+    public float angleCorrectionTurnRate;
+    public float rotationSpeed;
+    // Avoidance
+    public float minimumDistToAvoid = 5;
+    public LayerMask avoidanceIgnoreMask;
+    public float force = 10;
 
     private Rigidbody rigidBody;
     private AudioSource source;
@@ -24,7 +31,8 @@ public class Morbius : BossFSM , IDamagable
     private int health = 15;
     private float maxHealth;
     private int damageMultiplier = 1;
-    private int stance = 1;
+    private AttackStance currentAttackStance;
+    private enum AttackStance { NORMAL,BROKEN}
 
     // Animation flags
     private bool isSpawning;
@@ -72,6 +80,7 @@ public class Morbius : BossFSM , IDamagable
         player = GameObject.FindGameObjectWithTag("Player");
 		maxHealth = health;
         currentState = FSMState.Chase;
+        currentAttackStance = AttackStance.NORMAL;
         animator = GetComponent<Animator>();
         source = GetComponent<AudioSource>();
         rigidBody = GetComponent<Rigidbody>();
@@ -86,13 +95,14 @@ public class Morbius : BossFSM , IDamagable
 
         if (health <= 0)
         {
-            stance = 2;
-            attackRange *= 3;
+            Debug.Log("dieded");
+            currentAttackStance = AttackStance.BROKEN;
+            attackRange *= 2;
             health = 9999;
             damageMultiplier = 0;
             isChasing = false;
             isInRange = false;
-            currentState = FSMState.Spawn;
+            currentState = FSMState.Overpowered;
         }     
 
         
@@ -107,78 +117,84 @@ public class Morbius : BossFSM , IDamagable
         animator.SetBool("isPounding", isPounding);
     }
 
-    protected override void UpdateSpawnState()
+    protected override void UpdateOverpoweredState()
     {
         isSpawning = true;
-
-        
-  
     }
 
     protected override void UpdateChaseState()
     {
         isChasing = true;
-        Quaternion rot = Quaternion.LookRotation(player.transform.position - transform.position);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rot, 2.0f * Time.deltaTime);
+
+
+        //Quaternion rot = Quaternion.LookRotation(player.transform.position - transform.position);
+        //transform.rotation = Quaternion.Slerp(transform.rotation, rot, 2.0f * Time.deltaTime);
+
+        GetComponent<Avoidance>().LookAtPlayer();
+
 
         rigidBody.velocity = transform.forward * moveSpeed;
-
-
-
-        if (Vector3.Distance(transform.position, player.transform.position) <= attackRange)
+        
+        if (Vector3.Distance(transform.position, player.transform.position) <= attackRange &&
+            Vector3.Angle(transform.forward, player.transform.position - transform.position)
+        <= attackAngle)
         {
+            // If the player is within range and angle is correct
             isChasing = false;
-                currentState = FSMState.Attack;
-
-            
+            currentState = FSMState.Attack;
         }
+        else if(Vector3.Distance(transform.position, player.transform.position) <= attackRange &&
+             Vector3.Angle(transform.forward, player.transform.position - transform.position) > attackAngle)
+        {
+            // If player is within range but not in the right angle
+            currentState = FSMState.Turn;
+
+
+        }
+
+       
 
 
     }
+
+    
 
     protected override void UpdateAttackState()
     {
+        // If the player is out of range OR not in the right angle to hit
+        if (Vector3.Distance(transform.position, player.transform.position) > attackRange ||
+        Vector3.Angle(transform.forward, player.transform.position - transform.position)
+         > attackAngle)
+        {
 
-        // if out of range
-        if (Vector3.Distance(transform.position, player.transform.position) > attackRange)
-            {
-               isInRange = false;
-                currentState = FSMState.Chase;
-            }
-            else
-            {
-                if (Vector3.Angle(transform.forward, player.transform.position - transform.position) < 60)
-                {
-                    if (stance == 1)
-                    {
-                        isInRange = true;
-                        //rigidBody.constraints = RigidbodyConstraints.FreezeAll;
-                    }
-                    else
-                        isPounding = true;
-                }
-                   
-                 
-            }
-
-
-
-
+            currentState = FSMState.Chase;
            
+        }
+        else
+        {
+            Attack();
+        }
     }
 
-    protected override void UpdateAttack2State()
+    
+
+
+    protected override void UpdateTurnState()
     {
+       
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(player.transform.position - transform.position)
+            , angleCorrectionTurnRate * Time.deltaTime);
+
+        if(Vector3.Angle(transform.forward, player.transform.position - transform.position) <= attackAngle)
+        {
+            currentState = FSMState.Attack;
+        }
+
     }
 
-    protected override void UpdateUltimateState()
+    protected override void UpdatePatrolState()
     {
-        Debug.Log("USING ULT");
-
-        isSpawning = true;
-        isChasing = false;
         
-     
     }
 
     protected override void UpdateDeadState()
@@ -200,6 +216,22 @@ public class Morbius : BossFSM , IDamagable
         return animator.GetCurrentAnimatorStateInfo(0).IsName(animationName);
     }
 
+    private void Attack()
+    {
+        //Check type of attack based on stance
+        switch(currentAttackStance)
+        {
+            case AttackStance.NORMAL:
+                isInRange = true;
+                break;
+            case AttackStance.BROKEN:
+                isPounding = true;
+                break;
+        }
+    }
+
+
+    
 
     //-------------------------------------------- Animation events -------------------------------------------------------------------------------//
 
@@ -223,6 +255,7 @@ public class Morbius : BossFSM , IDamagable
         GenerateSpawnEffects();
         if(roar_clip != null)
         source.PlayOneShot(roar_clip);
+
     }
 
     public void Falling()
@@ -261,8 +294,10 @@ public class Morbius : BossFSM , IDamagable
         isPounding = false;
 
         if(fissure != null)
-        Instantiate(fissure,transform.position,transform.rotation);
+        Instantiate(fissure,castPoint.transform.position,transform.rotation);
+        Debug.Log("ended");
         Shake(0.5f,4);
+
 
 
     }
