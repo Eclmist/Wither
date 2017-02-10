@@ -6,7 +6,7 @@
 	}
 
 		Category{
-		Tags{ "Queue" = "Transparent" "IgnoreProjector" = "True" "RenderType" = "Transparent" }
+		Tags{ "Queue" = "Transparent" "RenderType" = "Transparent" }
 		Blend SrcAlpha One
 		AlphaTest Greater .01
 		ColorMask RGB
@@ -68,8 +68,6 @@
 	float partZ = i.projPos.z;
 	float fade = saturate(_InvFade * (sceneZ - partZ));
 	i.color.a *= fade;
-
-		if (partZ > sceneZ) discard;
 
 		return 2.0f * i.color * _TintColor * tex2D(_MainTex, i.texcoord);
 	}

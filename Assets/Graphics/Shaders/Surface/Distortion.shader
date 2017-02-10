@@ -25,8 +25,16 @@
 		}
 
 
+		//Stencil
+		//{
+		//	Ref 1
+		//	Comp Always
+		//	Pass Replace
+		//}
+
 		Pass
 		{
+
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
@@ -96,8 +104,6 @@
 				intersectColor.a *= (1 - fade);
 
 				distortedTex.rgb += intersectColor.rgb * intersectColor.a * _Opacity;
-
-
 				return distortedTex;
 
 			}

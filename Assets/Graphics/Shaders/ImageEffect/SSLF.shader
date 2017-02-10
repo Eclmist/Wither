@@ -78,6 +78,7 @@
 
 				//col = LinearEyeDepth(tex2D(_PUDepthTex, i.uv).r) / 100;
 				//if (length(i.uv - _sPosition) < 0.01) return _sDepth / 100;
+				//return (tex2D(_PUDepthTex,i.uv)) * 5;
 				return col + lens * _opacity *oMul * _color;
 			}
 			ENDCG

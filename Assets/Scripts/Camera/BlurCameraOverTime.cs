@@ -37,7 +37,7 @@ public class BlurCameraOverTime : MonoBehaviour {
 
 	IEnumerator Blur(bool enabled)
 	{
-		BlurOptimized blurScript = Camera.main.GetComponent<BlurOptimized>();
+		BlurOptimized blurScript = GetComponent<BlurOptimized>();
 
 		float startingBlurValue = enabled ? 0 : 2;
 

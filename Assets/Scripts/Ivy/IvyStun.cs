@@ -4,19 +4,30 @@ using UnityEngine;
 
 public class IvyStun : MonoBehaviour
 {
+	public GameObject stunSphere;
+	private Renderer stunSphereRenderer;
 
 	[Range(0,10)] public float range = 5;
 	[Range(0, 2)] public float stunDuration = 1;
 	[Range(0, 5)] public float cooldown = 1;
+
+	public AnimationCurve OpacityCurve;
+	public AnimationCurve DistortionCurve;
+	public AnimationCurve SizeCurve;
 
 	private float timePassedSinceLastStun;
 
 	// Use this for initialization
 	void Start ()
 	{
-		
+		stunSphereRenderer = stunSphere.GetComponent<Renderer>();
+
+		stunSphereRenderer.material.SetFloat("_Opacity", 0);
+		stunSphereRenderer.material.SetFloat("_DistortionAmt", 0);
+		stunSphere.transform.localScale = Vector3.zero;
+
 	}
-	
+
 	// Update is called once per frame
 	void Update ()
 	{
@@ -24,11 +35,12 @@ public class IvyStun : MonoBehaviour
 
 		if (timePassedSinceLastStun > cooldown)
 		{
-			timePassedSinceLastStun = 0;
 
-			if (Input.GetKeyDown(KeyCode.E))
+			if (Input.GetMouseButtonDown(1))
 			{
-				//StartCoroutine(StunSphereAnimation);
+				timePassedSinceLastStun = 0;
+				Debug.Log("Coroutine Started");
+				StartCoroutine(StunSphereAnimation());
 			}
 		}
 	}
@@ -39,8 +51,28 @@ public class IvyStun : MonoBehaviour
 		Gizmos.DrawSphere(transform.position, range);
 	}
 
-//	IEnumerator StunSphereAnimation()
-	//{
-		//while ()
-//	}
+	IEnumerator StunSphereAnimation()
+	{
+		stunSphere.transform.position = transform.position;
+
+		float sinIN = 0;
+		while (sinIN < 1)
+		{
+			sinIN += 0.01F;
+
+			float opacity = OpacityCurve.Evaluate(sinIN);
+			float distortion = DistortionCurve.Evaluate(sinIN);
+			float size = SizeCurve.Evaluate(sinIN) * range;
+
+			stunSphereRenderer.material.SetFloat("_Opacity", opacity);
+			stunSphereRenderer.material.SetFloat("_DistortionAmt", distortion * 5);
+			stunSphere.transform.localScale = new Vector3(size, size, size);
+
+			yield return new WaitForSeconds(0.01F);
+		}
+
+		stunSphereRenderer.material.SetFloat("_Opacity", 0);
+		stunSphereRenderer.material.SetFloat("_DistortionAmt", 0);
+		stunSphere.transform.localScale = Vector3.zero;
+	}
 }

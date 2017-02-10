@@ -4,82 +4,82 @@ using UnityEngine;
 
 public class MementoManager : MonoBehaviour {
 
-    public static int PickupCount = 0;
-    public static MementoManager Instance;
-    public Renderer ren;
-    public Renderer backfaceRen;
+	public static int PickupCount = 0;
+	public static MementoManager Instance;
+	public Renderer ren;
+	public Renderer backfaceRen;
 
-    private bool shown;
+	private bool shown;
 
-    void Awake()
-    {
-        Instance = this;
-    }
+	void Awake()
+	{
+		Instance = this;
+	}
 
-    void Start () {
+	void Start () {
 		
 	}
 	
 	void Update () {
-        if (Input.GetKeyDown(KeyCode.Escape) ||
-            Input.GetKeyDown(KeyCode.E) ||
-            Input.GetKeyDown(KeyCode.Return))
-        {
-            if (shown)
-            {
-                shown = false;
-                HideMemento();
-            }
-        }
+		if (Input.GetKeyDown(KeyCode.Escape) ||
+			Input.GetKeyDown(KeyCode.E) ||
+			Input.GetKeyDown(KeyCode.Return))
+		{
+			if (shown)
+			{
+				shown = false;
+				HideMemento();
+			}
+		}
 	}
 
-    public static void IncrementPickupCount()
-    {
-        PickupCount++;
-    }
+	public static void IncrementPickupCount()
+	{
+		PickupCount++;
+	}
 
-    public static void ShowMemento()
-    {
-        Instance.GetComponent<Camera>().enabled = true;
-    }
+	public static void ShowMemento()
+	{
+		Instance.GetComponent<Camera>().enabled = true;
+	}
 
-    public static void HideMemento()
-    {
-        Chronos.ResumeTime(0.05F);
-        BlurCameraOverTime.Instance.UnblurScreen();
-        Instance.StartCoroutine(Instance.TriggerMemento(false));
-    }
+	public static void HideMemento()
+	{
+		Chronos.ResumeTime(0.05F);
+		BlurCameraOverTime.Instance.UnblurScreen();
+		Instance.StartCoroutine(Instance.TriggerMemento(false));
+	}
 
-    public IEnumerator TriggerMemento(bool enabled)
-    {
+	public IEnumerator TriggerMemento(bool enabled)
+	{
 
-        float startingOpacity = 0;
-        ren.material.SetFloat("_Opacity", startingOpacity);
-        backfaceRen.material.SetFloat("_Opacity", startingOpacity);
+		float startingOpacity = 0;
+		ren.material.SetFloat("_Opacity", startingOpacity);
+		backfaceRen.material.SetFloat("_Opacity", startingOpacity);
 
-        if (!enabled)
-        {
-            startingOpacity = 0;
-            Instance.GetComponent<Camera>().enabled = false;
-        }
-        else //Enabled
-        {
-            while (startingOpacity < 1)
-            {
+		if (!enabled)
+		{
+			startingOpacity = 0;
+			Instance.GetComponent<Camera>().enabled = false;
+		}
+		else //Enabled
+		{
+			while (startingOpacity < 1)
+			{
 
-                startingOpacity += 0.005F;
+				startingOpacity += 0.005F;
 
-                if (startingOpacity >= 1)
-                {
-                    startingOpacity = 1;
-                    Instance.shown = true;
-                }
+				if (startingOpacity >= 1)
+				{
+					startingOpacity = 1;
+					Instance.shown = true;
+				}
 
-                ren.material.SetFloat("_Opacity", startingOpacity);
-                backfaceRen.material.SetFloat("_Opacity", startingOpacity);
+				ren.material.SetFloat("_Opacity", startingOpacity);
+				backfaceRen.material.SetFloat("_Opacity", startingOpacity);
 
-                yield return new WaitForSecondsRealtime(0.01F);
-            }
-        }
-    }
+				yield return new WaitForSecondsRealtime(0.01F);
+			}
+		}
+	}
 }
