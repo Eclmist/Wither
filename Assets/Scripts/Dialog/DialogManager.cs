@@ -25,7 +25,9 @@ public class DialogManager : MonoBehaviour {
     private bool isShowing;     // Status of dialog box
     private bool isTyping;      // Check if  a co routine is currently running
     private bool canContinue;   // Check if user clicked
-    
+
+	private Callback onDialogEnd;
+
     void Awake()
     {
         // Load the text resource
@@ -153,6 +155,9 @@ public class DialogManager : MonoBehaviour {
             // Reached the last line of character speech
             if (iterator >= messageOrder.Count && canContinue)
             {
+				//Call the callback func
+	            onDialogEnd();
+
                 ToggleDialogBox();
                 // Reset the iterator
                 iterator = 0;
@@ -203,17 +208,10 @@ public class DialogManager : MonoBehaviour {
             messageOrder.Clear();
     }
 
+	public void SetCallbackFunc(Callback function)
+	{
+		onDialogEnd = function;
+	}
 
-
-
-
-
-
-
-
-
-
-
-
-
+	public delegate void Callback();
 }
