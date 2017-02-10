@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Elemental : EnemyFSM, IDamagable
+public class Elemental : EnemyFSM, IDamagable, IStunnable
 {
 
 	public LayerMask avoidanceIgnoreMask;
@@ -36,7 +36,7 @@ public class Elemental : EnemyFSM, IDamagable
 	private PathAgent pathAgent;
 	private Animator animator;
 	private Rigidbody rigidBody;
-	private int health = 10;
+	private int health = 1000;
 	private bool stunned;
 	private Renderer renderer;
 	private Vector3 lastPlayerPos;
@@ -48,20 +48,15 @@ public class Elemental : EnemyFSM, IDamagable
 	{
 		health -= damage;
 	}
-
-	public void ApplyStun(float duration)
-	{
-		StopCoroutine("ApplyStatusEffect");
-		StartCoroutine(ApplyStatusEffect(duration));
-	}
 		
 	public IEnumerator ApplyStatusEffect(float duration)
 	{
 		currentState = FSMState.Stun;
 		stunned = true;
+		animator.enabled = false;
 		yield return new WaitForSeconds(duration);
 		animator.enabled = true;
-		stunned = true;
+		stunned = false;
 	}
 
 	public IEnumerator FadeOpacity(bool show)
@@ -161,7 +156,9 @@ public class Elemental : EnemyFSM, IDamagable
 	{
 		isAttacking = true;
 		rigidBody.velocity = Vector3.zero;
-		LookAtPlayer();
+		transform.rotation = Quaternion.Slerp(transform.rotation,
+			Quaternion.LookRotation(player.transform.position - transform.position, Vector3.up),
+			30 * Time.deltaTime);
 
 		if (Vector3.Distance(transform.position, player.transform.position) > attackRange)
 		{
@@ -198,7 +195,7 @@ public class Elemental : EnemyFSM, IDamagable
 			
 			rigidBody.MovePosition(transform.position + transform.forward * moveSpeed / 100);
 
-			if(Vector3.Distance(transform.position, player.transform.position) <= attackRange)
+			if (Vector3.Distance(transform.position, player.transform.position) <= attackRange)
 			{
 				currentState = FSMState.Attack;
 			}
@@ -322,5 +319,12 @@ public class Elemental : EnemyFSM, IDamagable
 	public void RecalculatePlayerPosForAiming()
 	{
 		lastPlayerPos = player.transform.position;
+	}
+
+	public void Stun(float duration)
+	{
+		Debug.Log("Stunned");
+		StopCoroutine("ApplyStatusEffect");
+		StartCoroutine(ApplyStatusEffect(duration));
 	}
 }

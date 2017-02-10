@@ -71,7 +71,7 @@ public class Transition : MonoBehaviour
         if(operation.isDone == false && isMessageShown)
             spinner.SetActive(true);
 
-        if (operation.progress > 0.89 && isMessageShown)
+        if (operation.progress > 0.9F && isMessageShown)
         {
             spinner.SetActive(false);
             operation.allowSceneActivation = true;

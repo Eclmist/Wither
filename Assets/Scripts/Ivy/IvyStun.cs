@@ -55,6 +55,19 @@ public class IvyStun : MonoBehaviour
 	{
 		stunSphere.transform.position = transform.position;
 
+		Collider[] enemies = Physics.OverlapSphere(transform.position, range, LayerMask.GetMask("Enemy"));
+
+		foreach (Collider enemy in enemies)
+		{
+			IStunnable stunnable = enemy.GetComponent<IStunnable>();
+
+			if (stunnable != null)
+			{
+				stunnable.Stun(stunDuration);
+			}
+		}
+
+
 		float sinIN = 0;
 		while (sinIN < 1)
 		{
