@@ -92,10 +92,6 @@ public class IvyAttackSpellDefault : MonoBehaviour {
 							shortestDistance = distanceFromPlayer;
 							timeSinceLastStart = 0;
 						}
-						else
-						{
-							Debug.Log("Ivy attack default blocked by " + intersection.collider.name);
-						}
 					}
 				}
 
