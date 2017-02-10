@@ -32,6 +32,7 @@ public class Message : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other)
 	{
+
 		if(!isCleared)
 		{
 			DialogManager.dialogManager.LoadConversationByIndex(index);

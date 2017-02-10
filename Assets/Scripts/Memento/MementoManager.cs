@@ -67,7 +67,7 @@ public class MementoManager : MonoBehaviour {
             while (startingOpacity < 1)
             {
 
-                startingOpacity += 0.01F;
+                startingOpacity += 0.005F;
 
                 if (startingOpacity >= 1)
                 {

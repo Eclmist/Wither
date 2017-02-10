@@ -1,4 +1,4 @@
-﻿Shader "Hidden/Overlay"
+﻿Shader "Hidden/OverlayPulse"
 {
 	Properties
 	{
@@ -40,11 +40,13 @@
 			sampler2D _MainTex;
 			sampler2D _OverlayTex;
 
+			float _Opacity;
+
 			fixed4 frag (v2f i) : SV_Target
 			{
 				fixed4 col = tex2D(_MainTex, i.uv);
-				fixed4 ovl = tex2D(_OverlayTex, i.uv);
-				return col + ovl;
+				fixed4 ovl = tex2D(_OverlayTex, i.uv) * _Opacity;
+				return col + ovl * (sin(_Time * 100) + 4) /20;
 			}
 			ENDCG
 		}

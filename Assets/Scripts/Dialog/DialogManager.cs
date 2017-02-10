@@ -11,7 +11,6 @@ public class DialogManager : MonoBehaviour {
 	private Text currentText; // Text that is currently displayed
 	private string currentLine; // The line that is currently being processed
 	private GameObject currentCharacter; // Sprite to represent the character that is currently talking
-	private IEnumerator typeWriter; // Coroutine that achieves the typewriter effect
 	private int iterator = 0; // To iterate through conversations
 
 	private TextAsset conversations; // Text resource containing all conversation information
@@ -29,6 +28,9 @@ public class DialogManager : MonoBehaviour {
 	private Callback onDialogEnd;
 	private bool autoCloseDialogBoxOnMessageEnd;
 	private bool alreadyClosing;
+
+	private float timeSinceLastLetter = 0;
+	private bool allowTypewriterToRun = false;
 	void Awake()
 	{
 		transform.FindChild("Dialog Canvas").gameObject.SetActive(true);
@@ -56,19 +58,30 @@ public class DialogManager : MonoBehaviour {
 		dialogBox.SetActive(isShowing);
 		currentCharacter.SetActive(isShowing);
 		HandleDialogBox();
-			
+
+		timeSinceLastLetter += Chronos.BetaTime;
+
+		if (allowTypewriterToRun && !alreadyClosing)
+		{
+			isTyping = TypeText();
+		}
+		else
+		{
+			isTyping = false;
+			currentLineSubstringPos = 0;
+		}
 	}
 
 	public void ShowDialogBox()
 	{
-		isShowing = true;
+		ToggleDialogBox(true);
 	}
 
 	public void HideDialogBox()
 	{
-		isShowing = false;
+		ToggleDialogBox(false);
 	}
-   
+
 	// Search through the text resource to find the specified conversation
 	// Accessed by outside gameobjects
 	public void LoadConversationByIndex(int conversationIndex)
@@ -101,10 +114,9 @@ public class DialogManager : MonoBehaviour {
 		SortCharacterAndSpeech(retrievedLines);
 	}
 
-
-	public void ToggleDialogBox()
+	public void ToggleDialogBox(bool show)
 	{
-		isShowing = !isShowing;
+		isShowing = show;
 
 		if (!isShowing)
 		{
@@ -116,17 +128,25 @@ public class DialogManager : MonoBehaviour {
 		}
 	}
 
-	// type writing effect
-	private IEnumerator WriteTextLikeATypeWriter()
+	private int currentLineSubstringPos = 0;
+
+	private bool TypeText()
 	{
-		for (int i = 0; i <= currentLine.Length; i++)
+		if (currentLineSubstringPos <= currentLine.Length)
 		{
-			currentText.text = currentLine.Substring(0, i);
-			yield return new WaitForSeconds(0.1f - textSpeed);
+
+			if (timeSinceLastLetter > 0.1f - textSpeed)
+			{
+				timeSinceLastLetter = 0;
+				currentText.text = currentLine.Substring(0, currentLineSubstringPos);
+				currentLineSubstringPos++;
+			}
+
+			return true;
 		}
 
-		isTyping = false;
-
+		allowTypewriterToRun = false;
+		return false;
 	}
 
 	// Handles how messages are being displayed in the dialog box (eg. order of messages etc)
@@ -154,7 +174,7 @@ public class DialogManager : MonoBehaviour {
 				if (isTyping)
 				{
 					isTyping = false;
-					StopCoroutine(typeWriter);
+					allowTypewriterToRun = false;
 					currentText.text = messageOrder[iterator-1];
 					
 				}
@@ -170,15 +190,14 @@ public class DialogManager : MonoBehaviour {
 				if (!isTyping && !alreadyClosing && autoCloseDialogBoxOnMessageEnd)
 				{
 					alreadyClosing = true;
-					Chronos.LateExecute(ToggleDialogBox, 0.5F);
+					Chronos.LateExecute(HideDialogBox, 0.5f);
 				}
 
 				if (canContinue)
 				{
 					//Call the callback func
 					onDialogEnd();
-
-					ToggleDialogBox();
+					HideDialogBox();
 				}
 			}
 		}
@@ -190,9 +209,8 @@ public class DialogManager : MonoBehaviour {
 		currentLine = messageOrder[iterator];
 		currentCharacter.GetComponent<Image>().sprite = Resources.Load<Sprite>("Characters/" + characterOrder[iterator]) as Sprite;
 
-		// Store the coroutine to stop later
-		typeWriter = WriteTextLikeATypeWriter();
-		StartCoroutine(typeWriter);
+
+		allowTypewriterToRun = true;
 		iterator++;
 
 	}
@@ -211,7 +229,6 @@ public class DialogManager : MonoBehaviour {
 			messageOrder.Add(temp[1]);
 		}
 	}
-
 
 	// Removes previously added items in all lists
 	private void ClearPreviousConversations()

@@ -95,7 +95,7 @@
 					tex2D(_Pattern, i.uv + _Time.rg * _Speed);
 				intersectColor.a *= (1 - fade);
 
-				distortedTex.rgb += intersectColor.rgb * intersectColor.a;
+				distortedTex.rgb += intersectColor.rgb * intersectColor.a * _Opacity;
 
 
 				return distortedTex;

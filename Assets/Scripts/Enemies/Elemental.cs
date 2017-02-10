@@ -226,7 +226,7 @@ public class Elemental : EnemyFSM, IDamagable
 		lookAtTarget.y = 0; //Force no y change;
 		transform.rotation = Quaternion.Slerp(transform.rotation,
 			Quaternion.LookRotation(lookAtTarget, Vector3.up),
-			rotationSpeed / 50);
+			rotationSpeed * Time.deltaTime);
 
 		//Vector3 targetPosCurrFrame = transform.position + transform.forward;
 		//transform.position = Vector3.Lerp(transform.position, targetPosCurrFrame, moveSpeed);

@@ -15,6 +15,7 @@ public class IvyAttackSpellDefault : MonoBehaviour {
 	[SerializeField] private float durationPerHit = 0.5f;
 	[SerializeField] private int targetIndex = 0;
 	[SerializeField] private int damage = 1;
+	[SerializeField] private LayerMask collisionMasks;
 
 	private LineRenderer lineRenderer;
 	private Vector3[] linePoints = new Vector3[10];
@@ -22,9 +23,9 @@ public class IvyAttackSpellDefault : MonoBehaviour {
 	private float currentCurveFactor;
 	private GameObject target;
 	private float timeSinceLastStart = float.MaxValue;
-    private ParticleToggle enemyHitParticles;
+	private ParticleToggle enemyHitParticles;
 
-    public bool SkillActive
+	public bool SkillActive
 	{
 		get { return skillActive; }
 		set { skillActive = value; }
@@ -43,14 +44,14 @@ public class IvyAttackSpellDefault : MonoBehaviour {
 		{
 			if (timeSinceLastStart > durationPerHit || !target)
 			{
-                // Find new Enemy
-                if (enemyHitParticles)
-                    enemyHitParticles.ToggleParticles(false);
+				// Find new Enemy
+				if (enemyHitParticles)
+					enemyHitParticles.ToggleParticles(false);
 
 
-                enemyHitParticles = null;
+				enemyHitParticles = null;
 
-                target = null;
+				target = null;
 
 
 				//Find enemy within lightning range
@@ -67,29 +68,33 @@ public class IvyAttackSpellDefault : MonoBehaviour {
 					if (distanceFromPlayer < shortestDistance)
 					{
 						RaycastHit intersection;
-						Physics.Linecast(transform.position, enemy.transform.position, out intersection);
+						Physics.Linecast(transform.position, enemy.transform.position, out intersection, ~collisionMasks);
 						if (intersection.collider == enemy)
 						{
 
 
 							IDamagable enemyDamageComponent = enemy.GetComponent<IDamagable>();
 
-                            if (enemyDamageComponent == null)
-                                continue;
+							if (enemyDamageComponent == null)
+								continue;
 
-                            //Found new target
-                            enemyDamageComponent.TakeDamage(damage);
+							//Found new target
+							enemyDamageComponent.TakeDamage(damage);
 
-                            enemyHitParticles = enemy.GetComponentInChildren<ParticleToggle>();
+							enemyHitParticles = enemy.GetComponentInChildren<ParticleToggle>();
 
-                            if (enemyHitParticles)
-                                enemyHitParticles.ToggleParticles(true);
-                            
+							if (enemyHitParticles)
+								enemyHitParticles.ToggleParticles(true);
+
 
 							target = enemy.gameObject;
 							currentCurveFactor = UnityEngine.Random.Range(-curveFactor, curveFactor);
 							shortestDistance = distanceFromPlayer;
 							timeSinceLastStart = 0;
+						}
+						else
+						{
+							Debug.Log("Ivy attack default blocked by " + intersection.collider.name);
 						}
 					}
 				}
