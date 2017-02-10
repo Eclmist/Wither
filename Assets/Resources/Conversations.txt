@@ -8,3 +8,7 @@ Rem|Woah a talking cat!
 Cursed Soul|some shit
 Weird Dude|wdf man
 --End
+
+--Session 3
+System|A mysterious forcefield seems to be blocking the way.
+--End

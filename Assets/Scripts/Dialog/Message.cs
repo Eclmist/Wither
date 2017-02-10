@@ -10,6 +10,10 @@ public class Message : MonoBehaviour {
 	[SerializeField]
 	private bool canRepeat;
 
+	[SerializeField] private bool pauseGameOnShowDialog = true;
+	[SerializeField] private bool autoClose = false;
+
+
 	private bool isCleared = false;
 	
 	// Use this for initialization
@@ -30,12 +34,22 @@ public class Message : MonoBehaviour {
 	{
 		if(!isCleared)
 		{
-			BlurCameraOverTime.Instance.BlurScreen();
-			Chronos.PauseTime(0.05F);
 			DialogManager.dialogManager.LoadConversationByIndex(index);
-			DialogManager.dialogManager.SetCallbackFunc(OnMessageEnd);
+			DialogManager.dialogManager.SetAutoClose(autoClose);
 
-			Chronos.LateExecute(DialogManager.dialogManager.ShowDialogBox, 0.6F);
+
+			if (pauseGameOnShowDialog)
+			{
+				BlurCameraOverTime.Instance.BlurScreen();
+				Chronos.PauseTime(0.05F);
+				DialogManager.dialogManager.SetCallbackFunc(OnMessageEnd);
+				Chronos.LateExecute(DialogManager.dialogManager.ShowDialogBox, 0.6F);
+			}
+			else
+			{
+				DialogManager.dialogManager.SetCallbackFunc(DefaultBehavior);
+				DialogManager.dialogManager.ShowDialogBox();
+			}
 
 			isCleared = !canRepeat;
 			
@@ -46,6 +60,11 @@ public class Message : MonoBehaviour {
 	{
 		BlurCameraOverTime.Instance.UnblurScreen();
 		Chronos.ResumeTime(0.05F);
+	}
+
+	void DefaultBehavior()
+	{
+		//Do nothing
 	}
 
 }
