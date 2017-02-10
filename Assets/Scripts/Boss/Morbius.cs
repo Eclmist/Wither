@@ -130,7 +130,8 @@ public class Morbius : BossFSM , IDamagable
         //Quaternion rot = Quaternion.LookRotation(player.transform.position - transform.position);
         //transform.rotation = Quaternion.Slerp(transform.rotation, rot, 2.0f * Time.deltaTime);
 
-        GetComponent<Avoidance>().LookAtPlayer();
+        if(GetComponent<Avoidance>() != null)
+            GetComponent<Avoidance>().LookAtPlayer();
 
 
         rigidBody.velocity = transform.forward * moveSpeed;
