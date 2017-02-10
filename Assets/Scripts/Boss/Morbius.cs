@@ -9,6 +9,7 @@ public class Morbius : BossFSM , IDamagable
     public GameObject effectRed;
     public GameObject effectBlue;
     public GameObject burst;
+    public GameObject bossGUI;
 
 	public float cameraShakeIntensity;
 	public float cameraShakeRange;
@@ -52,8 +53,11 @@ public class Morbius : BossFSM , IDamagable
 
     public void TakeDamage(int damage)
     {
-		if (GetComponent<HealthEffect>())
-        GetComponent<HealthEffect>().ReduceHealth(damage / maxHealth);
+        if (GetComponent<HealthEffect>() != null)
+            GetComponent<HealthEffect>().ReduceHealth(damage / maxHealth);
+        else
+            Debug.Log("boss does not have HealthEffect Component");
+
         health -= damage * damageMultiplier;
     }
 
@@ -77,6 +81,8 @@ public class Morbius : BossFSM , IDamagable
     {
         base.FSMUpdate();
         DebuggingInput();
+
+        bossGUI.SetActive(Vector3.Distance(player.transform.position,transform.position) <= cameraShakeRange);
 
         if (health <= 0)
         {
