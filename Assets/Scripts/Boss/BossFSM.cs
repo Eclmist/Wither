@@ -13,11 +13,11 @@ public class BossFSM : FSM
 
     protected enum FSMState
     {
-        Spawn,
+        Patrol,
+        Overpowered,
         Chase,
         Attack,
-        Attack2,
-        Ultimate,
+        Turn,
         Dead,
     }
 
@@ -26,18 +26,21 @@ public class BossFSM : FSM
 
     protected override void Initialize()
     {
-        currentState = FSMState.Spawn;
+        currentState = FSMState.Patrol;
     }
 
     protected override void FSMUpdate()
     {
-
+    
         HandleAnimations();
 
         switch (currentState)
         {
-            case FSMState.Spawn:
-                UpdateSpawnState();
+            case FSMState.Patrol:
+                UpdatePatrolState();
+                break;
+            case FSMState.Overpowered:
+                UpdateOverpoweredState();
                 break;
             case FSMState.Chase:
                 UpdateChaseState();
@@ -45,11 +48,8 @@ public class BossFSM : FSM
             case FSMState.Attack:
                 UpdateAttackState();
                 break;
-            case FSMState.Attack2:
-                UpdateAttack2State();
-                break;
-            case FSMState.Ultimate:
-                UpdateUltimateState();
+            case FSMState.Turn:
+                UpdateTurnState();
                 break;
             case FSMState.Dead:
                 UpdateDeadState();
@@ -58,11 +58,11 @@ public class BossFSM : FSM
 
     }
 
-    protected virtual void UpdateSpawnState() { }
+    protected virtual void UpdatePatrolState() { }
+    protected virtual void UpdateOverpoweredState() { }
     protected virtual void UpdateChaseState() { }
     protected virtual void UpdateAttackState() { }
-    protected virtual void UpdateAttack2State() { }
-    protected virtual void UpdateUltimateState() { }
+    protected virtual void UpdateTurnState() { }
     protected virtual void UpdateDeadState() { }
     
 }
