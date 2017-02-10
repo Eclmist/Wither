@@ -4,6 +4,12 @@ using UnityEngine;
 
 // Interface for every object/pickup that needs to be interacted with
 
+public enum Interactor
+{
+	Player,
+	Ivy
+}
+
 public interface IInteractable
 {
 
@@ -12,4 +18,8 @@ public interface IInteractable
 	void Pulse();
 
 	void SetOpacity(float opacity);
+
+	bool GetIsInteracted();
+
+	bool CanInteractWith(Interactor from);
 }

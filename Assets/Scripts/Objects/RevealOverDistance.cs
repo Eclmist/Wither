@@ -5,6 +5,10 @@ using UnityEngine;
 public class RevealOverDistance : MonoBehaviour
 {
 	public float distance;
+
+	public bool autoInteract = true;
+	public float autoInteractDistance;
+
 	public LayerMask layers;
 	// Use this for initialization
 	void Start () {
@@ -20,12 +24,19 @@ public class RevealOverDistance : MonoBehaviour
 		foreach (Collider c in interractables)
 		{
 			IInteractable interactable = c.GetComponent<IInteractable>();
-			 if (interactable != null)
-			{
-				float distanceRatio = Vector3.Distance(c.transform.position, transform.position)/
-				                      distance;
-				float opacity = 1 - distanceRatio;
 
+			if (interactable != null)
+			{
+				float actualDistance = 
+					Vector3.Distance(c.transform.position, transform.position);
+
+				if (autoInteract && actualDistance < autoInteractDistance)
+				{
+					interactable.Interact();
+				}
+
+				float distanceRatio = actualDistance / distance;
+				float opacity = 1 - distanceRatio;
 				interactable.SetOpacity(opacity);
 			}
 		}

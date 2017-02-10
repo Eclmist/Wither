@@ -36,7 +36,7 @@ public class Message : MonoBehaviour {
 		if(!isCleared)
 		{
 			DialogManager.dialogManager.LoadConversationByIndex(index);
-			DialogManager.dialogManager.SetAutoClose(autoClose);
+			DialogManager.dialogManager.SetAutoClose(false);
 
 
 			if (pauseGameOnShowDialog)
@@ -55,6 +55,12 @@ public class Message : MonoBehaviour {
 			isCleared = !canRepeat;
 			
 		}
+	}
+
+	void OnTriggerExit(Collider other)
+	{
+		DialogManager.dialogManager.SetAutoClose(autoClose);
+
 	}
 
 	void OnMessageEnd()
