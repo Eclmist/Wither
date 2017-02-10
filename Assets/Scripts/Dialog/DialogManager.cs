@@ -170,7 +170,7 @@ public class DialogManager : MonoBehaviour {
 				if (!isTyping && !alreadyClosing && autoCloseDialogBoxOnMessageEnd)
 				{
 					alreadyClosing = true;
-					Chronos.LateExecute(ToggleDialogBox, 1);
+					Chronos.LateExecute(ToggleDialogBox, 0.5F);
 				}
 
 				if (canContinue)
