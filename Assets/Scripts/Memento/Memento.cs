@@ -14,6 +14,13 @@ public class Memento : MonoBehaviour, ICollectable
 		Chronos.LateExecute(MementoManager.ShowMemento, 0.6F);
 		MementoManager.IncrementPickupCount();
 		MementoManager.Instance.StartCoroutine(MementoManager.Instance.TriggerMemento(true));
-		Destroy(gameObject);
+
+		foreach (ParticleToggle p in GetComponentsInChildren<ParticleToggle>())
+		{
+			p.ToggleParticles(false);
+		}
+
+		Destroy(gameObject, 0.1F);
+
 	}
 }

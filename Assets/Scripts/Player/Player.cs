@@ -21,8 +21,6 @@ public class Player : MonoBehaviour, IDamagable
     public AudioClip ac_footstep1;
     public AudioClip ac_footstep2;
     public AudioClip ac_hurt;
-    public AudioClip ac_test;
-    public GameObject elem;
 
     private int currentHealth;
     private int currentMana;
@@ -51,10 +49,8 @@ public class Player : MonoBehaviour, IDamagable
     }
 
     // Update is called once per frame
-    void Update () {
-        if (Input.GetKeyDown(KeyCode.X))
-            AudioManager.Instance.PlaySoundAt(ac_test,elem.transform.position,elem);
-
+    void Update ()
+	{
 	    if (currentHealth > 0)
 	    {
 		    timeSinceLastDamageTaken += Time.deltaTime;
@@ -143,8 +139,6 @@ public class Player : MonoBehaviour, IDamagable
 		ReduceHealth(damage);
 	}
  
-    
-
     //---------- Animation Events ----------------------------------------------------------------------------//
 
     public void Step1()

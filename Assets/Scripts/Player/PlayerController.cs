@@ -100,6 +100,14 @@ class PlayerController : MonoBehaviour
 		return moveSpeedMultiplier;
 	}
 
+    void OnDisable()
+    {
+        Debug.Log("something");
+        horizontal = 0;
+        vertical = 0;
+        animator.enabled = false;
+    }
+
 	
 
 }
