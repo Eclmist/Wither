@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 0e28abef5db693b4cbf1a19597c20b66
+timeCreated: 1486844070
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: DK Business As Usual
+  fontNames:
+  - DK Business As Usual
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

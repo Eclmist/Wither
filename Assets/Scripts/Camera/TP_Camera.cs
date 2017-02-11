@@ -22,6 +22,8 @@ public class TP_Camera : MonoBehaviour {
 	public float mouseWheelSensitivity;
 	public float x_smooth = 0.05F;
 	public float y_smooth = 0.1F;
+	public float damping = 0.9F;
+	public bool useDamping = false;
 
 	[Header("Occlusion Checking")]
 	public bool enableOcclusionChecking = false;
@@ -242,7 +244,15 @@ public class TP_Camera : MonoBehaviour {
 
 		currentPosition = new Vector3(posX, posY, posZ);
 
-		transform.position = currentPosition + shake;
+		if (useDamping)
+		{
+			Vector3 difference = currentPosition - transform.position;
+			transform.position += difference*damping*Time.deltaTime + shake;
+		}
+		else
+		{
+			transform.position = currentPosition;
+		}
 
 		transform.LookAt(target.position + shake + transform.right * desiredXOffset * distance / 10);
 		//transform.LookAt(target.position);

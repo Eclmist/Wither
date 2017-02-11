@@ -7,7 +7,7 @@ public class FPS_Display : MonoBehaviour
 
     void Update()
     {
-        deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
+        deltaTime += (Chronos.BetaTime - deltaTime) * 0.1f;
     }
 
     void OnGUI()
