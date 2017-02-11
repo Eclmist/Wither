@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+using UnityEditor.SceneManagement;
 
 public class Transition : MonoBehaviour
 {
@@ -41,7 +41,8 @@ public class Transition : MonoBehaviour
     // Use this for initialization
     IEnumerator Start ()
     {
-        operation = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1,LoadSceneMode.Single);
+        //operation = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1,LoadSceneMode.Single);
+        operation = EditorSceneManager.LoadSceneAsync(EditorSceneManager.GetActiveScene().buildIndex + 1, UnityEngine.SceneManagement.LoadSceneMode.Single);
         operation.allowSceneActivation = false;   
         
    
@@ -71,7 +72,7 @@ public class Transition : MonoBehaviour
         if(operation.isDone == false && isMessageShown)
             spinner.SetActive(true);
 
-        if (operation.progress > 0.9F && isMessageShown)
+        if (operation.progress >= 0.89F && isMessageShown)
         {
             spinner.SetActive(false);
             operation.allowSceneActivation = true;

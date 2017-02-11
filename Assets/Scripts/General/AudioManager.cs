@@ -51,6 +51,16 @@ public class AudioManager : MonoBehaviour {
             audioHolder.transform.position = target;
 
             sfxInstance.GetComponent<AudioSource>().PlayOneShot(clip);
-         }
+           
+
+        }
+        
+           
+
+
+
     }
+
+
+
 }
