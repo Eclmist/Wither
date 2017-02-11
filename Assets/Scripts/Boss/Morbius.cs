@@ -144,8 +144,12 @@ public class Morbius : BossFSM , IDamagable
 
 
         rigidBody.velocity = transform.forward * moveSpeed;
-        
-        if (PlayerWithinAngle() && PlayerWithinRange())
+
+	    Debug.Log("Is within range: " + PlayerWithinRange());
+		Debug.Log("Is within angle: " + PlayerWithinAngle());
+
+
+		if (PlayerWithinAngle() && PlayerWithinRange())
         {
             // If the player is within range and angle is correct
             isChasing = false;
@@ -237,8 +241,14 @@ public class Morbius : BossFSM , IDamagable
 
 	private bool PlayerWithinAngle()
 	{
-		return Vector3.Angle(transform.forward, player.transform.position - transform.position)
-		       <= attackAngle;
+		Vector3 forward = transform.forward;
+		forward.y = 0;
+
+		Vector3 playerPos = player.transform.position - transform.position;
+		playerPos.y = 0;
+
+
+		return Vector3.Angle(forward, playerPos) <= attackAngle;
 	}
 
 	//-------------------------------------------- Animation events -------------------------------------------------------------------------------//
@@ -311,7 +321,6 @@ public class Morbius : BossFSM , IDamagable
 
         if(fissure != null)
         Instantiate(fissure,castPoint.transform.position,transform.rotation);
-        Debug.Log("ended");
         Shake(0.5f,4);
     }
 

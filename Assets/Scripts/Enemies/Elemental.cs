@@ -297,7 +297,7 @@ public class Elemental : EnemyFSM, IDamagable, IStunnable
 
 	public void RecalculatePlayerPosForAiming()
 	{
-		lastPlayerPos = player.transform.position;
+		lastPlayerPos = player.transform.position + Vector3.up;
 	}
 
 	public void Stun(float duration)

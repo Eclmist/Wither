@@ -45,12 +45,14 @@ public class AudioManager : MonoBehaviour {
     {
         if (clip != null)
         {
-            GameObject audioHolder = new GameObject();
-            SoundEffectInstance sfxInstance = audioHolder.AddComponent<SoundEffectInstance>();
-            audioHolder.transform.parent = source.transform;
-            audioHolder.transform.position = target;
-
-            sfxInstance.GetComponent<AudioSource>().PlayOneShot(clip);
-         }
+			GameObject audioHolder = Instantiate<GameObject>
+				(new GameObject("AudioSource"), source.transform);
+			//SoundEffectInstance sfxInstance = audioHolder.AddComponent<SoundEffectInstance>();
+			//audioHolder.transform.position = target;
+			//sfxInstance.GetComponent<AudioSource>().PlayOneShot(clip);
+		}
     }
+
+
+
 }

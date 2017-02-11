@@ -149,11 +149,11 @@ public class Player : MonoBehaviour, IDamagable
 
     public void Step1()
     {
-        AudioManager.Instance.PlaySound(ac_footstep1,gameObject);
-    }
+		AudioManager.Instance.PlaySound(Random.Range(0, 1) == 0 ? ac_footstep1 : ac_footstep2, gameObject);
+	}
 
-    public void Step2()
+	public void Step2()
     {
-        AudioManager.Instance.PlaySound(ac_footstep2, gameObject);
+	    AudioManager.Instance.PlaySound(Random.Range(0, 1) == 0 ? ac_footstep1 : ac_footstep2, gameObject);
     }
 }
