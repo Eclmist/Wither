@@ -152,7 +152,7 @@ ModelImporter:
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 1
       keepOriginalPositionY: 0
-      keepOriginalPositionXZ: 1
+      keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
@@ -160,6 +160,14 @@ ModelImporter:
       events:
       - time: 0.46803275
         functionName: Fissure
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: f4928c94e937ade468e333e4a5c71469,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 1
+        functionName: CheckPlayerPosition
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: f4928c94e937ade468e333e4a5c71469,
           type: 3}

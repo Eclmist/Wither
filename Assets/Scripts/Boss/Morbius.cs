@@ -30,7 +30,7 @@ public class Morbius : BossFSM , IDamagable
     private Rigidbody rigidBody;
     private AudioSource source;
     private Animator animator;
-    private int health = 15;
+    private int health = 100;
     private float maxHealth;
     private int damageMultiplier = 1;
     private AttackStance currentAttackStance;
@@ -39,7 +39,7 @@ public class Morbius : BossFSM , IDamagable
     // Animation flags
     private bool isSpawning;
     private bool isChasing;
-    private bool isInRange;
+    private bool IsSwinging;
     private bool isDead;
     private bool isPounding;
 
@@ -100,15 +100,17 @@ public class Morbius : BossFSM , IDamagable
         base.FSMUpdate();
         DebuggingInput();
 
+
         bossGUI.SetActive(Vector3.Distance(player.transform.position,transform.position) <= cameraShakeRange);
 		if (health <= 0)
         {
             currentAttackStance = AttackStance.BROKEN;
             attackRange *= 4;
-            health = 99999999;
+	        attackAngle  = 10;
+            health = 100;
             damageMultiplier = 0;
             isChasing = false;
-            isInRange = false;
+            IsSwinging = false;
             currentState = FSMState.Overpowered;
         }     
 
@@ -118,7 +120,7 @@ public class Morbius : BossFSM , IDamagable
     protected override void HandleAnimations()
     {
         animator.SetBool("isChasing", isChasing);
-        animator.SetBool("isSwinging", isInRange);
+        animator.SetBool("isSwinging", IsSwinging);
         animator.SetBool("isSpawning", isSpawning);
         animator.SetBool("isDead", isDead);
         animator.SetBool("isPounding", isPounding);
@@ -165,11 +167,11 @@ public class Morbius : BossFSM , IDamagable
 		{
 			Attack();
         }
-		else if (!PlayerWithinRange())
+		else if (!PlayerWithinRange() && (!isPounding && !IsSwinging))
 		{
 			currentState = FSMState.Chase;
 		}
-		else
+		else if (!isPounding && !IsSwinging)
 		{
 			currentState = FSMState.Turn;
 		}
@@ -177,8 +179,11 @@ public class Morbius : BossFSM , IDamagable
 
     protected override void UpdateTurnState()
     {
-       
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(player.transform.position - transform.position)
+	    Vector3 vectorToPlayer = player.transform.position - transform.position;
+	    vectorToPlayer.y = 0;
+
+
+		transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(vectorToPlayer)
             , angleCorrectionTurnRate * Time.deltaTime);
 
         if(PlayerWithinAngle() && PlayerWithinRange())
@@ -217,7 +222,7 @@ public class Morbius : BossFSM , IDamagable
         switch(currentAttackStance)
         {
             case AttackStance.NORMAL:
-                isInRange = true;
+                IsSwinging = true;
                 break;
             case AttackStance.BROKEN:
                 isPounding = true;
@@ -252,8 +257,8 @@ public class Morbius : BossFSM , IDamagable
     {
 	    if (PlayerWithinRange() && PlayerWithinAngle())
 	    {
-		    playerHealth.ReduceHealth(swingDamage);
 			Shake(0.5f, 1);
+			playerHealth.ReduceHealth(swingDamage);
 		}
 
 	}
@@ -286,14 +291,17 @@ public class Morbius : BossFSM , IDamagable
 
     public void CheckPlayerPosition()
     {
-        isInRange = false;
-        //rigidBody.constraints -= RigidbodyConstraints.FreezePosition;
+        IsSwinging = false;
+		isPounding = false;
 
-    }
+		//rigidBody.constraints -= RigidbodyConstraints.FreezePosition;
 
-    public void TransitionToChase()
+	}
+
+	public void TransitionToChase()
     {
-        isSpawning = false;
+		isChasing = true;
+		isSpawning = false;
         currentState = FSMState.Chase;
     }
 
