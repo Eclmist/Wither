@@ -29,7 +29,7 @@ public class ForceField : Obstacle
 		base.SetObstacleActive(active);
 		ToggleParticles(active);
 
-		animator.speed = active ? 1 : 0;
+		animator.speed = active ? 1 : -1;
 		collider.enabled = active;
 
 		messageBox.SetActive(active);

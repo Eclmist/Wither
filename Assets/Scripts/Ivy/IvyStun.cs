@@ -10,6 +10,7 @@ public class IvyStun : MonoBehaviour
 	[Range(0,10)] public float range = 5;
 	[Range(0, 2)] public float stunDuration = 1;
 	[Range(0, 5)] public float cooldown = 1;
+	[Range(0, 2)] public float yOffset = 1.55F;
 
 	public AnimationCurve OpacityCurve;
 	public AnimationCurve DistortionCurve;
@@ -53,7 +54,9 @@ public class IvyStun : MonoBehaviour
 
 	IEnumerator StunSphereAnimation()
 	{
-		stunSphere.transform.position = transform.position;
+		Vector3 targetPos = transform.position;
+		targetPos.y -= yOffset;
+		stunSphere.transform.position = targetPos;
 
 		Collider[] enemies = Physics.OverlapSphere(transform.position, range, LayerMask.GetMask("Enemy"));
 

@@ -32,7 +32,8 @@ public class RevealOverDistance : MonoBehaviour
 
 				if (autoInteract && actualDistance < autoInteractDistance)
 				{
-					interactable.Interact();
+					if (interactable.CanInteractWith(Interactor.Ivy))
+						interactable.Interact();
 				}
 
 				float distanceRatio = actualDistance / distance;

@@ -12,3 +12,7 @@ Weird Dude|wdf man
 --Session 3
 System|A mysterious forcefield seems to be blocking the way.
 --End
+
+--Session 4
+System|This fence is way too tall to climb over.
+--End
