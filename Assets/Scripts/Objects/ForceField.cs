@@ -14,14 +14,12 @@ public class ForceField : Obstacle
 		base.ObstacleStart();
 
 		animator = GetComponent<Animator>();
-		animator.speed = 1;
 
 		collider = GetComponent<Collider>();
-		collider.enabled = true;
 
 		messageBox = GetComponentInChildren<Message>().gameObject;
-		messageBox.SetActive(true);
-		ToggleParticles(true);
+
+		SetObstacleActive(true);
 	}
 
 	protected override void SetObstacleActive(bool active)
@@ -29,7 +27,7 @@ public class ForceField : Obstacle
 		base.SetObstacleActive(active);
 		ToggleParticles(active);
 
-		animator.speed = active ? 1 : -1;
+		animator.enabled = !active;
 		collider.enabled = active;
 
 		messageBox.SetActive(active);
