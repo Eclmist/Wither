@@ -14,7 +14,15 @@ public class Player : MonoBehaviour, IDamagable
     public int manaRestoreRate = 1;
     public int staminaRestoreRate = 1;
 
-    public AudioSource hitSound;
+    public AudioSource audioSource;
+
+    [Header("Audio Clips")]
+    // Player resources
+    public AudioClip ac_footstep1;
+    public AudioClip ac_footstep2;
+    public AudioClip ac_hurt;
+    public AudioClip ac_test;
+    public GameObject elem;
 
     private int currentHealth;
     private int currentMana;
@@ -24,13 +32,17 @@ public class Player : MonoBehaviour, IDamagable
     private float timeSinceLastStaminaUse;
     private float timeSinceLastManaUse;
 
+
     void Awake()
     {
         Instance = this;
+  
     }
 
 	// Use this for initialization
 	void Start () {
+
+        audioSource = GetComponent<AudioSource>();
         currentHealth = maxHealth;
         currentMana = maxMana;
         currentStamina = maxStamina;
@@ -40,6 +52,9 @@ public class Player : MonoBehaviour, IDamagable
 
     // Update is called once per frame
     void Update () {
+        if (Input.GetKeyDown(KeyCode.X))
+            AudioManager.Instance.PlaySoundAt(ac_test,elem.transform.position,elem);
+
 	    if (currentHealth > 0)
 	    {
 		    timeSinceLastDamageTaken += Time.deltaTime;
@@ -93,8 +108,7 @@ public class Player : MonoBehaviour, IDamagable
         timeSinceLastDamageTaken = 0;
         currentHealth -= amount;
 
-		if (hitSound)
-        hitSound.Play();
+        AudioManager.Instance.PlaySound(ac_hurt,gameObject);
     }
 
     public void ReduceMana(int amount)
@@ -128,4 +142,19 @@ public class Player : MonoBehaviour, IDamagable
 	{
 		ReduceHealth(damage);
 	}
+ 
+    
+
+    //---------- Animation Events ----------------------------------------------------------------------------//
+
+    public void Step1()
+    {
+        AudioManager.Instance.PlaySound(ac_footstep1,gameObject);
+
+    }
+
+    public void Step2()
+    {
+        AudioManager.Instance.PlaySound(ac_footstep2, gameObject);
+    }
 }

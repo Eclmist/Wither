@@ -124,10 +124,12 @@ public class Elemental : EnemyFSM, IDamagable, IStunnable
 	protected override void FSMUpdate()
 	{
 		base.FSMUpdate();
-		//if (Vector3.Distance(transform.position, player.transform.position) <= distanceToAvoidance)
-			//isUsingAStar = true;
 
-		if (health <= 0 && !isDead)
+        if (Vector3.Distance(transform.position, player.transform.position) <= distanceToAvoidance)
+            isUsingAStar = false;
+        
+
+        if (health <= 0 && !isDead)
 		{
 			isDead = true;
 
@@ -194,17 +196,15 @@ public class Elemental : EnemyFSM, IDamagable, IStunnable
 			LookAtPlayer();
 			
 			rigidBody.MovePosition(transform.position + transform.forward * moveSpeed / 100);
-
-			if (Vector3.Distance(transform.position, player.transform.position) <= attackRange)
-			{
-				currentState = FSMState.Attack;
-			}
-			
-			
 		}
 
+        if (Vector3.Distance(transform.position, player.transform.position) <= attackRange)
+        {
+            currentState = FSMState.Attack;
+        }
 
-	}
+
+    }
 
 	private void LookAtPlayer()
 	{
