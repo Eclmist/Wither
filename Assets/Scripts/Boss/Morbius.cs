@@ -24,6 +24,8 @@ public class Morbius : BossFSM , IDamagable
     public float minimumDistToAvoid = 5;
     public LayerMask avoidanceIgnoreMask;
     public float force = 10;
+	private Avoidance avoidance;
+
 
     private Rigidbody rigidBody;
     private AudioSource source;
@@ -45,6 +47,10 @@ public class Morbius : BossFSM , IDamagable
     private AudioClip roar_clip;
     private AudioClip footstep_clip;
     private GameObject fissure;
+
+	//Actually hitting player
+	private Player playerHealth;
+	[SerializeField] private int swingDamage = 35;
 
     public int Health
     {
@@ -78,12 +84,15 @@ public class Morbius : BossFSM , IDamagable
         fissure = Resources.Load("Skills/FireFissure") as GameObject;
 
         player = GameObject.FindGameObjectWithTag("Player");
+	    playerHealth = player.GetComponent<Player>();
 		maxHealth = health;
         currentState = FSMState.Chase;
         currentAttackStance = AttackStance.NORMAL;
         animator = GetComponent<Animator>();
         source = GetComponent<AudioSource>();
         rigidBody = GetComponent<Rigidbody>();
+	    avoidance = GetComponent<Avoidance>();
+
     }
 
     protected override void FSMUpdate()
@@ -92,13 +101,11 @@ public class Morbius : BossFSM , IDamagable
         DebuggingInput();
 
         bossGUI.SetActive(Vector3.Distance(player.transform.position,transform.position) <= cameraShakeRange);
-
-        if (health <= 0)
+		if (health <= 0)
         {
-            Debug.Log("dieded");
             currentAttackStance = AttackStance.BROKEN;
-            attackRange *= 2;
-            health = 9999;
+            attackRange *= 4;
+            health = 99999999;
             damageMultiplier = 0;
             isChasing = false;
             isInRange = false;
@@ -130,32 +137,23 @@ public class Morbius : BossFSM , IDamagable
         //Quaternion rot = Quaternion.LookRotation(player.transform.position - transform.position);
         //transform.rotation = Quaternion.Slerp(transform.rotation, rot, 2.0f * Time.deltaTime);
 
-        if(GetComponent<Avoidance>() != null)
-            GetComponent<Avoidance>().LookAtPlayer();
+        if(avoidance != null)
+			avoidance.LookAtPlayer();
 
 
         rigidBody.velocity = transform.forward * moveSpeed;
         
-        if (Vector3.Distance(transform.position, player.transform.position) <= attackRange &&
-            Vector3.Angle(transform.forward, player.transform.position - transform.position)
-        <= attackAngle)
+        if (PlayerWithinAngle() && PlayerWithinRange())
         {
             // If the player is within range and angle is correct
             isChasing = false;
             currentState = FSMState.Attack;
         }
-        else if(Vector3.Distance(transform.position, player.transform.position) <= attackRange &&
-             Vector3.Angle(transform.forward, player.transform.position - transform.position) > attackAngle)
+        else if(PlayerWithinRange())
         {
             // If player is within range but not in the right angle
             currentState = FSMState.Turn;
-
-
         }
-
-       
-
-
     }
 
     
@@ -163,22 +161,19 @@ public class Morbius : BossFSM , IDamagable
     protected override void UpdateAttackState()
     {
         // If the player is out of range OR not in the right angle to hit
-        if (Vector3.Distance(transform.position, player.transform.position) > attackRange ||
-        Vector3.Angle(transform.forward, player.transform.position - transform.position)
-         > attackAngle)
-        {
-
-            currentState = FSMState.Chase;
-           
+        if (PlayerWithinAngle() && PlayerWithinRange())
+		{
+			Attack();
         }
-        else
-        {
-            Attack();
-        }
-    }
-
-    
-
+		else if (!PlayerWithinRange())
+		{
+			currentState = FSMState.Chase;
+		}
+		else
+		{
+			currentState = FSMState.Turn;
+		}
+	}
 
     protected override void UpdateTurnState()
     {
@@ -186,16 +181,15 @@ public class Morbius : BossFSM , IDamagable
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(player.transform.position - transform.position)
             , angleCorrectionTurnRate * Time.deltaTime);
 
-        if(Vector3.Angle(transform.forward, player.transform.position - transform.position) <= attackAngle)
+        if(PlayerWithinAngle() && PlayerWithinRange())
         {
             currentState = FSMState.Attack;
         }
 
-    }
-
-    protected override void UpdatePatrolState()
-    {
-        
+	    if (!PlayerWithinRange())
+	    {
+		    currentState = FSMState.Chase;
+	    }
     }
 
     protected override void UpdateDeadState()
@@ -231,12 +225,20 @@ public class Morbius : BossFSM , IDamagable
         }
     }
 
+	private bool PlayerWithinRange()
+	{
+		return Vector3.Distance(transform.position, player.transform.position) <= attackRange;
+	}
 
-    
+	private bool PlayerWithinAngle()
+	{
+		return Vector3.Angle(transform.forward, player.transform.position - transform.position)
+		       <= attackAngle;
+	}
 
-    //-------------------------------------------- Animation events -------------------------------------------------------------------------------//
+	//-------------------------------------------- Animation events -------------------------------------------------------------------------------//
 
-    public void TurnOnBurst()
+	public void TurnOnBurst()
     {
         burst.SetActive(true);
     }
@@ -248,8 +250,13 @@ public class Morbius : BossFSM , IDamagable
 
     public void HeavySwing()
     {
-		Shake(0.5f, 1);
-    }
+	    if (PlayerWithinRange() && PlayerWithinAngle())
+	    {
+		    playerHealth.ReduceHealth(swingDamage);
+			Shake(0.5f, 1);
+		}
+
+	}
 
     public void Roar()
     {
@@ -298,9 +305,6 @@ public class Morbius : BossFSM , IDamagable
         Instantiate(fissure,castPoint.transform.position,transform.rotation);
         Debug.Log("ended");
         Shake(0.5f,4);
-
-
-
     }
 
 	public void Shake(float duration, float amount)
