@@ -142,14 +142,14 @@ public class Player : MonoBehaviour, IDamagable
 	{
 		ReduceHealth(damage);
 	}
- 
-    
+
+
 
     //---------- Animation Events ----------------------------------------------------------------------------//
 
     public void Step1()
     {
-        AudioManager.Instance.PlaySound(ac_footstep1,gameObject);
+        AudioManager.Instance.PlaySound(ac_footstep1, gameObject);
     }
 
     public void Step2()

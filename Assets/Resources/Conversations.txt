@@ -1,18 +1,188 @@
---Session 1
-Rem|Subaru is such a faggot.
-Puck|He looks like a retard.
-Rem|Woah a talking cat!
+--Session 1	// First Encounter
+Ivy|Hey! Wake up!
+Boy| * Frowns *
+Ivy|We are safe now.
+Boy| * Gazes curiously at the floating wisp *
+Ivy|Whats your name?
+Boy| .......
+Ivy|My name is Ivy.
+Boy| .......
+Ivy|Weren't you.....
+Ivy|like.....
+Ivy|going somewhere??
+Boy| * Continues to gaze at the flying Wisp*
+Ivy|Alright, alright....we'll stay put.
+Ivy|You can rest for as long as you like.
 --End
 
---Session 2
-Cursed Soul|some shit
-Weird Dude|wdf man
+--Session 2	// A Concerned Wisp
+Ivy|You know...
+Ivy|You shouldn't wander alone in the woods.
+Ivy|Its too dangerous.
+Boy| * Stares at Ivy * 
+Ivy|But now that I'm here
+Ivy|Everything should be fine.
+Boy| ......
+Ivy|You don't talk much do you?
+Boy| * smack *
+Ivy| Ooowwww!!
+Ivy| Wha'cha do that for?!
+Boy| .......
+Ivy| .......
+Ivy|...what do I do with this kid?
 --End
 
---Session 3
-System|A mysterious forcefield seems to be blocking the way.
+--Session 3 // The Wisp's Pride
+Ivy|MUAHAHAHAH!!!
+Ivy|How does it feel to be with the strongest wisp in the forst.
+Boy| * embraces the sarcasm *
+Ivy|They call me the Defender you know.
+Boy| * tries to get out of the conversation *
+Ivy|Can you imagine what the forest would be like without me?
+Ivy|Hmmmmm.......
+Ivy|Why is the forest so quiet today?
 --End
 
---Session 4
-System|This fence is way too tall to climb over.
+--Session 4 // A Helping Hand
+Ivy|Hmmmm....
+Ivy|There must be some sort of trigger somewhere.
+|* Ivy can reveal hidden objects. *
+|* Press 'SPACE' to use the All-Seeing Pulse *
+--End
+
+--Session 5 // Useless Babble 1
+Ivy|That was easy.
+--End
+
+--Session 6	// Something In The Air
+Ivy|Woah....
+Ivy|Something does not feel right..
+Boy| ?
+Ivy|Be careful.
+--End
+
+--Session 7 // Useless Babble 2
+Ivy|Sometimes I wonder.
+Ivy|Who created the universe?
+Boy| * Engages in deep thought *
+--End
+
+--Session 8 // Too Easy
+Ivy|Distract them.
+Ivy|I shall destroy all of them.
+--End
+
+--Session 9 // Useless Babble 3
+Ivy|Actually......
+Ivy|Do you know where we're heading?
+Boy| * sighs *
+Ivy|It's okay I'll always be here!
+Ivy|I will never leave you behind!
+Boy| * touched by Ivy's words *  
+--End
+
+--Session 10 // Useless Babble 4
+Ivy|I wonder what it's like being a human.
+Boy| * pictures himself as a fairy *
+Ivy|Humans cant fly
+Ivy|and they are weak in combat
+Ivy|Man...being a human sucks.
+Boy| * nods in agreement *
+--End 
+
+--Session 11 // Mysterious Sound
+Ivy|Dead you hear that?
+Boy| ?
+Ivy|I wouldn't want to be near THAT thing.
+--End
+
+--Session 12 // Not Again
+Ivy|You know the rules.
+--End
+
+--Session 13 // A Foe In The Forest
+Ivy|No way....
+Boy| ?
+Ivy|That's......
+Ivy|It can't be....
+Ivy|That thing lives here?!!
+Ivy|In this forest??!!
+Boy| * cold sweat dripping down his neck *
+Ivy|We have to get out of here!
+Ivy|NOW! 
+--End
+
+--Session 14 // Mission Impossible
+Ivy|Dam!
+Ivy|Guess we'll have to take him on.
+Boy| * shakes head franticaly *
+Ivy|Calm down.
+Ivy|Just do what we always do.
+Ivy|You distract him
+Ivy|and I'll do the work.
+Boy| * legs trembling *
+Ivy|You got this.
+Ivy|I trust you.
+--End
+
+--Session 15 // The Colours Are Fading
+Ivy|Sorry.
+--End
+
+
+---------------------------------------------------------$ System Messages $-----------------------------------------------------------------------------
+
+
+--Session 101
+|A mysterious forcefield seems to be blocking the way.
+--End
+
+--Session 102
+|This fence is way too tall to climb over.
+--End
+
+
+
+---------------------------------------------------------$ Ivy's lame jokes $-----------------------------------------------------------------------------
+
+
+
+--Session 201 // Joke 1
+Ivy|Hey!
+Ivy|Where do animals go when their tails fall off?
+Boy| ?
+Ivy|The retail store! 
+Boy| * shakes head in despair *
+--End
+
+--Session 202 // Joke 2
+Ivy|Hey!
+Ivy|Why can't you trust atoms?
+Boy| ?
+Ivy|Because they make up everything!
+Boy| * shakes head in despair *
+--End
+
+--Session 203 // Joke 3
+Ivy|Hey!
+Ivy|Why was the king only a foot tall?
+Boy| ?
+Ivy|Because he was a ruler!
+Boy| * shakes head in despair *
+--End
+
+--Session 204 // Joke 4
+Ivy|Hey!
+Ivy|Why do cows wear bells?
+Boy| ?
+Ivy|Because their horns don't work!
+Boy| * shakes head in despair *
+--End
+
+--Session 205 // Joke 5
+Ivy|Hey!
+Ivy|What did the tree say to autumn?
+Boy| ?
+Ivy|Leaf me alone!
+Boy| * shakes head in despair *
 --End

@@ -11,7 +11,9 @@ public class DialogManager : MonoBehaviour {
 	private Text currentText; // Text that is currently displayed
 	private string currentLine; // The line that is currently being processed
 	private GameObject currentCharacter; // Sprite to represent the character that is currently talking
+    private Text currentName;
 	private int iterator = 0; // To iterate through conversations
+    private Text[] textComponents;
 
 	private TextAsset conversations; // Text resource containing all conversation information
 	private List<string> retrievedLines; // List to store lines that belong to a particular conversation
@@ -49,8 +51,10 @@ public class DialogManager : MonoBehaviour {
 		dialogManager = this;
 		dialogBox = GameObject.FindWithTag("DialogBox");
 		currentCharacter = GameObject.FindWithTag("Character Sprite");
-		currentText = dialogBox.GetComponentInChildren<Text>();
-	}
+        textComponents =  dialogBox.GetComponentsInChildren<Text>();
+		currentText = textComponents[0];
+        currentName = textComponents[1]; 
+    }
 
 	void Update()
 	{
@@ -114,7 +118,37 @@ public class DialogManager : MonoBehaviour {
 		SortCharacterAndSpeech(retrievedLines);
 	}
 
-	public void ToggleDialogBox(bool show)
+    public void LoadConversationByTitle(string title)
+    {
+        retrievedLines = new List<string>();
+        ClearPreviousConversations();
+        bool storeLine = false;
+
+        foreach (string line in lines)
+        {
+            // ***the following series of operations are in the RIGHT order***
+
+            if (line.Contains("--End") && retrievedLines.Count > 0)
+                break;
+
+            // To stop storing lines
+            if (line.Contains("--End"))
+                storeLine = false;
+
+            // store the current line
+            if (storeLine == true)
+                retrievedLines.Add(line);
+
+            // This check is at the end to ensure that we only store the line after this header line
+            if (line.Contains("// " + title))
+                storeLine = true;
+
+        }
+
+        SortCharacterAndSpeech(retrievedLines);
+    }
+
+    public void ToggleDialogBox(bool show)
 	{
 		isShowing = show;
 
@@ -207,7 +241,16 @@ public class DialogManager : MonoBehaviour {
 	private void ProceedMessage()
 	{
 		currentLine = messageOrder[iterator];
-		currentCharacter.GetComponent<Image>().sprite = Resources.Load<Sprite>("Characters/" + characterOrder[iterator]) as Sprite;
+        if (Resources.Load<Sprite>("Characters/" + characterOrder[iterator]) != null)
+        {
+            currentCharacter.GetComponent<Image>().sprite = Resources.Load<Sprite>("Characters/" + characterOrder[iterator]) as Sprite;
+            currentCharacter.GetComponent<Image>().canvasRenderer.SetAlpha(1);
+        }
+        else
+            currentCharacter.GetComponent<Image>().canvasRenderer.SetAlpha(0);
+
+
+        currentName.text = characterOrder[iterator];
 
 
 		allowTypewriterToRun = true;

@@ -4,10 +4,14 @@ using UnityEngine;
 
 [System.Serializable]
 public class Message : MonoBehaviour {
-
-	[SerializeField]
-	private int index;
-	[SerializeField]
+    
+    [Header("Leave title blank if using index")]
+    [SerializeField]
+    private string title;
+    [Space(10)]
+    [SerializeField]
+    private int index;
+    [SerializeField]
 	private bool canRepeat;
 
 	[SerializeField] private bool pauseGameOnShowDialog = true;
@@ -17,7 +21,7 @@ public class Message : MonoBehaviour {
 	private bool isCleared = false;
 	
 	// Use this for initialization
-
+    
 
 	void Start()
 	{
@@ -35,7 +39,11 @@ public class Message : MonoBehaviour {
 
 		if(!isCleared)
 		{
-			DialogManager.dialogManager.LoadConversationByIndex(index);
+            if (title == "")
+                DialogManager.dialogManager.LoadConversationByIndex(index);
+            else
+                DialogManager.dialogManager.LoadConversationByTitle(title);
+
 			DialogManager.dialogManager.SetAutoClose(false);
 
 

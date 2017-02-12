@@ -10,6 +10,7 @@ public class LevelFader : MonoBehaviour {
     public float fadeInDuration;
     public float fadeOutDuration;
     public Image blackOverlay;
+    [HideInInspector]
     public bool canProceedToLoadingScreen;
 
 	void Awake()
