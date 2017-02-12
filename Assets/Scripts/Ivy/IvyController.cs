@@ -41,6 +41,9 @@ public class IvyController : MonoBehaviour
 	private float moveSpeed = 0;
 	private bool emergencyTurn = false;
 	private bool pulseCoroutineStarted = false;
+
+    public AudioClip pulseSound;
+
 	// Use this for initialization
 	void Start()
 	{
@@ -59,6 +62,9 @@ public class IvyController : MonoBehaviour
 		if (!pulseCoroutineStarted)
 		{
 			StartCoroutine("DoPulse");
+            if (pulseSound != null)
+                AudioManager.Instance.PlaySound(pulseSound,gameObject);
+
 		}
 	}
 
