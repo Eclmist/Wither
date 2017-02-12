@@ -4,32 +4,18 @@ using UnityEngine;
 
 public class Teleporter : MonoBehaviour {
 
-    bool isInTeleporter;
 	public string targetLevelName;
-
-    void Start()
-    {
-        isInTeleporter = false;
-    }
-
-    void Update()
-    {
-        if (isInTeleporter && LevelFader.Instance.canProceedToLoadingScreen)
-            LoadScene.Instance.Load("targetLevelName");
-    }
-        
-
 
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
         {
-            isInTeleporter = true;
             other.GetComponent<PlayerController>().enabled = false;
-            LevelFader.Instance.FadeOut();
-        }
+	        FadeToBlack.Instance.QueueNextOpacity(0);
+			LoadScene.Instance.Load("targetLevelName");
+		}
 
-    }
+	}
 
   
 

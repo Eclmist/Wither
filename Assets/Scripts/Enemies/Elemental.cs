@@ -36,7 +36,7 @@ public class Elemental : EnemyFSM, IDamagable, IStunnable
 	private PathAgent pathAgent;
 	private Animator animator;
 	private Rigidbody rigidBody;
-	private int health = 1000;
+	private int health = 20;
 	private bool stunned;
 	private Renderer renderer;
 	private Vector3 lastPlayerPos;

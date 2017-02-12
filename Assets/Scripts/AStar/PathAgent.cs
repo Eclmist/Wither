@@ -7,7 +7,7 @@ public class PathAgent : MonoBehaviour
 {
 
     public Transform player;
-    float speed = 0.1f;
+    public float speed = 0.1f;
     Vector3[] path;
     int targetIndex;
     int frame;
@@ -29,8 +29,8 @@ public class PathAgent : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
-        prevPosition = player.position;
+	    rb = GetComponent<Rigidbody>();
+		prevPosition = player.position;
         //PathRequestManager.RequestPath(transform.position, player.position, OnPathFound);
 
     }
@@ -107,9 +107,9 @@ public class PathAgent : MonoBehaviour
             tempV.y = transform.rotation.y;
             Quaternion rot = Quaternion.LookRotation(tempV);
             transform.rotation = Quaternion.Slerp(transform.rotation, rot, 10.0f * Time.deltaTime);
-            transform.position += transform.forward * 0.1f;
-            //Debug.Log("moving");
-            yield return new WaitForEndOfFrame();
+			rb.MovePosition(transform.position + transform.forward * speed / 100);
+			//Debug.Log("moving");
+			yield return new WaitForEndOfFrame();
 
 
         } // end while
