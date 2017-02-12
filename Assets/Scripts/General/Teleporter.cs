@@ -12,7 +12,7 @@ public class Teleporter : MonoBehaviour {
         {
             other.GetComponent<PlayerController>().enabled = false;
 	        FadeToBlack.Instance.QueueNextOpacity(0);
-			LoadScene.Instance.Load("targetLevelName");
+			LoadScene.Instance.Load(targetLevelName);
 		}
 
 	}

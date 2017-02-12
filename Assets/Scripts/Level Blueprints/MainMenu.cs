@@ -6,7 +6,6 @@ public class MainMenu : MonoBehaviour
 {
 	[SerializeField] private GameObject mainCamera;
 
-	
 	// Update is called once per frame
 	void Update () {
 		if (Input.anyKeyDown)

@@ -5,11 +5,17 @@ using UnityEngine.UI;
 
 public class PauseScreen : MonoBehaviour
 {
+	public static PauseScreen Instance;
+
 	public CanvasGroup pauseUI;
 
 	private bool isPaused;
 	private bool transitioning;
 
+	void Awake()
+	{
+		Instance = this;
+	}
 
 	void Update () {
 

@@ -49,6 +49,7 @@ public class Message : MonoBehaviour {
 
 			if (pauseGameOnShowDialog)
 			{
+				PauseScreen.Instance.enabled = false;
 				BlurCameraOverTime.Instance.BlurScreen();
 				Chronos.PauseTime(0.05F);
 				DialogManager.dialogManager.SetCallbackFunc(OnMessageEnd);
@@ -73,6 +74,7 @@ public class Message : MonoBehaviour {
 
 	void OnMessageEnd()
 	{
+		PauseScreen.Instance.enabled = true;
 		BlurCameraOverTime.Instance.UnblurScreen();
 		Chronos.ResumeTime(0.05F);
 	}

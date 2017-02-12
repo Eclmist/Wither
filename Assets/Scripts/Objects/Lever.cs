@@ -23,12 +23,12 @@ public class Lever : MonoBehaviour, IInteractable
 
 	public void Pulse()
 	{
-		throw new NotImplementedException();
+		//throw new NotImplementedException();
 	}
 
 	public void SetOpacity(float opacity)
 	{
-		throw new NotImplementedException();
+		//throw new NotImplementedException();
 	}
 
 	public bool CanInteractWith(Interactor from)

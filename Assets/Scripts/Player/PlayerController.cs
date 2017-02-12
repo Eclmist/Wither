@@ -14,6 +14,8 @@ class PlayerController : MonoBehaviour
 	private bool isMoving;
 	public bool isDead;
 
+	private bool noclip;
+
 	[SerializeField]
 	private string shaderName;
 
@@ -51,12 +53,18 @@ class PlayerController : MonoBehaviour
 		vertical = Input.GetAxis("Vertical");
 		HandleAnimations();
 
+		if (Input.GetKeyDown(KeyCode.P))
+			noclip = !noclip;
 	}
 
 	void FixedUpdate()
 	{
-		if(!isDead)
+		if(!isDead && !noclip)
 			HandleMovement(horizontal, vertical);
+		else if (noclip)
+		{
+			rigidBody.MovePosition(transform.position + new Vector3(horizontal, 0, vertical));
+		}
 	}
 
 
