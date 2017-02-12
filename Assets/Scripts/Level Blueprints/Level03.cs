@@ -15,6 +15,7 @@ public class Level03 : MonoBehaviour
 
 	[SerializeField] private IvySelfDestruct ivySelfDestructScript;
 
+	[SerializeField] private EnemySpawner bossAreaSpawner;
 	// Update is called once per frame
 	void Update()
 	{
@@ -25,15 +26,18 @@ public class Level03 : MonoBehaviour
 				playerPlannedDeathFlag = true;
 
 				ivySelfDestructScript.enabled = true;
+
+				bossAreaSpawner.enabled = false;
 			}
 		}
-		else if (Player.Instance.isDead && !bossEventFlag)
+		else if (Player.Instance.isDead && !playerDeathEventTriggered && !playerPlannedDeathFlag)
 		{
 			playerDeathEventTriggered = true;
 			FadeToBlack.Instance.QueueNextOpacity(0);
 			BlurCameraOverTime.Instance.BlurScreen();
 			Chronos.LateExecute(LoadScene.Instance.ReloadScene, 5);
 			Chronos.LateExecute(KillAllEnemiesCoroutine, 1);
+
 		}
 	}
 
