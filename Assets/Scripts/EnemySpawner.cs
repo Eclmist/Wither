@@ -10,6 +10,13 @@ public class EnemySpawner : MonoBehaviour {
     public float minBoundZ;
     public float maxBoundZ;
 
+    //Collider
+    protected Collider spawnPointCollider;
+
+    //SpawnCount
+    [SerializeField]
+    public int spawnCount;
+
     //Spawn Rate per Second
     [SerializeField]
     public float spawnRate;
@@ -23,12 +30,20 @@ public class EnemySpawner : MonoBehaviour {
     //Timer
     private float timePassed = 0;
 
+    void Start()
+    {
+        spawnPointCollider = GetComponent<Collider>();
+    }
+
     void Update()
     {
-        if(Time.time - timePassed > spawnRate / (spawnRate * spawnRate))
+        if(spawnRate != 0)
         {
-            SpawnEnemy(1);
-            timePassed = Time.time;
+            if (Time.time - timePassed > spawnRate / (spawnRate * spawnRate))
+            {
+                SpawnEnemy(1);
+                timePassed = Time.time;
+            }
         }
     }
 
@@ -41,6 +56,15 @@ public class EnemySpawner : MonoBehaviour {
               transform.position.z + Random.Range(minBoundZ, maxBoundZ));
 
             Instantiate(enemy, spawnPoint, enemy.transform.rotation);
+        }
+    }
+
+    void OnTriggerEnter(Collider collides)
+    {
+        if(collides.transform.tag == "Player")
+        {
+            SpawnEnemy(spawnCount);
+            spawnPointCollider.enabled = false;
         }
     }
 }
