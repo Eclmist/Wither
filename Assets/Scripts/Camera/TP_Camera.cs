@@ -266,6 +266,7 @@ public class TP_Camera : MonoBehaviour {
 		startDistance = distance;
 		desiredDistance = distance;
 		preOccludedDistance = distance;
+		currentPosition = transform.position;
 	}
 
 	public void SetShakeVector(Vector3 amount)

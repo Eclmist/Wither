@@ -186,3 +186,17 @@ Boy| ?
 Ivy|Leaf me alone!
 Boy| * shakes head in despair *
 --End
+
+
+---------------------------------------------------------$ Tool tips $-----------------------------------------------------------------------------
+
+--Session 301
+Ivy|Let me show you something cool!
+|Ivy can stop enemies from moving for a short time.
+|Right Click to stun a small area around Ivy.
+--End
+
+
+
+
+

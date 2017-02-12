@@ -13,9 +13,9 @@ public class FadeToBlack : MonoBehaviour
 	[Range(0, 10)] public float speed;
 
 	public Shader FadeToBlackShader;
-    private Material FadeToBlackMaterial;
+	private Material FadeToBlackMaterial;
 
-    private Camera cam;
+	private Camera cam;
 
 	private Queue<float> targetOpacities = new Queue<float>();
 	private bool coroutineActive;
@@ -29,14 +29,14 @@ public class FadeToBlack : MonoBehaviour
 	void Start ()
 	{
 		cam = GetComponent<Camera>();
-	    FadeToBlackMaterial = new Material(FadeToBlackShader);
+		FadeToBlackMaterial = new Material(FadeToBlackShader);
 	}
 	
 	// Update is called once per frame
 	void OnRenderImage(RenderTexture source, RenderTexture dest)
 	{
 		FadeToBlackMaterial.SetFloat("_Opacity", opacity);
-        Graphics.Blit(source, dest, FadeToBlackMaterial);
+		Graphics.Blit(source, dest, FadeToBlackMaterial);
 	}
 
 	void Update()
