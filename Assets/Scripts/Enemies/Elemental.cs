@@ -19,7 +19,7 @@ public class Elemental : EnemyFSM, IDamagable, IStunnable
 	public float attackRange;
 
 	public GameObject castPoint;
-
+    public AudioClip attackSound;
 
 	// Animation flags
 	private bool isChasing;
@@ -291,6 +291,7 @@ public class Elemental : EnemyFSM, IDamagable, IStunnable
 				Quaternion.LookRotation(lastPlayerPos - 
 				castPoint.transform.position);
 
+            AudioManager.Instance.PlaySound(attackSound,gameObject);
 			Instantiate(ElementalProjectile, castPoint.transform.position, rotation);
 		}
 	}
