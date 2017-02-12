@@ -23,4 +23,12 @@ public class Memento : MonoBehaviour, ICollectable
 		Destroy(gameObject, 0.1F);
 
 	}
+
+	public static void ShowMemento()
+	{
+		BlurCameraOverTime.Instance.BlurScreen();
+		Chronos.PauseTime(0.05F);
+		Chronos.LateExecute(MementoManager.ShowMemento, 0.6F);
+		MementoManager.Instance.StartCoroutine(MementoManager.Instance.TriggerMemento(true));
+	}
 }
