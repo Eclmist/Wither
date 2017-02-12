@@ -102,7 +102,6 @@ class PlayerController : MonoBehaviour
 
     void OnDisable()
     {
-        Debug.Log("something");
         horizontal = 0;
         vertical = 0;
         animator.enabled = false;

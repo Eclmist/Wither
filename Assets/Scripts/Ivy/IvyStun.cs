@@ -5,6 +5,7 @@ using UnityEngine;
 public class IvyStun : MonoBehaviour
 {
 	public GameObject stunSphere;
+    public AudioClip stunClip;
 	private Renderer stunSphereRenderer;
 
 	[Range(0,10)] public float range = 5;
@@ -54,6 +55,9 @@ public class IvyStun : MonoBehaviour
 
 	IEnumerator StunSphereAnimation()
 	{
+        AudioManager.Instance.PlaySound(stunClip,gameObject);
+        Effects.instance.ShakeCameraRelative(0.3f,0.3f);
+
 		Vector3 targetPos = transform.position;
 		targetPos.y -= yOffset;
 		stunSphere.transform.position = targetPos;
