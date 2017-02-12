@@ -30,6 +30,9 @@ public class EnemySpawner : MonoBehaviour {
     //Timer
     private float timePassed = 0;
 
+    //TriggerEnterBoolean
+    protected bool isTriggered;
+
     void Start()
     {
         spawnPointCollider = GetComponent<Collider>();
@@ -37,7 +40,7 @@ public class EnemySpawner : MonoBehaviour {
 
     void Update()
     {
-        if(spawnRate != 0)
+        if(spawnRate != 0 && isTriggered)
         {
             if (Time.time - timePassed > spawnRate / (spawnRate * spawnRate))
             {
@@ -66,5 +69,7 @@ public class EnemySpawner : MonoBehaviour {
             SpawnEnemy(spawnCount);
             spawnPointCollider.enabled = false;
         }
+
+        isTriggered = true;
     }
 }
