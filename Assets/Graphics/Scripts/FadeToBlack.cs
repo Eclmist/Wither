@@ -9,6 +9,8 @@ public class FadeToBlack : MonoBehaviour
 {
 	public static FadeToBlack Instance;
 
+	[Range(0,1)]public float opacityAddition = 0;
+
 	private float opacity;
 	[Range(0, 10)] public float speed;
 
@@ -35,7 +37,7 @@ public class FadeToBlack : MonoBehaviour
 	// Update is called once per frame
 	void OnRenderImage(RenderTexture source, RenderTexture dest)
 	{
-		FadeToBlackMaterial.SetFloat("_Opacity", opacity);
+		FadeToBlackMaterial.SetFloat("_Opacity", opacity + opacityAddition);
 		Graphics.Blit(source, dest, FadeToBlackMaterial);
 	}
 

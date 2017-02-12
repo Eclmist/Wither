@@ -6,6 +6,9 @@ public class IvyStun : MonoBehaviour
 {
 	public GameObject stunSphere;
     public AudioClip stunClip;
+
+	public bool allowInput = true;
+
 	private Renderer stunSphereRenderer;
 
 	[Range(0,10)] public float range = 5;
@@ -35,13 +38,12 @@ public class IvyStun : MonoBehaviour
 	{
 		timePassedSinceLastStun += Time.deltaTime;
 
-		if (timePassedSinceLastStun > cooldown)
+		if (timePassedSinceLastStun > cooldown && allowInput)
 		{
 
 			if (Input.GetMouseButtonDown(1))
 			{
 				timePassedSinceLastStun = 0;
-				Debug.Log("Coroutine Started");
 				StartCoroutine(StunSphereAnimation());
 			}
 		}

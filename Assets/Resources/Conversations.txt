@@ -129,6 +129,21 @@ Ivy|I trust you.
 Ivy|Sorry.
 --End
 
+--Session 16 
+Ivy|I don't think you should keep going from here.
+Ivy|Something lies ahead that even I might not be able to defeat.
+--End
+
+--Session 17 
+Ivy|I really suggest turning back right now.
+--End
+
+--Session 18 
+Ivy|You're not going to listen are you.
+--End
+
+
+
 
 ---------------------------------------------------------$ System Messages $-----------------------------------------------------------------------------
 

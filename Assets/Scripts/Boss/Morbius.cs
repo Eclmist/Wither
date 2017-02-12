@@ -30,11 +30,11 @@ public class Morbius : BossFSM , IDamagable
     private Rigidbody rigidBody;
     private AudioSource source;
     private Animator animator;
-    private int health = 100;
+    private int health = 300;
     private float maxHealth;
     private int damageMultiplier = 1;
-    private AttackStance currentAttackStance;
-    private enum AttackStance { NORMAL,BROKEN}
+    public AttackStance currentAttackStance;
+	public enum AttackStance { NORMAL,BROKEN}
 
     // Animation flags
     private bool isSpawning;
@@ -60,12 +60,15 @@ public class Morbius : BossFSM , IDamagable
     void DebuggingInput()
     {
         if (Input.GetKeyDown(KeyCode.Q))
-            TakeDamage(1);
+            TakeDamage(10);
         if (Input.GetKeyDown(KeyCode.R))
-            TakeDamage(5);
+            TakeDamage(50);
+
+	    if (Input.GetKeyDown(KeyCode.T))
+		    ForceKill();
     }
 
-    public void TakeDamage(int damage)
+	public void TakeDamage(int damage)
     {
         if (GetComponent<HealthEffect>() != null)
             GetComponent<HealthEffect>().ReduceHealth(damage / maxHealth);
@@ -76,8 +79,13 @@ public class Morbius : BossFSM , IDamagable
     }
 
 
+	public void ForceKill()
+	{
+		currentState = FSMState.Dead;
+	}
 
-    protected override void Initialize()
+
+	protected override void Initialize()
     {
         roar_clip =  Resources.Load("Sounds/BOSS_roar") as AudioClip;
         footstep_clip = Resources.Load("Sounds/footsteps1") as AudioClip;
@@ -107,8 +115,7 @@ public class Morbius : BossFSM , IDamagable
             currentAttackStance = AttackStance.BROKEN;
             attackRange *= 4;
 	        attackAngle  = 10;
-            health = 100;
-            damageMultiplier = 0;
+            health = 600;
             isChasing = false;
             IsSwinging = false;
             currentState = FSMState.Overpowered;
@@ -144,10 +151,6 @@ public class Morbius : BossFSM , IDamagable
 
 
         rigidBody.velocity = transform.forward * moveSpeed;
-
-	    Debug.Log("Is within range: " + PlayerWithinRange());
-		Debug.Log("Is within angle: " + PlayerWithinAngle());
-
 
 		if (PlayerWithinAngle() && PlayerWithinRange())
         {
@@ -321,7 +324,8 @@ public class Morbius : BossFSM , IDamagable
 
         if(fissure != null)
         Instantiate(fissure,castPoint.transform.position,transform.rotation);
-        Shake(0.5f,4);
+
+		Shake(0.5f,4);
     }
 
 	public void Shake(float duration, float amount)
