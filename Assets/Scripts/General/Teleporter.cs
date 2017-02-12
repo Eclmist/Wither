@@ -5,6 +5,7 @@ using UnityEngine;
 public class Teleporter : MonoBehaviour {
 
     bool isInTeleporter;
+	public string targetLevelName;
 
     void Start()
     {
@@ -14,7 +15,7 @@ public class Teleporter : MonoBehaviour {
     void Update()
     {
         if (isInTeleporter && LevelFader.Instance.canProceedToLoadingScreen)
-            LevelLoader.LoadNextLevel();
+            LoadScene.Instance.Load("targetLevelName");
     }
         
 

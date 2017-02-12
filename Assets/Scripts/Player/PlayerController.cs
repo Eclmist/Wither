@@ -99,15 +99,5 @@ class PlayerController : MonoBehaviour
 	{
 		return moveSpeedMultiplier;
 	}
-
-    void OnDisable()
-    {
-        horizontal = 0;
-        vertical = 0;
-        animator.enabled = false;
-    }
-
-	
-
 }
 

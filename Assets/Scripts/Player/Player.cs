@@ -14,13 +14,14 @@ public class Player : MonoBehaviour, IDamagable
     public int manaRestoreRate = 1;
     public int staminaRestoreRate = 1;
 
+	public bool isDead;
+
     public AudioSource audioSource;
 
     [Header("Audio Clips")]
     // Player resources
     public AudioClip ac_footstep1;
     public AudioClip ac_footstep2;
-    public AudioClip ac_hurt;
 
     private int currentHealth;
     private int currentMana;
@@ -69,6 +70,7 @@ public class Player : MonoBehaviour, IDamagable
 	    }
 	    else
 	    {
+			isDead = true;
 			GetComponent<PlayerController>().isDead = true;
 	    }
     }
@@ -103,8 +105,6 @@ public class Player : MonoBehaviour, IDamagable
     {
         timeSinceLastDamageTaken = 0;
         currentHealth -= amount;
-
-        AudioManager.Instance.PlaySound(ac_hurt,gameObject);
     }
 
     public void ReduceMana(int amount)

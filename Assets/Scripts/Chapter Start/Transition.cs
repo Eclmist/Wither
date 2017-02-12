@@ -6,6 +6,8 @@ using UnityEditor.SceneManagement;
 public class Transition : MonoBehaviour
 {
 
+	public static int level;
+
     [SerializeField]
     private string message; // Message to diplay
     [SerializeField]
@@ -25,63 +27,41 @@ public class Transition : MonoBehaviour
 
     private bool isMessageShown;
     private GameObject spinner;
-    private AsyncOperation operation;
-    
-    public void SetMessage(string message)
-    {
-        text.text = message;
-    }
 
-    public void SetHeaderText(string headerText)
-    {
-        header.text = headerText;
-    }
-        
-   
-    // Use this for initialization
+	void Awake()
+	{
+		level = 0;
+	}
+
+	// Use this for initialization
     IEnumerator Start ()
     {
-        //operation = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1,LoadSceneMode.Single);
-        operation = EditorSceneManager.LoadSceneAsync(EditorSceneManager.GetActiveScene().buildIndex + 1, UnityEngine.SceneManagement.LoadSceneMode.Single);
-        operation.allowSceneActivation = false;   
-        
-   
-        // Get the spinner sprite and hide it
-        spinner = GameObject.Find("Spinner");
-        spinner.SetActive(false);
+	    UpdateText(++level);
+		// Get the spinner sprite and hide it
+		spinner = GameObject.Find("Spinner");
+        spinner.SetActive(true);
         isMessageShown = false;
         // Initialize message and flower frame to be invisible
-        text.text = message;
         text.canvasRenderer.SetAlpha(0);
-        header.text = headerText;
         header.canvasRenderer.SetAlpha(0);
-
 
         DisplayHeader();
         yield return new WaitForSeconds(stayTime);
         FadeIn();
         yield return new WaitForSeconds(delayBeforeNextScene);
         isMessageShown = true;
-  
+  	}
+
+	void Update()
+    {
+		if (LoadScene.currentLoadProgress >= 0.9F && isMessageShown)
+		{
+			spinner.SetActive(false);
+		}
+
 	}
 
-    void Update()
-    {
-
-        // If the message has been shown and the scene is still loading
-        if(operation.isDone == false && isMessageShown)
-            spinner.SetActive(true);
-
-        if (operation.progress >= 0.89F && isMessageShown)
-        {
-            spinner.SetActive(false);
-            operation.allowSceneActivation = true;
-           
-        }
-            
-    }
-
-    void FadeIn()
+	void FadeIn()
     {
         text.CrossFadeAlpha(1, messageFadeInTime, false);
     }
@@ -90,6 +70,26 @@ public class Transition : MonoBehaviour
     {
         header.CrossFadeAlpha(1, headerFadeInTime, false);
     }
+
+	public void UpdateText(int level)
+	{
+		header.text = "Chapter " + level;
+
+		switch (level)
+		{
+			case 1:
+				text.text = "\"My Name is Ivy\"";
+				break;
+			case 2:
+				text.text = "\"She brought colors to my life\"";
+				break;
+			case 3:
+				text.text = "\"Don't know la\"";
+				break;
+			case 4:
+				break;
+		}
+	}
 
 
 }

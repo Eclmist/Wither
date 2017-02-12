@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
 public class LevelFader : MonoBehaviour {
     
     public static LevelFader Instance;
+
     public float fadeInDuration;
     public float fadeOutDuration;
     public Image blackOverlay;
@@ -43,15 +45,14 @@ public class LevelFader : MonoBehaviour {
         canProceedToLoadingScreen = true;
     }
 
+    //public void FadeOutAndLoadScene(string targetLevelName)
+    //{
+    //    blackOverlay.CrossFadeAlpha(1, fadeOutDuration, true);
+    //    StartCoroutine(WaitPermission(fadeOutDuration));
 
-    public void FadeOutAndLoadScene()
-    {
-        blackOverlay.CrossFadeAlpha(1, fadeOutDuration, true);
-        StartCoroutine(WaitPermission(fadeOutDuration));
-
-        if (canProceedToLoadingScreen)
-            LevelLoader.LoadNextLevel();
+    //    if (canProceedToLoadingScreen)
+    //        LoadScene.Instance.Load(targetLevelName);
                   
-    }
+    //}
         
 }
