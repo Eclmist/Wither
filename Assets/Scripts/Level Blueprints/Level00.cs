@@ -6,7 +6,10 @@ public class Level00 : MonoBehaviour
 {
 
 	private bool playerDeathEventTriggered;
+	private bool enemySpawnEventTriggered;
 
+	[SerializeField] private GameObject[] enemiesToEnable;
+ 
 	// Update is called once per frame
 	void Update ()
 	{
@@ -17,7 +20,6 @@ public class Level00 : MonoBehaviour
 			StartCoroutine(KillAllEnemies());
 
 			Chronos.LateExecute(LoadLevel01, 5);
-
 		}
 	}
 
@@ -28,11 +30,9 @@ public class Level00 : MonoBehaviour
 
 	IEnumerator KillAllEnemies()
 	{
-		yield return new WaitForSeconds(2);
+		yield return new WaitForSeconds(0.8F);
 
-		GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-
-		foreach (GameObject enemy in enemies)
+		foreach (GameObject enemy in enemiesToEnable)
 		{
 			IDamagable damagableComponent = enemy.GetComponent<IDamagable>();
 
@@ -41,7 +41,28 @@ public class Level00 : MonoBehaviour
 				damagableComponent.TakeDamage(99999);
 			}
 
-			yield return new WaitForSeconds(0.5F);
+			yield return new WaitForSeconds(0.2F);
+		}
+	}
+
+	IEnumerator SpawnAllEnemies()
+	{
+
+		foreach (GameObject enemy in enemiesToEnable)
+		{
+			enemy.SetActive(true);
+			yield return new WaitForSeconds(0.2F);
+		}
+	}
+
+
+	void OnTriggerEnter(Collider other)
+	{
+		if (other.tag == "Player")
+		{
+			enemySpawnEventTriggered = true;
+			StartCoroutine(SpawnAllEnemies());
+
 		}
 	}
 }
