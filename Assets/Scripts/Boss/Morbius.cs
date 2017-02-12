@@ -47,6 +47,8 @@ public class Morbius : BossFSM , IDamagable
     private AudioClip roar_clip;
     private AudioClip footstep_clip;
     private GameObject fissure;
+	public AudioClip fissure_clip;
+
 
 	//Actually hitting player
 	private Player playerHealth;
@@ -90,8 +92,7 @@ public class Morbius : BossFSM , IDamagable
         roar_clip =  Resources.Load("Sounds/BOSS_roar") as AudioClip;
         footstep_clip = Resources.Load("Sounds/footsteps1") as AudioClip;
         fissure = Resources.Load("Skills/FireFissure") as GameObject;
-
-        player = GameObject.FindGameObjectWithTag("Player");
+		player = GameObject.FindGameObjectWithTag("Player");
 	    playerHealth = player.GetComponent<Player>();
 		maxHealth = health;
         currentState = FSMState.Chase;
@@ -320,6 +321,8 @@ public class Morbius : BossFSM , IDamagable
 
     public void Fissure()
     {
+	    AudioManager.Instance.PlaySound(fissure_clip, gameObject);
+
         isPounding = false;
 
         if(fissure != null)
