@@ -20,6 +20,7 @@ public class Elemental : EnemyFSM, IDamagable, IStunnable
 
 	public GameObject castPoint;
     public AudioClip attackSound;
+	public AudioClip spawnSound;
 
 	// Animation flags
 	private bool isChasing;
@@ -106,6 +107,9 @@ public class Elemental : EnemyFSM, IDamagable, IStunnable
 	protected override void Initialize()
 	{
 		base.Initialize();
+
+		if (spawnSound)
+			AudioManager.Instance.PlaySound(spawnSound, gameObject);
 
 		ElementalProjectile = Resources.Load<GameObject>("Ice_Wave");
 		ElementalDeath = Resources.Load<GameObject>("Dark_Explosion");
@@ -291,7 +295,6 @@ public class Elemental : EnemyFSM, IDamagable, IStunnable
 				Quaternion.LookRotation(lastPlayerPos - 
 				castPoint.transform.position);
 
-            AudioManager.Instance.PlaySound(attackSound,gameObject);
 			Instantiate(ElementalProjectile, castPoint.transform.position, rotation);
 		}
 	}

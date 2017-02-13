@@ -25,7 +25,7 @@ public class Level03 : MonoBehaviour
 			{
 				playerPlannedDeathFlag = true;
 
-				ivySelfDestructScript.enabled = true;
+				Chronos.LateExecute(EndGameSequence, 2);
 
 				bossAreaSpawner.enabled = false;
 			}
@@ -39,6 +39,11 @@ public class Level03 : MonoBehaviour
 			Chronos.LateExecute(KillAllEnemiesCoroutine, 1);
 
 		}
+	}
+
+	void EndGameSequence()
+	{
+		ivySelfDestructScript.enabled = true;
 	}
 
 	void KillAllEnemiesCoroutine()

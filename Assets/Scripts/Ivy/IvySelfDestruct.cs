@@ -43,6 +43,7 @@ public class IvySelfDestruct : MonoBehaviour
 		GameObject.FindObjectOfType<Morbius>().ForceKill();
 
 		StartCoroutine(DoPulse());
+		StartCoroutine(KillAllEnemies());
 
 	}
 
@@ -86,4 +87,24 @@ public class IvySelfDestruct : MonoBehaviour
 		TP_Camera.Instance.useDamping = false;
 
 	}
+
+	IEnumerator KillAllEnemies()
+	{
+		yield return new WaitForSeconds(0.1F);
+
+		Elemental[] enemiesToEnable = FindObjectsOfType<Elemental>();
+
+		foreach (Elemental enemy in enemiesToEnable)
+		{
+			IDamagable damagableComponent = enemy.GetComponent<IDamagable>();
+
+			if (damagableComponent != null)
+			{
+				damagableComponent.TakeDamage(99999);
+			}
+
+			yield return new WaitForSeconds(0.1F);
+		}
+	}
+
 }

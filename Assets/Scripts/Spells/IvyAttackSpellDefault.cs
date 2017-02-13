@@ -25,6 +25,8 @@ public class IvyAttackSpellDefault : MonoBehaviour {
 	private float timeSinceLastStart = float.MaxValue;
 	private ParticleToggle enemyHitParticles;
 
+	public AudioClip attackSound;
+
 	public bool SkillActive
 	{
 		get { return skillActive; }
@@ -79,6 +81,9 @@ public class IvyAttackSpellDefault : MonoBehaviour {
 								continue;
 
 							//Found new target
+
+							AudioManager.Instance.PlaySound(attackSound, gameObject);
+
 							enemyDamageComponent.TakeDamage(damage);
 
 							enemyHitParticles = enemy.GetComponentInChildren<ParticleToggle>();

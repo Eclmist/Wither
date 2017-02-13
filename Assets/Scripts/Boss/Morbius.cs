@@ -30,7 +30,7 @@ public class Morbius : BossFSM , IDamagable
     private Rigidbody rigidBody;
     private AudioSource source;
     private Animator animator;
-    private int health = 300;
+    private int health = 20;
     private float maxHealth;
     private int damageMultiplier = 1;
     public AttackStance currentAttackStance;
@@ -47,7 +47,6 @@ public class Morbius : BossFSM , IDamagable
     private AudioClip roar_clip;
     private AudioClip footstep_clip;
     private GameObject fissure;
-	public AudioClip fissure_clip;
 
 
 	//Actually hitting player
@@ -321,8 +320,6 @@ public class Morbius : BossFSM , IDamagable
 
     public void Fissure()
     {
-	    AudioManager.Instance.PlaySound(fissure_clip, gameObject);
-
         isPounding = false;
 
         if(fissure != null)
