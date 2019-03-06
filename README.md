@@ -9,6 +9,6 @@ Developed as part of a game development assignment at Singapore Polytechnic, Wit
 Graphics is one of the main focuses of Wither. The partially monochromatic setting of the game world and the allowance of interaction with colours in Wither is achieved with many screen spaced image effects written in ShaderLab and CG, many of which are documented [here](http://www.samuelvanallen.com/).
 
 ## Screenshots
-![ss1](http://www.samuelvanallen.com/image/portfolio/wither/2.png)
-![ss1](http://www.samuelvanallen.com/image/portfolio/wither/3.png)
-![ss1](http://www.samuelvanallen.com/image/portfolio/wither/4.png)
+![ss1](http://samuelvanallen.azurewebsites.net/image/portfolio/wither/2.png)
+![ss1](http://samuelvanallen.azurewebsites.net/image/portfolio/wither/3.png)
+![ss1](http://samuelvanallen.azurewebsites.net/image/portfolio/wither/4.png)
